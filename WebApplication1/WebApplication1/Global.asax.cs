@@ -20,6 +20,7 @@ namespace WebApplication1
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer<ApplicationDbContext>(
             new DropCreateDatabaseAlways<ApplicationDbContext>());
+            AppDbInitializer.FillInitialValues();
         }
     }
 }

@@ -113,8 +113,8 @@ D:\4course\diplom3\WebApplication1\WebApplication1\bin\fi\Npgsql.resources.dll
 D:\4course\diplom3\WebApplication1\WebApplication1\bin\fr\Npgsql.resources.dll
 D:\4course\diplom3\WebApplication1\WebApplication1\bin\ja\Npgsql.resources.dll
 D:\4course\diplom3\WebApplication1\WebApplication1\bin\zh-CN\Npgsql.resources.dll
-D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.CoreCompileInputs.cache
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
+d:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
