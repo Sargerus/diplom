@@ -9,6 +9,11 @@ namespace WebApplication1.Models
 {
     public class Backlog
     {
+
+        public Backlog()
+        {
+            this.Tasks = new HashSet<BacklogTask>();
+        }
         [Key]
         public int BacklogId { get; set; }
 
@@ -41,6 +46,6 @@ namespace WebApplication1.Models
         public String BacklogState { get; set; }
         public virtual BacklogState BacklogStateFK { get; set; }
 
-        public ICollection<BacklogTask> Tasks { get; set; }
+        public virtual ICollection<BacklogTask> Tasks { get; set; }
     }
 }

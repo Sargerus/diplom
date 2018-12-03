@@ -36,6 +36,7 @@ namespace WebApplication1.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Configuration.ProxyCreationEnabled = true;
         }
 
         public static ApplicationDbContext Create()

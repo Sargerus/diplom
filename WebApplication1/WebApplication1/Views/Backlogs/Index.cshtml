@@ -27,7 +27,40 @@
             @Html.ActionLink("Details", "Details", new { id=item.BacklogId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.BacklogId })
         </td>
+        <td>
+            + @Html.ActionLink("Add Task","Create", "BacklogTasks", new { @id = item.BacklogId }, null)
+        </td>
     </tr>
-}
+    if (item.Tasks != null)
+    {
+        <tr>
+            <td>
+                <label>Created On</label>
+            </td>
+            <td>
+                <label>Description</label>
+            </td>
+            <td>
+                <label>Hours Done</label>
+            </td>
+
+        </tr>
+
+        foreach (var task in item.Tasks)
+        {
+        <tr>
+            <td>
+                @task.CreatedOn
+            </td>
+            <td>
+                @task.Description
+            </td>
+            <td>
+                @task.HoursDone
+            </td>
+        </tr>
+        }
+     }
+    }
 
 </table>

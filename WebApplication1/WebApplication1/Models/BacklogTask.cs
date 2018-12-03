@@ -36,10 +36,12 @@ namespace WebApplication1.Models
         [Display(Description = "Done (hrs): ")]
         public Nullable<int> HoursDone { get; set; }
 
-        [ForeignKey("BacklogRef")]
+
         [Required]
         public int Backlog { get; set; }
-        public Backlog BacklogRef { get; set; }
+
+        [ForeignKey("Backlog")]
+        public virtual Backlog BacklogRef { get; set; }
     }
 
 
