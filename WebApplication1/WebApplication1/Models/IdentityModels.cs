@@ -31,6 +31,7 @@ namespace WebApplication1.Models
         public DbSet<Backlog> Backlogs { get; set; }
         public DbSet<BacklogState> BacklogStates { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<BacklogTask> BacklogTasks { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -41,5 +42,9 @@ namespace WebApplication1.Models
         {
             return new ApplicationDbContext();
         }
+
+        //public System.Data.Entity.DbSet<WebApplication1.Models.BacklogTask> BacklogTasks { get; set; }
+
+        //public System.Data.Entity.DbSet<WebApplication1.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

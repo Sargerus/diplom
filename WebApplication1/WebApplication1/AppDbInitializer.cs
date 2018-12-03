@@ -46,6 +46,7 @@ namespace WebApplication1
 
                 userManager.Create(admin,"!Kemp111");
                 userManager.Create(user, "!Kemp111");
+                userManager.AddToRole(admin.Id, role1.Name);
                 userManager.AddToRole(user.Id, role2.Name);
 
                 context.BacklogStates.AddRange(new List<BacklogState> {

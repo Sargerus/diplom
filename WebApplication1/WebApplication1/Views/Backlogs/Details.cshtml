@@ -11,13 +11,38 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            <label>Project </label>@Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @ViewBag.ProjectDescription
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.CreatedOn)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BacklogState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BacklogState)
+        </dd>
     </dl>
 </div>
 <p>

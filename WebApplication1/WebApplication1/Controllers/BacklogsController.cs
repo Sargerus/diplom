@@ -33,14 +33,21 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ProjectDescription = db.Projects.Find(backlog.Project).ProjectDescription.ToString();
             return View(backlog);
         }
 
         // GET: Backlogs/Create
         public ActionResult Create()
         {
-            ViewBag.BacklogStatesVH = new SelectList(db.BacklogStates.ToList(), "State", "State");
-            return View();
+            ViewBag.BacklogState = new SelectList(db.BacklogStates.ToList(), "State", "State", "In Proccess");
+            //ViewBag.ApplicationUser = new SelectList(db.Users.ToList(), "Id", "Id");
+            ViewBag.Projects = new SelectList(db.Projects.ToList(), "ProjectId", "ProjectDescription");
+
+            Backlog backlog = new Backlog();
+            backlog.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
+
+            return View(backlog);
         }
 
         // POST: Backlogs/Create
@@ -48,7 +55,7 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BacklogId,CreatedOn")] Backlog backlog)
+        public ActionResult Create(Backlog backlog)
         {
             if (ModelState.IsValid)
             {

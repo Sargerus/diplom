@@ -10,112 +10,119 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
-    public class ProjectsController : Controller
+    public class BacklogTasksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
+        // GET: BacklogTasks
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            var backlogTasks = db.BacklogTasks.Include(b => b.BacklogRef).Include(b => b.CreatedByFK);
+            return View(backlogTasks.ToList());
         }
 
-        // GET: Projects/Details/5
+        // GET: BacklogTasks/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            BacklogTask backlogTask = db.BacklogTasks.Find(id);
+            if (backlogTask == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(backlogTask);
         }
 
-        // GET: Projects/Create
+        // GET: BacklogTasks/Create
         public ActionResult Create()
         {
-            Project project = new Project();
-            project.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
-            project.CreatedOn = DateTime.Now;
-            return View(project);
+            ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description");
+            ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Email");
+
+            BacklogTask task = new BacklogTask();
+            task.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
+            return View(task);
         }
 
-        // POST: Projects/Create
+        // POST: BacklogTasks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Project project)
+        public ActionResult Create([Bind(Include = "TaskId,Description,CreatedBy,CreatedOn,HoursEstiimated,HoursDone,Backlog")] BacklogTask backlogTask)
         {
-            
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
+                db.BacklogTasks.Add(backlogTask);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description", backlogTask.Backlog);
+            ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Email", backlogTask.CreatedBy);
+            return View(backlogTask);
         }
 
-        // GET: Projects/Edit/5
+        // GET: BacklogTasks/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            BacklogTask backlogTask = db.BacklogTasks.Find(id);
+            if (backlogTask == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description", backlogTask.Backlog);
+            ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Email", backlogTask.CreatedBy);
+            return View(backlogTask);
         }
 
-        // POST: Projects/Edit/5
+        // POST: BacklogTasks/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProjectId,ProjectDescription,CreatedOn")] Project project)
+        public ActionResult Edit([Bind(Include = "TaskId,Description,CreatedBy,CreatedOn,HoursEstiimated,HoursDone,Backlog")] BacklogTask backlogTask)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(backlogTask).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description", backlogTask.Backlog);
+            ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Email", backlogTask.CreatedBy);
+            return View(backlogTask);
         }
 
-        // GET: Projects/Delete/5
+        // GET: BacklogTasks/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            BacklogTask backlogTask = db.BacklogTasks.Find(id);
+            if (backlogTask == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(backlogTask);
         }
 
-        // POST: Projects/Delete/5
+        // POST: BacklogTasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            BacklogTask backlogTask = db.BacklogTasks.Find(id);
+            db.BacklogTasks.Remove(backlogTask);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
