@@ -84,7 +84,14 @@ namespace WebApplication1
                 };
 
                 context.BacklogTasks.Add(taskk);
-                              
+
+                context.Products.AddRange(new List<Products> {
+
+                   new Products {ProductId = 1, Description = "First" },
+                   new Products { ProductId = 2, Description = "Second" },
+                   new Products {ProductId = 3, Description = "Third"}
+                });
+
                 context.SaveChanges();
 
                 Backlog fff = context.Backlogs.Select(g => g).First();

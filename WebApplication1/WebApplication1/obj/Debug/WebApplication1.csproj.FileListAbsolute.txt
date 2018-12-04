@@ -118,3 +118,9 @@ D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csp
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
 D:\4course\diplom3\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
+d:\4course\diplom3\WebApplication1\WebApplication1\bin\System.Net.Http.Formatting.dll
+d:\4course\diplom3\WebApplication1\WebApplication1\bin\System.Web.Http.dll
+d:\4course\diplom3\WebApplication1\WebApplication1\bin\System.Web.Http.WebHost.dll
+d:\4course\diplom3\WebApplication1\WebApplication1\bin\System.Net.Http.Formatting.xml
+d:\4course\diplom3\WebApplication1\WebApplication1\bin\System.Web.Http.xml
+d:\4course\diplom3\WebApplication1\WebApplication1\bin\System.Web.Http.WebHost.xml

@@ -9,28 +9,33 @@ namespace WebApplication1.Models
 {
     public class BacklogTask
     {
+        public BacklogTask()
+        {
+            this.Reports = new HashSet<Report>();
+            this.ResponsibleUsers = new HashSet<ApplicationUser>();
+        }
 
         [Key]
         public int TaskId { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Description = "Task description: ")]
+        [Display(Name = "Task")]
         [Required]
         public string Description { get; set; }
 
         [DataType(DataType.Text)]
         [ForeignKey("CreatedByFK")]
-        [Display(Description = "Created by:")]
+        [Display(Name = "Created by:")]
         [Required]
         public String CreatedBy { get; set; }
         public virtual ApplicationUser CreatedByFK { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Description = "Date created:")]
+        [Display(Name = "Date created:")]
         [Required]
         public DateTime CreatedOn { get; set; }
 
-        [Display(Description = "Estimated (hrs): ")]
+        [Display(Name = "Estimated (hrs): ")]
         public Nullable<int> HoursEstiimated { get; set; }
 
         [Display(Description = "Done (hrs): ")]
@@ -38,10 +43,14 @@ namespace WebApplication1.Models
 
 
         [Required]
+        [Display(Name = "Backlog:")]
         public int Backlog { get; set; }
 
         [ForeignKey("Backlog")]
         public virtual Backlog BacklogRef { get; set; }
+
+        public virtual ICollection<Report> Reports { get; set; }
+        public virtual ICollection<ApplicationUser> ResponsibleUsers { get; set; }
     }
 
 

@@ -14,6 +14,7 @@ namespace WebApplication1.Models
         {
             this.Tasks = new HashSet<BacklogTask>();
         }
+
         [Key]
         public int BacklogId { get; set; }
 

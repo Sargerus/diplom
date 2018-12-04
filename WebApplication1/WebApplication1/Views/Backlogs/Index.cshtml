@@ -1,66 +1,119 @@
-﻿ @model IEnumerable<WebApplication1.Models.Backlog>
+﻿@model IEnumerable<WebApplication1.Models.Backlog>
 
 @{
-    ViewBag.Title = "Index";
+                /**/
+
+                ViewBag.Title = "Backlog";
 }
 
-<h2>Index</h2>
+<h2>Backlogs</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p style="text-align:right;">
+    @Html.ActionLink("+Add Backlog", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BacklogId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BacklogId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BacklogId })
-        </td>
-        <td>
-            + @Html.ActionLink("Add Task","Create", "BacklogTasks", new { @id = item.BacklogId }, null)
-        </td>
-    </tr>
-    if (item.Tasks != null)
-    {
-        <tr>
-            <td>
-                <label>Created On</label>
-            </td>
-            <td>
-                <label>Description</label>
-            </td>
-            <td>
-                <label>Hours Done</label>
-            </td>
+@foreach (var item in Model)
+{
+    <table class="table">
+<tr>
+    <td>
+    @Html.ActionLink(@item.Description, "Details", "Backlogs", new { @id = item.BacklogId }, null)
+    </td>
+    <td>
+        @item.CreatedBy
+    </td>
+    <td>
+        @item.BacklogState
+    </td>
+</tr>
+        <tr></tr>
+        </table>
 
-        </tr>
-
-        foreach (var task in item.Tasks)
+        if (item.Tasks != null)
         {
+    <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
+
+        @foreach (var task in item.Tasks)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(@task.Description, "Details", "BacklogTasks", new { @id = task.TaskId }, null)
+                </td>
+                <td>
+                    @task.CreatedOn
+                </td>
+                <td>
+                    @task.CreatedBy
+                </td>
+            </tr>
+        }
         <tr>
-            <td>
-                @task.CreatedOn
-            </td>
-            <td>
-                @task.Description
-            </td>
-            <td>
-                @task.HoursDone
+            <td></td>
+            <td></td>
+            <td style="text-align:right">
+                @Html.ActionLink("+Add Task", "Create", "BacklogTasks", new { @id = item.BacklogId }, null)
             </td>
         </tr>
-        }
-     }
-    }
+    </table>
 
-</table>
+         }
+ }
+
+    @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th></th>
+            </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.BacklogId }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.BacklogId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.BacklogId })
+                </td>
+                <td>
+                    + @Html.ActionLink("Add Task","Create", "BacklogTasks", new { @id = item.BacklogId }, null)
+                </td>
+            </tr>
+            if (item.Tasks != null)
+            {
+                <tr>
+                    <td>
+                        <label>Created On</label>
+                    </td>
+                    <td>
+                        <label>Description</label>
+                    </td>
+                    <td>
+                        <label>Hours Done</label>
+                    </td>
+
+                </tr>
+
+                foreach (var task in item.Tasks)
+                {
+                <tr>
+                    <td>
+                        @task.CreatedOn
+                    </td>
+                    <td>
+                        @task.Description
+                    </td>
+                    <td>
+                        @task.HoursDone
+                    </td>
+                </tr>
+                }
+             }
+            }
+
+        </table>*@

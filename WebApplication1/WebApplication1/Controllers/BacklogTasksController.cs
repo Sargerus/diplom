@@ -45,6 +45,7 @@ namespace WebApplication1.Controllers
             BacklogTask task = new BacklogTask();
             task.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
             task.Backlog = Convert.ToInt32(id);
+            if(id != null)
             ViewBag.BacklogDesc = db.Backlogs.Find(Convert.ToInt32(id)).Description;
 
             return View(task);

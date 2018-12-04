@@ -13,9 +13,15 @@ namespace WebApplication1.Models
         public ApplicationUser()
         {
             this.Projects = new HashSet<Project>();
+            this.Backlogs = new HashSet<Backlog>();
+            this.BacklogTasks = new HashSet<BacklogTask>();
+            this.Reports = new HashSet<Report>();
         }
 
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Backlog> Backlogs { get; set; }
+        public virtual ICollection<BacklogTask> BacklogTasks { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -32,6 +38,8 @@ namespace WebApplication1.Models
         public DbSet<BacklogState> BacklogStates { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<BacklogTask> BacklogTasks { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<Products> Products { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
