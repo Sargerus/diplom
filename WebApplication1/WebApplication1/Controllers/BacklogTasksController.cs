@@ -37,13 +37,17 @@ namespace WebApplication1.Controllers
         }
 
         // GET: BacklogTasks/Create
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
             ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description");
             ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Email");
 
             BacklogTask task = new BacklogTask();
             task.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
+            task.Backlog = Convert.ToInt32(id);
+            if(id != null)
+            ViewBag.BacklogDesc = db.Backlogs.Find(Convert.ToInt32(id)).Description;
+
             return View(task);
         }
 
@@ -52,11 +56,12 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TaskId,Description,CreatedBy,CreatedOn,HoursEstiimated,HoursDone,Backlog")] BacklogTask backlogTask)
+        public ActionResult Create(BacklogTask backlogTask)
         {
             if (ModelState.IsValid)
             {
                 db.BacklogTasks.Add(backlogTask);
+                db.Backlogs.Find(backlogTask.Backlog).Tasks.Add(backlogTask);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

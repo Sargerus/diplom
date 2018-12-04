@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebApplication1.Models.Report>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TaskFK.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportedByFK.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoursReported)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaskFK.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportedByFK.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoursReported)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ReportId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ReportId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ReportId })
+        </td>
+    </tr>
+}
+
+</table>

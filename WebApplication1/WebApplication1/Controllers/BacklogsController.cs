@@ -18,6 +18,7 @@ namespace WebApplication1.Controllers
         // GET: Backlogs
         public ActionResult Index()
         {
+            var abc = db.Backlogs.ToList();
             return View(db.Backlogs.ToList());
         }
 
@@ -87,7 +88,7 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BacklogId,CreatedOn")] Backlog backlog)
+        public ActionResult Edit(Backlog backlog)
         {
             if (ModelState.IsValid)
             {

@@ -1,0 +1,144 @@
+﻿@model IEnumerable<WebApplication1.Models.Report>
+
+@{
+    ViewBag.Title = "Records";
+}
+<h2>Records</h2>
+@{ 
+        var entity = Model.ToList();
+        while (entity.Count() > 0)
+        {
+            var todate = entity.Where(g => g.ReportedOn.Equals(entity.First().ReportedOn)).ToList();
+
+        <h2>@entity.First().ReportedOn</h2>
+<table class="table">
+    <tr>
+        <th>
+            Task
+        </th>
+        <th>
+            Report Desc
+        </th>
+        <th>
+            Reported (hrs.)
+        </th>
+    </tr>
+    @foreach (var record in todate)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
+            </td>
+            <td>
+                @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
+            </td>
+            <td>
+                @record.HoursReported
+            </td>
+        </tr>
+
+    }
+</table>
+       entity.RemoveAll(g => g.ReportedOn.Equals(entity.First().ReportedOn));
+    }
+    }
+@*@if (Model.Count() > 0)
+{
+
+    foreach (var record in Model)
+    {
+        DateTime dateTime = new DateTime();
+        if (record.ReportedOn.Equals(dateTime))
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
+                </td>
+                <td>
+                    @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
+                </td>
+                <td>
+                    @record.HoursReported
+                </td>
+            </tr>
+        }
+        else
+        {
+            <h2>@record.ReportedOn</h2>
+            <table class="table">
+                <tr>
+                    <th>
+                        Task
+                    </th>
+                    <th>
+                        Report Desc
+                    </th>
+                    <th>
+                        Reported (hrs.)
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
+                    </td>
+                    <td>
+                        @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
+                    </td>
+                    <td>
+                        @record.HoursReported
+                    </td>
+                </tr>
+                </table>
+        }
+
+        dateTime = record.ReportedOn;
+
+    }
+
+}*@
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportedByFK.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskFK.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoursReported)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportedByFK.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskFK.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoursReported)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ReportId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ReportId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ReportId })
+            </td>
+        </tr>
+    }
+
+    </table>*@

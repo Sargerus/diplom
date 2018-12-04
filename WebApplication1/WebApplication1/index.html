@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+
+    <div>
+        <h2>All Products</h2>
+        <ul id="products" />
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="product" />
+    </div>
+
+    <div>
+        <h2>Add new item</h2>
+        <input type="text" id="prodaddid" size="5" />
+        <input type="text" id="prodaddescr" size="5" />
+        <input type="submit" value="Add" onclick="add();" />
+    </div>
+
+    <div>
+        <h2>Change Item</h2>
+        <input type="text" id="prodputid" size="5" />
+        <input type="text" id="prodputdescr" size="5" />
+        <input type="submit" value="Change" onclick="change();" />
+    </div>
+
+    <div>
+        <h2>Delete Item</h2>
+        <label>ID</label><input type="text" id="proddeleteid" size="5" />
+        <input type="submit" value="Delete" onclick="del();" />
+    </div>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = 'api/products';
+
+    $(document).ready(function () {
+      // Send an AJAX request
+      $.getJSON(uri)
+          .done(function (data) {
+            // On success, 'data' contains a list of products.
+            $.each(data, function (key, item) {
+              // Add a list item for the product.
+              $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+            });
+          });
+    });
+
+    function formatItem(item) {
+      return "Id: " + item.ProductId + " " + "Description: " + item.Description;
+        }
+
+        function del() {
+            $.ajax({
+                type: 'DELETE',
+                url: uri + '/' + $('#proddeleteid').val(),
+            });
+        }
+
+        function change() {
+            $.ajax({
+                type: 'PUT',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: uri,
+                data: JSON.stringify({
+                    ProductId: $('#prodputid').val(),
+                    Description: $('#prodputdescr').val()
+                }),
+                success: function (result) { }
+            });
+        }
+
+        function add() {
+            //$.ajax(uri, {
+            //    data: JSON.stringify({ "ProductId": $('#prodaddit').val(), "Description": $('#prodaddescr').val() })
+            //});
+            var product = { ProductId: $('#prodaddescr').val(), Description: $('#prodaddid').val() };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: uri,
+                data: JSON.stringify({ 
+                    ProductId: $('#prodaddid').val(),
+                    Description: $('#prodaddescr').val()
+                }),
+                success: function (result) { }
+            });
+        }
+
+    function find() {
+      var id = $('#prodId').val();
+      $.getJSON(uri + '/' + id)
+          .done(function (data) {
+            $('#product').text(formatItem(data));
+          })
+          .fail(function (jqXHR, textStatus, err) {
+            $('#product').text('Error: ' + err);
+          });
+    }
+    </script>
+</body>
+</html>

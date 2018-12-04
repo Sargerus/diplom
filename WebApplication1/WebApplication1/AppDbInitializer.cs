@@ -55,9 +55,50 @@ namespace WebApplication1
                  new BacklogState { State = "Done" },
                 });
 
-                
+                context.Projects.Add(new Project
+                {
+                    CreatedBy = "administrator",
+                    CreatedOn = DateTime.Now,
+                    ProjectDescription = "First project",
+                    ProjectId = 1
+                });
+
+                context.Backlogs.Add(new Backlog
+                {
+                    CreatedOn = DateTime.Now,
+                    Project = 1,
+                    Description = "First Backlog",
+                    BacklogState = "In Progress",
+                    BacklogId = 1,
+                    CreatedBy = "administrator"
+                });
+
+                BacklogTask taskk = new BacklogTask
+                {
+                    Backlog = 1,
+                    CreatedBy = "administrator",
+                    Description = "First task",
+                    CreatedOn = DateTime.Now,
+                    TaskId = 1,
+                    HoursEstiimated = 8
+                };
+
+                context.BacklogTasks.Add(taskk);
+
+                context.Products.AddRange(new List<Products> {
+
+                   new Products {ProductId = 1, Description = "First" },
+                   new Products { ProductId = 2, Description = "Second" },
+                   new Products {ProductId = 3, Description = "Third"}
+                });
 
                 context.SaveChanges();
+
+                Backlog fff = context.Backlogs.Select(g => g).First();
+                fff.Tasks.Add(taskk);
+
+                context.SaveChanges();
+
             }
         }
     }

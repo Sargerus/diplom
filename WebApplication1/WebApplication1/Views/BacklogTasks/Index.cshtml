@@ -1,63 +1,120 @@
 ﻿@model IEnumerable<WebApplication1.Models.BacklogTask>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tasks";
 }
 
-<h2>Index</h2>
+<h2>Tasks</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p style="text-align:right;">
+    @Html.ActionLink("+Add Task", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.BacklogRef.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HoursEstiimated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HoursDone)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.BacklogRef.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HoursEstiimated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HoursDone)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TaskId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TaskId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TaskId })
-        </td>
-    </tr>
+
+@foreach (var item in Model)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BacklogRef.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoursEstiimated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoursDone)
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink(@item.BacklogRef.Description, "Details", "Backlogs", new { @id = item.Backlog }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.ActionLink(@item.Description, "Details", "BacklogTasks", new { @id = item.TaskId }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoursEstiimated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoursDone)
+            </td>
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TaskId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.TaskId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TaskId })
+                </td>*@
+        </tr>
+    </table>
+    if (item.Reports.Count > 0)
+    {
+        <div>
+            <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
+
+                @foreach (var report in item.Reports)
+                {
+                    <tr>
+                        <th>
+                            Report
+                        </th>
+                        <th>
+                            Reported By
+                        </th>
+                        <th>
+                            Date Reported
+                        </th>
+                        <th>
+                            Reported
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.ActionLink(@report.Comment, "Details", "Reports", new { @id = @report.ReportId }, null)
+                        </td>
+                        <td>
+                            @report.ReportedBy
+                        </td>
+                        <td>
+                            @report.ReportedOn
+                        </td>
+                        <td>
+                            @report.HoursReported
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right">
+                        @Html.ActionLink("+Add Report", "Create", "Reports", new { @id = item.TaskId }, null)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="pull-right">
+            @Html.ActionLink("+Add Report", "Create", "Reports", new { @id = item.TaskId }, null)
+                
+            </div>
+    }
+
 }
 
-</table>
