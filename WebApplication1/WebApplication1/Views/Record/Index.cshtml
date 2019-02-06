@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WebApplication1.Models.Report>
+
+@{
+    ViewBag.Title = "Records";
+}
+<h2>Records</h2>
+@using (Html.BeginForm(FormMethod.Get))
+{
+    <p>Log of the last</p>
+<input type="number" id="days" name="days"
+                                 min="3" max="7">
+
+
+    <p>days</p>
+    <button type="submit">View log</button>
+}
+@{
+    var entity = Model.ToList();
+    while (entity.Count() > 0)
+    {
+        var todate = entity.Where(g => g.ReportedOn.Equals(entity.First().ReportedOn)).ToList();
+
+        <h2>@entity.First().ReportedOn</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Task
+                </th>
+                <th>
+                    Report Desc
+                </th>
+                <th>
+                    Reported (hrs.)
+                </th>
+            </tr>
+            @foreach (var record in todate)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
+                    </td>
+                    <td>
+                        @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
+                    </td>
+                    <td>
+                        @record.HoursReported
+                    </td>
+                </tr>
+
+            }
+        </table>
+        entity.RemoveAll(g => g.ReportedOn.Equals(entity.First().ReportedOn));
+    }
+}

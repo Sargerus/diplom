@@ -10,6 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class BacklogTasksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,7 +19,25 @@ namespace WebApplication1.Controllers
         public ActionResult Index()
         {
             var backlogTasks = db.BacklogTasks.Include(b => b.BacklogRef).Include(b => b.CreatedByFK);
-            return View(backlogTasks.ToList());
+            List<BacklogTask> entities = new List<BacklogTask>();
+            var userid = db.Users.ToList().Find(u => u.UserName == User.Identity.Name).Id;
+            if (User.Identity.Name.Equals("admin@admin.ru"))
+            {
+                 entities = db.BacklogTasks.ToList();
+            }
+                entities = db.BacklogTasks.Where(g => g.CreatedBy.Equals(userid)).ToList();
+
+           // var entities = backlogTasks.ToList();
+            foreach(var entity in entities)
+            {
+                foreach(var report in entity.Reports)
+                {
+                    if (entity.HoursDone == null)
+                        entity.HoursDone = new int();
+                    entity.HoursDone += report.HoursReported;
+                }
+            }
+            return View(entities);
         }
 
         // GET: BacklogTasks/Details/5
@@ -33,13 +52,18 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
+            foreach(var report in backlogTask.Reports)
+            {
+                backlogTask.HoursDone += report.HoursReported;   
+            }
             return View(backlogTask);
         }
 
         // GET: BacklogTasks/Create
         public ActionResult Create(string id)
         {
-            ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description");
+            var userid = db.Users.ToList().Find(u => u.UserName == User.Identity.Name).Id;
+            ViewBag.Backlog = new SelectList(db.Backlogs.Where(g => g.CreatedBy.Equals(userid)), "BacklogId", "Description");
             ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Email");
 
             BacklogTask task = new BacklogTask();

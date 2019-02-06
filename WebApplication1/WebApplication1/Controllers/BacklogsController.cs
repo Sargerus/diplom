@@ -19,7 +19,12 @@ namespace WebApplication1.Controllers
         public ActionResult Index()
         {
             var abc = db.Backlogs.ToList();
-            return View(db.Backlogs.ToList());
+            var userid = db.Users.ToList().Find(u => u.UserName == User.Identity.Name).Id;
+            if (User.Identity.Name.Equals("admin@admin.ru"))
+            {
+                return View(db.Backlogs.ToList());
+            }
+            return View(db.Backlogs.Where(g => g.CreatedBy.Equals(userid)).ToList());
         }
 
         // GET: Backlogs/Details/5
@@ -42,7 +47,6 @@ namespace WebApplication1.Controllers
         public ActionResult Create()
         {
             ViewBag.BacklogState = new SelectList(db.BacklogStates.ToList(), "State", "State", "In Proccess");
-            //ViewBag.ApplicationUser = new SelectList(db.Users.ToList(), "Id", "Id");
             ViewBag.Projects = new SelectList(db.Projects.ToList(), "ProjectId", "ProjectDescription");
 
             Backlog backlog = new Backlog();

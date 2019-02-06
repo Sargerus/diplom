@@ -44,7 +44,7 @@ namespace WebApplication1.Controllers
             //ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email");
             Report report = new Report();
             report.Task = Convert.ToInt32(id);
-            ViewBag.TaskDesc = db.BacklogTasks.Find(Convert.ToInt32(id)).ToString(); 
+            ViewBag.TaskDesc = db.BacklogTasks.Find(Convert.ToInt32(id)).Description.ToString(); 
             report.ReportedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
             return View(report);
         }
@@ -59,8 +59,9 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
             {
                 db.Reports.Add(report);
+                //db.BacklogTasks.Find(report.TaskFK.TaskId).HoursDone += report.HoursReported;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "BacklogTasks");
             }
 
             ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
@@ -90,13 +91,13 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ReportId,ReportedBy,ReportedOn,HoursReported,Comment,Backlog")] Report report)
+        public ActionResult Edit(Report report)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(report).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","BacklogTasks");
             }
             ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
             ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email", report.ReportedBy);

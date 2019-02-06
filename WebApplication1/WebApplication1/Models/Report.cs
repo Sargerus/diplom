@@ -29,6 +29,7 @@ namespace WebApplication1.Models
         public int HoursReported { get; set; }
 
         [Display(Description = "Comment")]
+        [Required]
         public String Comment { get; set; }
         
         [ForeignKey("TaskFK")]

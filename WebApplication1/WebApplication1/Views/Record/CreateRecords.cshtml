@@ -4,79 +4,34 @@
     ViewBag.Title = "Records";
 }
 <h2>Records</h2>
-@{ 
-        var entity = Model.ToList();
-        while (entity.Count() > 0)
-        {
-            var todate = entity.Where(g => g.ReportedOn.Equals(entity.First().ReportedOn)).ToList();
+@using (Html.BeginForm(FormMethod.Get))
+{
+    <p>Log of the last</p>
+    @Html.TextBox("value");
+    <p>days</p>
+    <button type="submit">View log</button>
+}
+@{
+    var entity = Model.ToList();
+    while (entity.Count() > 0)
+    {
+        var todate = entity.Where(g => g.ReportedOn.Equals(entity.First().ReportedOn)).ToList();
 
         <h2>@entity.First().ReportedOn</h2>
-<table class="table">
-    <tr>
-        <th>
-            Task
-        </th>
-        <th>
-            Report Desc
-        </th>
-        <th>
-            Reported (hrs.)
-        </th>
-    </tr>
-    @foreach (var record in todate)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
-            </td>
-            <td>
-                @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
-            </td>
-            <td>
-                @record.HoursReported
-            </td>
-        </tr>
-
-    }
-</table>
-       entity.RemoveAll(g => g.ReportedOn.Equals(entity.First().ReportedOn));
-    }
-    }
-@*@if (Model.Count() > 0)
-{
-
-    foreach (var record in Model)
-    {
-        DateTime dateTime = new DateTime();
-        if (record.ReportedOn.Equals(dateTime))
-        {
+        <table class="table">
             <tr>
-                <td>
-                    @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
-                </td>
-                <td>
-                    @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
-                </td>
-                <td>
-                    @record.HoursReported
-                </td>
+                <th>
+                    Task
+                </th>
+                <th>
+                    Report Desc
+                </th>
+                <th>
+                    Reported (hrs.)
+                </th>
             </tr>
-        }
-        else
-        {
-            <h2>@record.ReportedOn</h2>
-            <table class="table">
-                <tr>
-                    <th>
-                        Task
-                    </th>
-                    <th>
-                        Report Desc
-                    </th>
-                    <th>
-                        Reported (hrs.)
-                    </th>
-                </tr>
+            @foreach (var record in todate)
+            {
                 <tr>
                     <td>
                         @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
@@ -88,14 +43,66 @@
                         @record.HoursReported
                     </td>
                 </tr>
-                </table>
+
+            }
+        </table>
+        entity.RemoveAll(g => g.ReportedOn.Equals(entity.First().ReportedOn));
+    }
+}
+@*@if (Model.Count() > 0)
+    {
+
+        foreach (var record in Model)
+        {
+            DateTime dateTime = new DateTime();
+            if (record.ReportedOn.Equals(dateTime))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
+                    </td>
+                    <td>
+                        @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
+                    </td>
+                    <td>
+                        @record.HoursReported
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <h2>@record.ReportedOn</h2>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Task
+                        </th>
+                        <th>
+                            Report Desc
+                        </th>
+                        <th>
+                            Reported (hrs.)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.ActionLink(record.TaskFK.Description, "Details", "BacklogTasks", new { @id = record.Task }, null)
+                        </td>
+                        <td>
+                            @Html.ActionLink(record.Comment, "Details", "Reports", new { @id = record.ReportId }, null)
+                        </td>
+                        <td>
+                            @record.HoursReported
+                        </td>
+                    </tr>
+                    </table>
+            }
+
+            dateTime = record.ReportedOn;
+
         }
 
-        dateTime = record.ReportedOn;
-
-    }
-
-}*@
+    }*@
 @*<table class="table">
         <tr>
             <th>
