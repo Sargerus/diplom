@@ -36,7 +36,7 @@ namespace WebApplication1.Models
         public DateTime CreatedOn { get; set; }
 
         [Display(Name = "Estimated (hrs): ")]
-        public Nullable<int> HoursEstiimated { get; set; }
+        public Nullable<int> HoursEstimated { get; set; }
 
         [Display(Description = "Done (hrs): ")]
         public Nullable<int> HoursDone { get; set; }

@@ -18,6 +18,7 @@ namespace WebApplication1.Models
             this.Reports = new HashSet<Report>();
         }
 
+        public bool isManager { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<Backlog> Backlogs { get; set; }
         public virtual ICollection<BacklogTask> BacklogTasks { get; set; }
@@ -40,6 +41,7 @@ namespace WebApplication1.Models
         public DbSet<BacklogTask> BacklogTasks { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Products> Products { get; set; }
+        public DbSet<BacklogType> BacklogTypes { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

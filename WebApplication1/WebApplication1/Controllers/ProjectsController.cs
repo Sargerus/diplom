@@ -33,6 +33,12 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
+
+            int k = 0;
+            project.Team = project.UserAssigned.Count;
+            db.Backlogs.ToList().ForEach(backlog => backlog.Tasks.ToList().ForEach(task => k += (int)(task.HoursEstimated.Value)));
+            project.TotalEstimate = k;
+
             return View(project);
         }
 
@@ -42,6 +48,7 @@ namespace WebApplication1.Controllers
             Project project = new Project();
             project.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
             project.CreatedOn = DateTime.Now;
+            ViewBag.Users = new SelectList(db.Users.ToList(), "Id", "UserName");
             return View(project);
         }
 
@@ -50,7 +57,7 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Project project)
+        public ActionResult Create(Project project, string[] managers)
         {
             
             if (ModelState.IsValid)
@@ -75,6 +82,7 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Users2 = new SelectList(db.Users.ToList(), "Id", "UserName");
             return View(project);
         }
 
@@ -83,7 +91,7 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProjectId,ProjectDescription,CreatedOn")] Project project)
+        public ActionResult Edit([Bind(Include = "ProjectId,ProjectDescription,HeadOfProject")] Project project)
         {
             if (ModelState.IsValid)
             {

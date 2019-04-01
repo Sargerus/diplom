@@ -13,25 +13,17 @@ namespace WebApplication1.Models
         public Backlog()
         {
             this.Tasks = new HashSet<BacklogTask>();
+            this.UsersAssigned = new HashSet<ApplicationUser>();
         }
 
         [Key]
         public int BacklogId { get; set; }
 
-        [DataType(DataType.Date)]
-        [Display(Description = "Date created:")]
+        [Display(Description = "Backlog type")]
         [Required]
-        public DateTime CreatedOn { get; set; }
-
-        [Display(Description = "Project description:")]
-        [Required]
-        public string Description { get; set; }
-
-        [DataType(DataType.Text)]
-        [ForeignKey("ProjectFK")]
-        [Required]
-        public int Project { get; set; }
-        public virtual Project ProjectFK { get; set; }
+        [ForeignKey("BacklogTypeFK")]
+        public String BacklogType { get; set; }
+        public virtual BacklogType BacklogTypeFK { get; set; }
 
         [DataType(DataType.Text)]
         [ForeignKey("CreatedByFK")]
@@ -40,6 +32,21 @@ namespace WebApplication1.Models
         public String CreatedBy { get; set; }
         public virtual ApplicationUser CreatedByFK { get; set; }
 
+        [DataType(DataType.Date)]
+        [Display(Description = "Date created:")]
+        [Required]
+        public DateTime CreatedOn { get; set; }
+
+        [Display(Description = "Project description:")]
+        [Required]
+        public string ProjectDescription { get; set; }
+
+        [DataType(DataType.Text)]
+        [ForeignKey("ProjectFK")]
+        [Required]
+        public int Project { get; set; }
+        public virtual Project ProjectFK { get; set; }
+
         [DataType(DataType.Text)]
         [ForeignKey("BacklogStateFK")]
         [Display(Description = "Status:")]
@@ -47,6 +54,15 @@ namespace WebApplication1.Models
         public String BacklogState { get; set; }
         public virtual BacklogState BacklogStateFK { get; set; }
 
+        [Display(Description = "Total estimate")]
+        public int TotalEsimate { get; set; }
+
+        [Display(Description = "Backlog description")]
+        public String BacklogDescription { get; set; }
+
+        public virtual ICollection<ApplicationUser> UsersAssigned { get; set; }
         public virtual ICollection<BacklogTask> Tasks { get; set; }
+        //to future if i will become good in asp
+        //public virtual ICollection<File> Files{get;set;}
     }
 }

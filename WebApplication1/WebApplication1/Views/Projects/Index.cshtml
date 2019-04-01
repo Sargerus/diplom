@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<WebApplication1.Models.Project>
 
 @{
+    Layout = "~/Views/Shared/_LayoutWOAddInfo.cshtml";
     ViewBag.Title = "Index";
 }
 
@@ -13,36 +14,14 @@
     }
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProjectDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th></th>
-    </tr>
 
 @foreach (var item in Model) {
+    
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ProjectDescription)
+            @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @if (User.IsInRole("admin"))
-            {
-                @Html.ActionLink("Edit |", "Edit", new { id = item.ProjectId })
-            }
-            @Html.ActionLink("Details", "Details", new { id = item.ProjectId })
-
-            @if (User.IsInRole("admin"))
-            {
-                @Html.ActionLink("| Delete", "Delete", new { id = item.ProjectId })
-            }
-        </td>
+        
     </tr>
 }
 
