@@ -3,49 +3,97 @@
 @{
     ViewBag.Title = "Details";
 }
+<div class="main-backlog-div-pk">
+    <div>
+        <div id="backlog_label">
+            <span id="backlog_type"></span> @Html.DisplayFor(model => model.BacklogDescription)
+        </div>
+        <div class="btn-main-pk">
+            @Html.ActionLink("Change", "Edit", new { @id = Model.BacklogId }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+            @Html.ActionLink("Delete", "Delete", new { @id = Model.BacklogId }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+        </div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ProjectDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(mode => Model.ProjectDescription)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </dt>
 
-<h2>Details</h2>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedOn)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
 
-<div>
-    <h4>Backlog</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            <label>Project </label>@Html.DisplayNameFor(model => model.BacklogDescription)
-        </dt>
-        <dd>
-            @ViewBag.ProjectDescription
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BacklogDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BacklogDescription)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedBy)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.BacklogState)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.BacklogState)
+            </dd>
+        </dl>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BacklogState)
-        </dt>
+    <div class="task-div-pk">
+        @if (Model.Tasks != null)
+        {
+            <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
 
-        <dd>
-            @Html.DisplayFor(model => model.BacklogState)
-        </dd>
-    </dl>
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(@task.Description, "Details", "BacklogTasks", new { @id = task.TaskId }, null)
+                        </td>
+                        <td>
+                            @task.CreatedOn
+                        </td>
+                        <td>
+                            @task.CreatedBy
+                        </td>
+                        <td>
+                            @task.HoursEstimated
+                        </td>
+                        <td>
+                            @task.HoursDone
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        }
+        <div class="add-div-pk">@Html.ActionLink("+", "Create", "BacklogTasks", "", new { @class = "btn-add-pk" })</div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.BacklogId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<script>
+    let backlogLabel = document.getElementById("backlog_label");
+    let backlogType = document.getElementById("backlog_type");
+
+    switch ("@Model.BacklogType") {
+        case "Backlog":
+            backlogLabel.setAttribute("class", "backlog-label-pk");
+            backlogType.innerHTML = "@Model.BacklogType: ";
+            break;
+        case "Sprint Backlog":
+            backlogLabel.setAttribute("class", "sprint-backlog-label-pk");
+            backlogType.innerHTML = "@Model.BacklogType: ";
+            break;
+        case "Defect":
+            backlogLabel.setAttribute("class", "defect-label-pk");
+            backlogType.innerHTML = "@Model.BacklogType: ";
+            break;
+        default: backlogLabel.setAttribute("class", "backlog-label-pk"); break;
+    }
+</script>

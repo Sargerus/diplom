@@ -15,14 +15,20 @@
 </p>
 <table class="table">
 
-@foreach (var item in Model) {
-    
-    <tr>
-        <td>
-            @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
-        </td>
-        
-    </tr>
-}
+    @foreach (var item in Model)
+    {
 
+        <tr>
+            <td>
+                <div>
+                    @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
+                    @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("New Backlog", "Create", "Backlogs", new { @projectId = item.ProjectId }, new { @class = "btn btn-success" })
+                </div>
+            </td>
+
+        </tr>
+    }
 </table>
+<div class="add-div-pk"> @Html.ActionLink("+", "Create", "", new { @class = "btn-add-pk" }) </div>

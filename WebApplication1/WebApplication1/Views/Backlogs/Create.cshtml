@@ -25,9 +25,10 @@
 
     <div class="form-group">
         @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.Project)
         @Html.LabelFor(model => model.Project, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Project, (IEnumerable<SelectListItem>)ViewBag.Projects, "")
+            @Html.TextBoxFor(model => model.ProjectDescription, new { @readonly = true })
             @Html.ValidationMessageFor(model => model.Project, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -46,34 +47,40 @@
             @Html.ValidationMessageFor(model => model.BacklogDescription, "", new { @class = "text-danger" })
         </div>
 
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BacklogState, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("BacklogState", (IEnumerable<SelectListItem>)ViewBag.BacklogState, "")*@
+                @Html.DropDownListFor(model => model.BacklogState, (IEnumerable<SelectListItem>)ViewBag.BacklogState, "")
+                @*@Html.EditorFor(model => model.BacklogState, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.BacklogState, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.BacklogType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BacklogType, (IEnumerable<SelectListItem>)ViewBag.BacklogType, "")
+                @Html.ValidationMessageFor(model => model.BacklogType, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.BacklogState, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @*@Html.DropDownList("BacklogState", (IEnumerable<SelectListItem>)ViewBag.BacklogState, "")*@
-            @Html.DropDownListFor(model => model.BacklogState, (IEnumerable<SelectListItem>)ViewBag.BacklogState, "")
-            @*@Html.EditorFor(model => model.BacklogState, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.ValidationMessageFor(model => model.BacklogState, "", new { @class = "text-danger" })
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.ApplicationUser, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ApplicationUser, (IEnumerable<SelectListItem>)ViewBag.ApplicationUser, "")
+                @Html.ValidationMessageFor(model => model.ApplicationUser, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
         </div>
     </div>
 
-    @*<div class="form-group">
-        @Html.LabelFor(model => model.ApplicationUser, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.ApplicationUser, (IEnumerable<SelectListItem>)ViewBag.ApplicationUser, "")
-            @Html.ValidationMessageFor(model => model.ApplicationUser, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
     </div>
-</div>
 }
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

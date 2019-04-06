@@ -9,7 +9,7 @@
 <h2>Backlogs</h2>
 
 <p style="text-align:right;">
-    @Html.ActionLink("+Add Backlog", "Create")
+    @Html.ActionLink("+Add Backlog","Index","Projects")
 </p>
 
 @foreach (var item in Model)
@@ -17,7 +17,7 @@
     <table class="table">
 <tr>
     <td>
-    @Html.ActionLink(@item.Description, "Details", "Backlogs", new { @id = item.BacklogId }, null)
+    @Html.ActionLink(@item.BacklogDescription, "Details", "Backlogs", new { @id = item.BacklogId }, null)
     </td>
     <td>
         @item.CreatedBy

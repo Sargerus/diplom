@@ -38,7 +38,6 @@ namespace WebApplication1.Models
         public DateTime CreatedOn { get; set; }
 
         [Display(Description = "Project description:")]
-        [Required]
         public string ProjectDescription { get; set; }
 
         [DataType(DataType.Text)]

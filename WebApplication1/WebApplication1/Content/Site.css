@@ -2,6 +2,106 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
+
+.btn-main-pk{
+    
+}
+
+.task-div-pk{
+    margin: 0.2em;
+    padding: .5em;
+}
+
+.main-backlog-div-pk{
+
+}
+
+.project-label-pk {
+    padding-left: .5em;
+    border-radius: 15px 50px 30px;
+    font-size: 180%;
+    background-color:aliceblue;
+    color: black;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: .3em;
+}
+
+.backlog-label-pk {
+    padding-left: .5em;
+    border-radius: 15px 50px 30px;
+    font-size: 180%;
+    background-color: rgb(65, 206, 44);
+    color: black;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: .3em;
+}
+
+.sprint-backlog-label-pk {
+    padding-left: .5em;
+    border-radius: 15px 50px 30px;
+    font-size: 180%;
+    background-color: darkorange;
+    color: black;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: .3em;
+}
+
+.defect-label-pk {
+    padding-left: .5em;
+    border-radius: 15px 50px 30px;
+    font-size: 180%;
+    background-color:rgb(255, 69, 69);
+    color: black;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: .3em;
+}
+
+.add-div-pk:hover, tr:hover {
+transition: .2s linear;
+background-color:whitesmoke;
+}
+
+.add-div-pk, tr {
+    transition: .2s linear;
+    background-color: white;
+}
+
+.block-right {
+    color:red;
+}
+
+.btn-add-pk {
+    display: block;
+    text-align: center;
+    background-image: -webkit-linear-gradient(top, #5cb85c 0%, #419641 100%);
+    background-image: -o-linear-gradient(top, #5cb85c 0%, #419641 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5cb85c), to(#419641));
+    background-image: linear-gradient(to bottom, #5cb85c 0%, #419641 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5cb85c', endColorstr='#ff419641', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    width: 8%;
+    height: 5%;
+    border-radius: .9em;
+    margin: 0 auto;
+    
+}
+
+    .btn-add-pk:hover,
+    .btn-add-pk:focus {
+        background-color: #419641;
+        background-position: 0 -15px;
+    }
+
+    .btn-add-pk:active,
+    .btn-add-pk.active {
+        background-color: #419641;
+        border-color: #3e8f3e;
+    }
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;

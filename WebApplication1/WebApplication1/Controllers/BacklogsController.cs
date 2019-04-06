@@ -44,13 +44,16 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Backlogs/Create
-        public ActionResult Create()
+        public ActionResult Create(string projectId)
         {
+            ViewBag.BacklogType = new SelectList(db.BacklogTypes.ToList(), "Type","Type","Backlog");
             ViewBag.BacklogState = new SelectList(db.BacklogStates.ToList(), "State", "State", "In Proccess");
             ViewBag.Projects = new SelectList(db.Projects.ToList(), "ProjectId", "ProjectDescription");
 
             Backlog backlog = new Backlog();
             backlog.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
+            backlog.Project = Convert.ToInt32(projectId);
+            backlog.ProjectDescription = db.Projects.First(e => e.ProjectId == backlog.Project).ProjectDescription;
 
             return View(backlog);
         }
@@ -84,6 +87,16 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
+
+            // ViewBag.BacklogState = new SelectList(db.BacklogStates.ToList(), "State", "State",);
+            //ViewData["BacklogState"] = new SelectList(db.BacklogStates.ToList(), "State", "State", new BacklogState { State = "In Progress" });
+            //SelectList sellist = new SelectList((IEnumerable<BacklogState>)db.BacklogStates.ToList(), "State", "State");
+            var States = db.BacklogStates.ToList();
+
+            ViewBag.BacklogState = new SelectList(db.BacklogStates.ToList(), "State", "State", "In Proccess");
+            ViewBag.selectedState = States.IndexOf(States.Where(g => g.State.Equals(backlog.BacklogState)).Select(g => g).First());
+
+            ModelState.Clear();
             return View(backlog);
         }
 

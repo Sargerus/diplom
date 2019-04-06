@@ -4,10 +4,14 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Project</h4>
+    <div class="project-label-pk">
+        @Html.DisplayFor(model => model.ProjectDescription)
+    </div>
+    <div class="btn-main-pk">
+        @Html.ActionLink("Change", "Edit", new { @id = Model.ProjectId }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+        @Html.ActionLink("Delete", "Delete", new { @id = Model.ProjectId }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+    </div>
     <hr />
     <dl class="dl-horizontal">
 
@@ -76,9 +80,43 @@
 
     </dl>
 </div>
-<p>
-    @if (User.IsInRole("admin")) {
-        @Html.ActionLink("Edit |", "Edit", new { id = Model.ProjectId }) 
-                                                                       }
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="task-div-pk">
+    @if (Model.Backlogs != null)
+    {
+        <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
+
+            @foreach (var backlog in Model.Backlogs)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@backlog.BacklogDescription, "Details", "Backlogs", new { @id = backlog.BacklogId }, null)
+                    </td>
+                    <td>
+                        @backlog.CreatedOn
+                    </td>
+                    <td>
+                        @backlog.CreatedBy
+                    </td>
+                    <td>
+                        @backlog.TotalEsimate
+                    </td>
+                    <td>
+                        @{ int totalDone = 0;
+                            foreach (var task in backlog.Tasks)
+                            {
+                                if (task.HoursDone != null)
+                                {
+                                    totalDone += task.HoursDone.Value;
+                                }
+                            }
+                        }
+                        @totalDone
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    }
+    <div class="add-div-pk">@Html.ActionLink("+", "Create", "Backlogs", new { @projectId = Model.ProjectId }, new { @class = "btn-add-pk" })</div>
+</div>

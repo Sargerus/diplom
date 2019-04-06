@@ -7,19 +7,20 @@
 <h2>Edit</h2>
 
 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Backlog</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.BacklogId)
-        @Html.HiddenFor(model => model.BacklogState)
         @Html.HiddenFor(model => model.CreatedBy)
-        @Html.HiddenFor(model => model.Description)
+        @Html.HiddenFor(model => model.BacklogDescription)
         @Html.HiddenFor(model => model.Project)
+        @Html.HiddenFor(model => model.BacklogType)
 
         <div class="form-group">
             @Html.LabelFor(model => model.CreatedOn, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -29,6 +30,24 @@
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.BacklogDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BacklogDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BacklogDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BacklogState, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("BacklogState", (IEnumerable<SelectListItem>)ViewBag.BacklogState, "")*@
+                @Html.DropDownListFor(model => model.BacklogState, (IEnumerable<SelectListItem>)ViewBag.BacklogState, new { @id = "states" })
+                @*@Html.EditorFor(model => model.BacklogState, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.BacklogState, "", new { @class = "text-danger" })
+            </div>
+        </div>
+               
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -43,4 +62,12 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        document.getElementById("states").selectedIndex = @{ @ViewBag.selectedState };
+
+    </script>
 }
+
+
