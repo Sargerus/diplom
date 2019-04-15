@@ -24,14 +24,17 @@ namespace WebApplication1.Models
         public string ProjectDescription { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Description = "Created on")]
         public DateTime CreatedOn { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Description = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Description = "End Date")]
         public DateTime EndDate { get; set; }
         

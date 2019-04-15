@@ -20,6 +20,7 @@ namespace WebApplication1.Models
         public virtual ApplicationUser ReportedByFK { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Description = "Date reported:")]
         [Required]
         public DateTime ReportedOn { get; set; }

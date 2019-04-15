@@ -3,8 +3,67 @@
     padding-bottom: 20px;
 }
 
+td{
+    padding-bottom:.3em;
+    padding-top:.3em;
+}
+
 .btn-main-pk{
     
+}
+
+.progress {
+    margin-bottom: 0px;
+    border-radius: 15px;
+}
+
+.task-container-pk {
+    display:flex;
+    flex-direction:row;
+
+}
+
+.div-text-center-pk {
+    text-align: center;
+    vertical-align: central;
+}
+
+.flex-item-big-pk{
+    flex-grow:3;
+    margin-left:.3em;
+    margin-right: .3em;
+}
+.flex-item-middle-pk {
+    flex-grow: 2;
+    margin-left: .3em;
+    margin-right: .3em;
+}
+.flex-item-small-pk {
+    flex-grow: 1;
+    margin-left: .3em;
+    margin-right: .3em;
+}
+
+.hover-element-pk {
+    transition: .2s linear;
+    background-color: white;
+}
+
+    .hover-element-pk:hover {
+        transition: .2s linear;
+        background-color: whitesmoke;
+        border-radius:15px;
+    }
+
+.project-div-pk:hover {
+    transition: .2s linear;
+    background-color: whitesmoke;
+}
+.project-div-pk {
+    padding-left: .5em;
+    transition: .2s linear;
+    background-color: white;
+    border-radius: 15px;
 }
 
 .task-div-pk{
@@ -12,9 +71,37 @@
     padding: .5em;
 }
 
-.main-backlog-div-pk{
-
+.backlog-left-item-pk {
+    padding-left: .2em;
+    border-radius: 5px 15px 10px;
+    font-size: 130%;
+    /*background-color: aliceblue;*/
+    color: black;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: .5em;
+    /*width: 80%;*/
+    /*float: left;*/
 }
+
+    .backlog-right-item-pk {
+        /*width: 20%;*/
+        /*float: right;*/
+        /*border: 2px solid yellow;*/
+        vertical-align: central;
+        text-align: center;
+        /*margin-top: .5em;*/
+        margin-bottom: .5em;
+        /*padding: .3em;*/
+    }
+
+.backlog-left-task-pk:hover, .backlog-right-task-pk:hover {
+    transition: .2s linear;
+    background-color: whitesmoke;
+}
+
+    .main-backlog-div-pk {
+    }
 
 .project-label-pk {
     padding-left: .5em;
@@ -60,14 +147,8 @@
     padding: .3em;
 }
 
-.add-div-pk:hover, tr:hover {
-transition: .2s linear;
-background-color:whitesmoke;
-}
-
-.add-div-pk, tr {
-    transition: .2s linear;
-    background-color: white;
+.add-div-pk {
+    border-radius: 15px;
 }
 
 .block-right {

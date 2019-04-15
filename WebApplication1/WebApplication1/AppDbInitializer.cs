@@ -72,7 +72,8 @@ namespace WebApplication1
                         CreatedOn = DateTime.Now,
                         ProjectDescription = "First project",
                         ProjectId = 1,
-                        HeadOfProject = "administrator"
+                        HeadOfProject = "administrator",
+                        StartDate = DateTime.Now
                     });
 
                     context.Backlogs.Add(new Backlog

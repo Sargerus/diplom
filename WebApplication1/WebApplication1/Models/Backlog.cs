@@ -33,6 +33,7 @@ namespace WebApplication1.Models
         public virtual ApplicationUser CreatedByFK { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Description = "Date created:")]
         [Required]
         public DateTime CreatedOn { get; set; }
@@ -52,9 +53,6 @@ namespace WebApplication1.Models
         [Required]
         public String BacklogState { get; set; }
         public virtual BacklogState BacklogStateFK { get; set; }
-
-        [Display(Description = "Total estimate")]
-        public int TotalEsimate { get; set; }
 
         [Display(Description = "Backlog description")]
         public String BacklogDescription { get; set; }

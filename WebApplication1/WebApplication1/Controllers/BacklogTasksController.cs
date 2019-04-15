@@ -15,6 +15,11 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string CalculateTaskDoneFor(int id)
+        {
+            return 5.ToString();
+        }
+
         // GET: BacklogTasks
         public ActionResult Index()
         {

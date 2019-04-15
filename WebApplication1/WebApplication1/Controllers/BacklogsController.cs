@@ -15,6 +15,23 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string CalculateBacklogDoneFor(int id)
+        {
+            var backlog = db.Backlogs.Find(id);
+
+            int hoursEstimated = backlog.Tasks.ToList().Sum(g =>
+            {
+                return g.HoursEstimated.Equals(null) ? 0 : g.HoursEstimated.Value;
+            });
+
+            int hoursDone = backlog.Tasks.ToList().Sum(g =>
+            {
+                return g.HoursDone.Equals(null) ? 0 : g.HoursDone.Value;
+            });
+
+            return (hoursDone.Equals(0) ? "0" : (hoursDone / hoursEstimated).ToString());
+        }
+
         // GET: Backlogs
         public ActionResult Index()
         {
@@ -46,7 +63,7 @@ namespace WebApplication1.Controllers
         // GET: Backlogs/Create
         public ActionResult Create(string projectId)
         {
-            ViewBag.BacklogType = new SelectList(db.BacklogTypes.ToList(), "Type","Type","Backlog");
+            ViewBag.BacklogType = new SelectList(db.BacklogTypes.ToList(), "Type", "Type", "Backlog");
             ViewBag.BacklogState = new SelectList(db.BacklogStates.ToList(), "State", "State", "In Proccess");
             ViewBag.Projects = new SelectList(db.Projects.ToList(), "ProjectId", "ProjectDescription");
 
