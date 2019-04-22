@@ -11,7 +11,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -47,6 +47,7 @@ namespace WebApplication1.Controllers
         public ActionResult Create()
         {
             Project project = new Project();
+
             project.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
             project.CreatedOn = DateTime.Now;
             ViewBag.Users = new SelectList(db.Users.ToList(), "Id", "UserName");

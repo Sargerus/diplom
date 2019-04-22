@@ -17,7 +17,13 @@ namespace WebApplication1.Controllers
 
         public string CalculateTaskDoneFor(int id)
         {
-            return 5.ToString();
+            var task = db.BacklogTasks.ToList().Find(g => g.TaskId.Equals(id));
+            if (task.HoursDone.Equals(null) || task.HoursEstimated.Equals(null))
+                return 0.ToString();
+            if (task.HoursEstimated.Value.Equals(0))
+                return 0.ToString();
+
+            return Math.Round((Convert.ToDouble(task.HoursDone.Value) / Convert.ToDouble(task.HoursEstimated.Value)) * 100 ).ToString();
         }
 
         // GET: BacklogTasks
@@ -84,15 +90,23 @@ namespace WebApplication1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(BacklogTask backlogTask)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Create([System.Web.Http.FromBody]BacklogTask backlogTask)
         {
-            if (ModelState.IsValid)
+            if (backlogTask.CreatedBy == null || backlogTask.Equals(String.Empty))
             {
+                backlogTask.CreatedBy = db.Users.ToList().Find(g => g.UserName.Equals(User.Identity.Name)).Id;
+                ModelState.Clear();
+            }
+
+            if (ModelState.IsValid || TryValidateModel(backlogTask))
+            {
+
                 db.BacklogTasks.Add(backlogTask);
                 db.Backlogs.Find(backlogTask.Backlog).Tasks.Add(backlogTask);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+                //return RedirectToAction("Index");
             }
 
             ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description", backlogTask.Backlog);

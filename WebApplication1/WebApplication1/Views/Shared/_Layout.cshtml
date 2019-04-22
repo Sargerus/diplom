@@ -48,63 +48,76 @@
     <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
 </head>
 <!------ Include the above in your HEAD tag ---------->
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("ReportLand", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-        </div>
-        <div class="navbar-collapse collapse">
-            @Html.Partial("_LoginPartial")
-        </div>
-    </div>
-</div>
-<div class="modal-body row">
-    <div>
-        <nav class="navbar navbar-default sidebar" role="navigation">
-            <div class="container-fluid">
+<div style="margin-bottom:2em;">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+                    @Html.ActionLink("ReportLand", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 </div>
-                <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Create<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
-                            <ul class="dropdown-menu forAnimate" role="menu">
-                                <li><a href="/Projects/Index">Project</a></li>
-                                <li><a href="/Backlogs/Index">Backlog</a></li>
-                                <li><a href="/BacklogTasks/Index">Task</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/Record/Index?days=3">Log<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>
-                        @*<li><a href="#">Tags<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>*@
-                    </ul>
+                <div class="navbar-collapse collapse">
+                    @Html.Partial("_LoginPartial")
                 </div>
-            </div>
-        </nav>
-    </div>
-
-    <div class="container-fluid" style="background-color:#fffdfb">
-        <div class="row content">
-            <div class="col-lg-8 text-left">
-                @RenderBody()
-
-            </div>
-            <div class="col-lg-2 text-center">
-                Here you can find additional info
             </div>
         </div>
     </div>
+@*<div>
+    <nav class="navbar navbar-default navbar-expand sidebar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>*@
+@*@<div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Create<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu forAnimate" role="menu">
+                            <li><a href="/Projects/Index">Project</a></li>
+                            <li><a href="/Backlogs/Index">Backlog</a></li>
+                            <li><a href="/BacklogTasks/Index">Task</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/Record/Index?days=3">Log<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>
+                    @*<li><a href="#">Tags<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
+                </ul>
+            </div>
+            @*</div>
+        </nav>
+    </div>*@
+<div class="container col-sm-2 col-lg-2">
+    <nav class="main-navigation-bar-pk">
+            <div class="active main-navigation-bar-div-pk hover-element-pk">
+                <a href="/">Home</a>
+                </div>
+            <div class="dropdown main-navigation-bar-div-pk hover-element-pk">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Create<span class="caret"></span></a>
+                <ul class="dropdown-menu forAnimate" role="menu">
+                    <li><a href="/Projects/Index">Project</a></li>
+                    <li><a href="/Backlogs/Index">Backlog</a></li>
+                    <li><a href="/BacklogTasks/Index">Task</a></li>
+                </ul>
+            </div>
+    </nav>
+</div>
+
+<div class="container-fluid col-sm-8 col-lg-8" style="background-color:#fffdfb">
+    <div>
+        @RenderSection("Body")
+    </div>
+</div>
+
+<div class="col-sm-1 col-lg-2 text-center">
+    @RenderSection("Additional", required: false)
 </div>
 
 

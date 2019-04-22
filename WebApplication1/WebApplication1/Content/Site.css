@@ -1,15 +1,37 @@
-﻿body {
+﻿.main-navigation-bar-pk {
+    /*background-color: rgba(211, 211, 211, 0.2);*/
+}
+
+.main-navigation-bar-div-pk {
+    border-radius: 15px;
+    border: .2em solid white;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    list-style-type: none;
+}
+
+    .main-navigation-bar-div-pk > a {
+        font-size: 1.2em;
+        text-decoration: none;
+        color: black;
+    }
+
+.main-navigation-bar-div-pk:hover {
+    font-size:1.1em;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
 
-td{
-    padding-bottom:.3em;
-    padding-top:.3em;
+td {
+    padding-bottom: .3em;
+    padding-top: .3em;
 }
 
-.btn-main-pk{
-    
+.btn-main-pk {
 }
 
 .progress {
@@ -18,9 +40,8 @@ td{
 }
 
 .task-container-pk {
-    display:flex;
-    flex-direction:row;
-
+    display: flex;
+    /*flex-direction: row;*/
 }
 
 .div-text-center-pk {
@@ -28,16 +49,18 @@ td{
     vertical-align: central;
 }
 
-.flex-item-big-pk{
-    flex-grow:3;
-    margin-left:.3em;
+.flex-item-big-pk {
+    flex-grow: 3;
+    margin-left: .3em;
     margin-right: .3em;
 }
+
 .flex-item-middle-pk {
     flex-grow: 2;
     margin-left: .3em;
     margin-right: .3em;
 }
+
 .flex-item-small-pk {
     flex-grow: 1;
     margin-left: .3em;
@@ -52,13 +75,14 @@ td{
     .hover-element-pk:hover {
         transition: .2s linear;
         background-color: whitesmoke;
-        border-radius:15px;
+        border-radius: 15px;
     }
 
 .project-div-pk:hover {
     transition: .2s linear;
     background-color: whitesmoke;
 }
+
 .project-div-pk {
     padding-left: .5em;
     transition: .2s linear;
@@ -66,7 +90,7 @@ td{
     border-radius: 15px;
 }
 
-.task-div-pk{
+.task-div-pk {
     margin: 0.2em;
     padding: .5em;
 }
@@ -84,30 +108,30 @@ td{
     /*float: left;*/
 }
 
-    .backlog-right-item-pk {
-        /*width: 20%;*/
-        /*float: right;*/
-        /*border: 2px solid yellow;*/
-        vertical-align: central;
-        text-align: center;
-        /*margin-top: .5em;*/
-        margin-bottom: .5em;
-        /*padding: .3em;*/
-    }
+.backlog-right-item-pk {
+    /*width: 20%;*/
+    /*float: right;*/
+    /*border: 2px solid yellow;*/
+    vertical-align: central;
+    text-align: center;
+    /*margin-top: .5em;*/
+    margin-bottom: .5em;
+    /*padding: .3em;*/
+}
 
 .backlog-left-task-pk:hover, .backlog-right-task-pk:hover {
     transition: .2s linear;
     background-color: whitesmoke;
 }
 
-    .main-backlog-div-pk {
-    }
+.main-backlog-div-pk {
+}
 
 .project-label-pk {
     padding-left: .5em;
     border-radius: 15px 50px 30px;
     font-size: 180%;
-    background-color:aliceblue;
+    background-color: aliceblue;
     color: black;
     margin-top: .5em;
     margin-bottom: .5em;
@@ -140,7 +164,7 @@ td{
     padding-left: .5em;
     border-radius: 15px 50px 30px;
     font-size: 180%;
-    background-color:rgb(255, 69, 69);
+    background-color: rgb(255, 69, 69);
     color: black;
     margin-top: .5em;
     margin-bottom: .5em;
@@ -152,7 +176,7 @@ td{
 }
 
 .block-right {
-    color:red;
+    color: red;
 }
 
 .btn-add-pk {
@@ -168,7 +192,6 @@ td{
     height: 5%;
     border-radius: .9em;
     margin: 0 auto;
-    
 }
 
     .btn-add-pk:hover,
@@ -197,7 +220,7 @@ td{
 }
 
 .list-group {
-    margin-left:200px;
+    margin-left: 200px;
     float: left;
     padding-top: 20px;
 }
@@ -208,7 +231,7 @@ td{
     right: 0;
     padding-top: 10%;
 }
-    
+
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
@@ -336,5 +359,3 @@ nav:hover .forAnimate {
 section {
     padding-left: 15px;
 }
-  
- 

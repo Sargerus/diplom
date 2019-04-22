@@ -6,105 +6,109 @@
     ViewBag.Title = "Backlog";
 }
 
-@foreach (var backlog in Model)
-{
-    <div class="container-fluid" style="border: .1em solid #949392;border-radius:25px; margin-top:.5em;">
-        <div style="font-size:120%; padding-top:1em;">@backlog.ProjectDescription</div>
-        <table width="100%">
-            <tr>
-                <td width="85%" @*style="border:2px solid black"*@>
-                    <div class="backlog-left-item-pk" btype="@backlog.BacklogType">
-                        @Html.ActionLink(@backlog.BacklogDescription, "Details", new { @id = backlog.BacklogId }, new { @style = "color:black" })
-                    </div>
-                </td>
-                <td width="15%">
-                    <div class="backlog-right-item-pk" bstate="@backlog.BacklogState">
-                        
-                        хуй
-                    </div>
-                </td>
-            </tr>
-        </table>
+@section  Body {
 
-        <table width="100%" class="task-table-pk">
-            @foreach (var task in backlog.Tasks)
-            {
+    @foreach (var backlog in Model)
+    {
+        <div class="container-fluid" style="border: .1em solid #949392;border-radius:25px; margin-top:.5em;">
+            <div style="font-size:120%; padding-top:1em;">@backlog.ProjectDescription</div>
+            <table width="100%">
                 <tr>
-                    <td width="85%" height="50%">
-                        <div class="task-container-pk" style="margin:.2em;">
-                            <div class="flex-item-big-pk hover-element-pk" style="padding-left:.5em">
-                                <img src="~/Content/Images/TaskDone.png" />
-                                @Html.ActionLink(@task.Description, "Details", "BacklogTasks", new { @id = task.TaskId }, "")
-                            </div> 
-                            <div class="flex-item-middle-pk div-text-center-pk hover-element-pk progress">
-                                @{ MvcHtmlString x = Html.Action("CalculateTaskDoneFor", "BacklogTasks", new { @id = task.TaskId });}
-                                <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: @x%" aria-valuenow="@x" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">@((task.HoursDone.Equals(null)) ? "0" : task.HoursDone.ToString()) / @((task.HoursEstimated.Equals(null)) ? "0" : task.HoursEstimated.ToString())</small>
-                             </div>
-                            <div class="flex-item-small-pk div-text-center-pk hover-element-pk">
-                                @Html.ActionLink("Report", "Create", "BacklogTasks", new { @id = task.TaskId }, "")
-                            </div>
+                    <td width="85%" @*style="border:2px solid black"*@>
+                        <div class="backlog-left-item-pk" btype="@backlog.BacklogType" id="@backlog.BacklogId">
+                            @Html.ActionLink(@backlog.BacklogDescription, "Details", new { @id = backlog.BacklogId }, new { @style = "color:black" })
                         </div>
                     </td>
                     <td width="15%">
-                        <div class="hover-element-pk div-text-center-pk">
-                            @task.CreatedBy
+                        <div class="backlog-right-item-pk" bstate="@backlog.BacklogState">
+
+                            ляля
                         </div>
                     </td>
                 </tr>
-            }
-        </table>
-
-    </div>
-}
-
-<script type="text/javascript" src="~/Scripts/BacklogIndexBehaviour.js"></script>
-
-
-@*@foreach (var item in Model) lalst one
-    {
-        <table class="table">
-    <tr>
-        <td>
-        @Html.ActionLink(@item.BacklogDescription, "Details", "Backlogs", new { @id = item.BacklogId }, null)
-        </td>
-        <td>
-            @item.CreatedBy
-        </td>
-        <td>
-            @item.BacklogState
-        </td>
-    </tr>
-            <tr></tr>
             </table>
 
-            if (item.Tasks != null)
-            {
-        <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
+            <table width="100%" class="task-table-pk">
+                @foreach (var task in backlog.Tasks)
+                {
+                    <tr>
+                        <td width="85%" height="50%">
+                            <div class="task-container-pk" style="margin:.2em;">
+                                <div class="flex-item-big-pk hover-element-pk" style="padding-left:.5em">
+                                    <img src="~/Content/Images/TaskDone.png" />
+                                    @Html.ActionLink(@task.Description, "Details", "BacklogTasks", new { @id = task.TaskId }, "")
+                                </div>
+                                <div class="flex-item-middle-pk div-text-center-pk hover-element-pk progress">
+                                    @{ MvcHtmlString x = Html.Action("CalculateTaskDoneFor", "BacklogTasks", new { @id = task.TaskId });}
+                                    <div class="progress-bar progress-bar-striped bg-info text-center" role="progressbar" style="width: @x%" aria-valuenow="@x" aria-valuemin="0" aria-valuemax="100">@((task.HoursDone.Equals(null)) ? "0" : task.HoursDone.ToString()) / @((task.HoursEstimated.Equals(null)) ? "0" : task.HoursEstimated.ToString())</div>
+                                    @*<small class="justify-content-center d-flex position-absolute w-100"></small>*@
+                                </div>
+                                <div class="flex-item-small-pk div-text-center-pk hover-element-pk">
+                                    @Html.ActionLink("Report", "Create", "BacklogTasks", new { @id = task.TaskId }, "")
+                                </div>
+                            </div>
+                        </td>
+                        <td width="15%">
+                            <div class="hover-element-pk div-text-center-pk">
+                                @task.CreatedBy
+                            </div>
+                        </td>
+                    </tr>
+                                        }
+            </table>
 
-            @foreach (var task in item.Tasks)
-            {
+        </div>
+                                        }
+    <script type="text/javascript" src="~/Scripts/BacklogIndexBehaviour.js"></script>
+
+
+    @*@foreach (var item in Model) lalst one
+        {
+            <table class="table">
+        <tr>
+            <td>
+            @Html.ActionLink(@item.BacklogDescription, "Details", "Backlogs", new { @id = item.BacklogId }, null)
+            </td>
+            <td>
+                @item.CreatedBy
+            </td>
+            <td>
+                @item.BacklogState
+            </td>
+        </tr>
+                <tr></tr>
+                </table>
+
+                if (item.Tasks != null)
+                {
+            <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
+
+                @foreach (var task in item.Tasks)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(@task.Description, "Details", "BacklogTasks", new { @id = task.TaskId }, null)
+                        </td>
+                        <td>
+                            @task.CreatedOn
+                        </td>
+                        <td>
+                            @task.CreatedBy
+                        </td>
+                    </tr>
+                }
                 <tr>
-                    <td>
-                        @Html.ActionLink(@task.Description, "Details", "BacklogTasks", new { @id = task.TaskId }, null)
-                    </td>
-                    <td>
-                        @task.CreatedOn
-                    </td>
-                    <td>
-                        @task.CreatedBy
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right">
+                        @Html.ActionLink("+Add Task", "Create", "BacklogTasks", new { @id = item.BacklogId }, null)
                     </td>
                 </tr>
-            }
-            <tr>
-                <td></td>
-                <td></td>
-                <td style="text-align:right">
-                    @Html.ActionLink("+Add Task", "Create", "BacklogTasks", new { @id = item.BacklogId }, null)
-                </td>
-            </tr>
-        </table>
+            </table>
 
-             }
-     }*@
+                 }
+         }*@
 
+}
+
+@section Additional {}

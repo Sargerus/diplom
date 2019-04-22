@@ -1,34 +1,34 @@
 ﻿@model IEnumerable<WebApplication1.Models.Project>
 
 @{
-    Layout = "~/Views/Shared/_LayoutWOAddInfo.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@section Body{
+    <p>
+        @if (User.IsInRole("admin"))
+        {
+            @Html.ActionLink("Create New", "Create")
+        }
+    </p>
+    <table class="table">
 
-<p>
-    @if (User.IsInRole("admin"))
-    {
-        @Html.ActionLink("Create New", "Create")
-    }
-</p>
-<table class="table">
+        @foreach (var item in Model)
+        {
 
-    @foreach (var item in Model)
-    {
+            <tr>
+                <td>
+                    <div class="project-div-pk">
+                        @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
+                        @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("New Backlog", "Create", "Backlogs", new { @projectId = item.ProjectId }, new { @class = "btn btn-success" })
+                    </div>
+                </td>
 
-        <tr>
-            <td>
-                <div class="project-div-pk">
-                    @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
-                    @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-success" })
-                    @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-danger" })
-                    @Html.ActionLink("New Backlog", "Create", "Backlogs", new { @projectId = item.ProjectId }, new { @class = "btn btn-success" })
-                </div>
-            </td>
-
-        </tr>
-    }
-</table>
-<div class="add-div-pk hover-element-pk"> @Html.ActionLink("+", "Create", "", new { @class = "btn-add-pk" }) </div>
+            </tr>
+        }
+    </table>
+    <div class="add-div-pk hover-element-pk"> @Html.ActionLink("+", "Create", "", new { @class = "btn-add-pk" }) </div>
+}
