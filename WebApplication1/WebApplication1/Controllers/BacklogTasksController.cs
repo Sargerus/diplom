@@ -90,9 +90,10 @@ namespace WebApplication1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Create([System.Web.Http.FromBody]BacklogTask backlogTask)
         {
+
             if (backlogTask.CreatedBy == null || backlogTask.Equals(String.Empty))
             {
                 backlogTask.CreatedBy = db.Users.ToList().Find(g => g.UserName.Equals(User.Identity.Name)).Id;
@@ -105,8 +106,20 @@ namespace WebApplication1.Controllers
                 db.BacklogTasks.Add(backlogTask);
                 db.Backlogs.Find(backlogTask.Backlog).Tasks.Add(backlogTask);
                 db.SaveChanges();
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
-                //return RedirectToAction("Index");
+
+                int id = db.Backlogs.Find(backlogTask.Backlog).Tasks.Count;
+
+
+
+                //BacklogTask newTask = db.Backlogs.Find(backlogTask.Backlog).Tasks.ToList().Where(g => g.TaskId == id).First();
+
+                return Json( new {
+                    TaskId = id,
+                    Description = backlogTask.Description,
+                    HoursDone = backlogTask.HoursDone,
+                    HoursEstimated = backlogTask.HoursEstimated,
+                    CreatedBy = backlogTask.CreatedBy
+                } );
             }
 
             ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description", backlogTask.Backlog);

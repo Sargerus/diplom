@@ -1,6 +1,9 @@
-﻿.main-navigation-bar-pk {
-    /*background-color: rgba(211, 211, 211, 0.2);*/
-}
+﻿/*.main-navigation-bar-pk {
+}*/
+
+input[type=number] {
+    width: 8em;
+} 
 
 .main-navigation-bar-div-pk {
     border-radius: 15px;
@@ -31,22 +34,39 @@ td {
     padding-top: .3em;
 }
 
-.btn-main-pk {
-}
+/*.btn-main-pk {
+}*/
 
 .progress {
     margin-bottom: 0px;
     border-radius: 15px;
+    text-align: center;
+    /*width: 50%;*/
+    /*margin: 15px auto;*/
+}
+
+.progress-value {
+    /*position: absolute;
+    right: 0;
+    left: 0;*/
 }
 
 .task-container-pk {
     display: flex;
+    padding-bottom:.5em;
     /*flex-direction: row;*/
 }
 
 .div-text-center-pk {
     text-align: center;
     vertical-align: central;
+}
+
+.flex-item-big-abs-pk {
+    /*flex-grow: 3;*/
+    width:40%;
+    margin-left: .3em;
+    margin-right: .3em;
 }
 
 .flex-item-big-pk {
@@ -63,8 +83,8 @@ td {
 
 .flex-item-small-pk {
     flex-grow: 1;
-    margin-left: .3em;
-    margin-right: .3em;
+    /*margin-left: .3em;
+    margin-right: .3em;*/
 }
 
 .hover-element-pk {
@@ -78,6 +98,11 @@ td {
         border-radius: 15px;
     }
 
+    .main-backlog-div-pk{
+
+        margin:.3em;
+
+    }
 .project-div-pk:hover {
     transition: .2s linear;
     background-color: whitesmoke;
@@ -125,6 +150,7 @@ td {
 }
 
 .main-backlog-div-pk {
+    color:black;
 }
 
 .project-label-pk {
