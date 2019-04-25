@@ -3,7 +3,58 @@
 
 input[type=number] {
     width: 8em;
-} 
+}
+
+.header{
+    background-color:antiquewhite;
+    margin-bottom:1em;
+    padding:.5em;
+    font-size:1.2em;
+}
+
+.header-item {
+    margin-left:0.5em;
+    margin-right:0.5em;
+
+}
+
+.reports-table-header-pk{
+    font-size:2em;
+    text-decoration:solid;
+    color:black;
+}
+
+.done-color {
+    height: 1.2em;
+    width: 1.2em;
+    background-color: #419641;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.havetime-color {
+    height: 1.2em;
+    width: 1.2em;
+    background-color: royalblue;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.outstanding-color {
+    height: 1.2em;
+    width: 1.2em;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.progress-color {
+    height: 1.2em;
+    width: 1.2em;
+    background-color: orange;
+    border-radius: 50%;
+    display: inline-block;
+}
 
 .main-navigation-bar-div-pk {
     border-radius: 15px;
@@ -25,6 +76,7 @@ input[type=number] {
 }
 
 body {
+    /*background-color:rgb(178, 173, 173);*/
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -53,8 +105,9 @@ td {
 
 .task-container-pk {
     display: flex;
-    padding-bottom:.5em;
-    /*flex-direction: row;*/
+    font-size:1.1em;
+    /*padding-bottom:.5em;*/
+    /*flex-direction: column;*/
 }
 
 .div-text-center-pk {
@@ -98,11 +151,11 @@ td {
         border-radius: 15px;
     }
 
-    .main-backlog-div-pk{
-
-        margin:.3em;
-
-    }
+.main-backlog-div-pk {
+    border:2px solid white;
+    background-color:white;
+    margin: .3em;
+}
 .project-div-pk:hover {
     transition: .2s linear;
     background-color: whitesmoke;
@@ -115,9 +168,14 @@ td {
     border-radius: 15px;
 }
 
+.report-div-pk {
+margin-top:.2em;
+margin-bottom:.2em;
+}
+
 .task-div-pk {
-    margin: 0.2em;
-    padding: .5em;
+    margin: 0.3em;
+    padding: .3em;
 }
 
 .backlog-left-item-pk {
@@ -149,9 +207,10 @@ td {
     background-color: whitesmoke;
 }
 
-.main-backlog-div-pk {
+/*.main-backlog-div-pk {
+    background-color:rgb(243, 240, 240);
     color:black;
-}
+}*/
 
 .project-label-pk {
     padding-left: .5em;

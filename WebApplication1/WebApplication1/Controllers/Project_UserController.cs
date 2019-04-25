@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -11,124 +10,107 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
-    public class ProjectsController : Controller
+    public class Project_UserController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
+        // GET: Project_User
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            return View(db.Project_User.ToList());
         }
 
-        // GET: Projects/Details/5
+        // GET: Project_User/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Project_User project_User = db.Project_User.Find(id);
+            if (project_User == null)
             {
                 return HttpNotFound();
             }
-
-            int k = 0;
-            project.Team = project.UserAssigned.Count;
-            //db.Backlogs.ToList().ForEach(backlog => backlog.Tasks.ToList().ForEach(task => k += (int)(task.HoursEstimated.Value)));
-            project.TotalEstimate = k;
-
-            return View(project);
+            return View(project_User);
         }
 
-        // GET: Projects/Create
+        // GET: Project_User/Create
         public ActionResult Create()
         {
-            Project project = new Project();
-
-            project.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
-            project.CreatedOn = DateTime.Now;
-            ViewBag.Users = new SelectList(db.Users.ToList(), "Id", "UserName");
-            return View(project);
+            return View();
         }
 
-        // POST: Projects/Create
+        // POST: Project_User/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Project project, string[] managers)
+        public ActionResult Create([Bind(Include = "ProjectId,isPM,isLead,isDev")] Project_User project_User)
         {
-            
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
+                db.Project_User.Add(project_User);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            return View(project_User);
         }
 
-        // GET: Projects/Edit/5
+        // GET: Project_User/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Project_User project_User = db.Project_User.Find(id);
+            if (project_User == null)
             {
                 return HttpNotFound();
             }
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            ViewBag.Users2 = new SelectList(db.Users.ToList(), "Id", "UserName");
-           // var date = project.StartDate.ToShortDateString();
-           // project.StartDate = DateTime.ParseExact(date, "yyyy-MM-dd", provider);
-            return View(project);
+            return View(project_User);
         }
 
-        // POST: Projects/Edit/5
+        // POST: Project_User/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Project project) //[Bind(Include = "ProjectId,ProjectDescription,HeadOfProject")]
+        public ActionResult Edit([Bind(Include = "ProjectId,isPM,isLead,isDev")] Project_User project_User)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(project_User).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            return View(project_User);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Project_User/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Project_User project_User = db.Project_User.Find(id);
+            if (project_User == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(project_User);
         }
 
-        // POST: Projects/Delete/5
+        // POST: Project_User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            Project_User project_User = db.Project_User.Find(id);
+            db.Project_User.Remove(project_User);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -32,12 +32,6 @@ namespace WebApplication1.Models
         [Display(Description = "Comment")]
         [Required]
         public String Comment { get; set; }
-        
-        [ForeignKey("TaskFK")]
-        [Display(Description = "Task Id: ")]
-        [Required]
-        public int Task { get; set; }
-        public virtual BacklogTask TaskFK { get; set; }
 
     }
 }

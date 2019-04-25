@@ -11,11 +11,11 @@ namespace WebApplication1
 {
     public static class AppDbInitializer
     {
-        
+
 
         public static void FillInitialValues()
         {
-            
+
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 try
@@ -37,7 +37,6 @@ namespace WebApplication1
                         Email = "admin@admin.ru",
                         Id = "administrator",
                         UserName = "admin@admin.ru",
-                        isManager = true
                     };
 
                     ApplicationUser user = new ApplicationUser
@@ -53,19 +52,6 @@ namespace WebApplication1
                     userManager.AddToRole(admin.Id, role1.Name);
                     userManager.AddToRole(user.Id, role2.Name);
 
-                    context.BacklogStates.AddRange(new List<BacklogState> {
-                 new BacklogState { State = "None" },
-                 new BacklogState { State = "In Progress" },
-                 new BacklogState { State = "Done" },
-                });
-
-                    context.BacklogTypes.AddRange(new List<BacklogType>
-                {
-                 new BacklogType { Type = "Backlog" },
-                 new BacklogType { Type = "Defect" },
-                 new BacklogType { Type = "Sprint Backlog" },
-                });
-
                     context.Projects.Add(new Project
                     {
                         CreatedBy = "administrator",
@@ -76,43 +62,96 @@ namespace WebApplication1
                         StartDate = DateTime.Now
                     });
 
-                    context.Backlogs.Add(new Backlog
+                    context.Projects.Add(new Project
                     {
-                        CreatedOn = DateTime.Now,
-                        Project = 1,
-                        BacklogDescription = "First Backlog",
-                        BacklogState = "In Progress",
-                        BacklogId = 1,
                         CreatedBy = "administrator",
-                        BacklogType = "Backlog",
-                        ProjectDescription = "First project"
+                        CreatedOn = DateTime.Now,
+                        ProjectDescription = "Second project",
+                        ProjectId = 2,
+                        HeadOfProject = "administrator",
+                        StartDate = DateTime.Now
                     });
 
-                    BacklogTask taskk = new BacklogTask
+                    context.Projects.Add(new Project
                     {
-                        Backlog = 1,
                         CreatedBy = "administrator",
-                        Description = "First task",
                         CreatedOn = DateTime.Now,
-                        TaskId = 1,
-                        HoursEstimated = 8
-                    };
+                        ProjectDescription = "Third project",
+                        ProjectId = 3,
+                        HeadOfProject = "administrator",
+                        StartDate = DateTime.Now
+                    });
 
-                    context.BacklogTasks.Add(taskk);
+                    var task = context.ProjectTasks.Add(new ProjectTask
+                    {
+                        ProjectKey = 1,
+                        AssignedBy = "administrator",
+                        UserAssigned = "user",
+                        TaskEstimated = 24,
+                        TaskDone = 8,
+                        TaskKey = 1,
+                        Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        ShortText = "Change Fonts",
+                        RequiredStartDate = DateTime.Now.AddDays(-2),
+                        RequiredEndDate = DateTime.Now.AddDays(2)
+                    });
 
-                    context.Products.AddRange(new List<Products> {
+                    context.ProjectTasks.Add(new ProjectTask
+                    {
+                        ProjectKey = 1,
+                        AssignedBy = "administrator",
+                        UserAssigned = "user",
+                        TaskEstimated = 32,
+                        TaskDone = 0,
+                        TaskKey = 2,
+                        ShortText = "Backend govno",
+                        Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        RequiredStartDate = DateTime.Now.AddDays(-2),
+                        RequiredEndDate = DateTime.Now.AddDays(2)
 
-                   new Products {ProductId = 1, Description = "First" },
-                   new Products { ProductId = 2, Description = "Second" },
-                   new Products {ProductId = 3, Description = "Third"}
-                });
+                    });
+
+                    context.ProjectTasks.Add(new ProjectTask
+                    {
+                        ProjectKey = 1,
+                        AssignedBy = "administrator",
+                        UserAssigned = "user",
+                        TaskEstimated = 20,
+                        TaskDone = 20,
+                        TaskKey = 3,
+                        ShortText = "Simple task",
+                        Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        RequiredStartDate = DateTime.Now,
+                        RequiredEndDate = DateTime.Now.AddDays(-5)
+                    });
+
+                    task.Reports.Add(context.Reports.Add(new Report
+                    {
+                        ReportId = 1,
+                        Comment = "Govno",
+                        ReportedBy = "user",
+                        ReportedOn = DateTime.Now,
+                        HoursReported = 4
+                    }));
+
+                    task.Reports.Add(context.Reports.Add(new Report
+                    {
+                        ReportId = 2,
+                        Comment = "Govno",
+                        ReportedBy = "user",
+                        ReportedOn = DateTime.Now,
+                        HoursReported = 4
+                    }));
+
+                    context.Project_User.Add(new Project_User
+                    {
+                        ProjectId = 1,
+                        User = "administrator",
+                        isLead = false
+                    });
 
                     context.SaveChanges();
 
-                    Backlog fff = context.Backlogs.Select(g => g).First();
-                    fff.Tasks.Add(taskk);
-
-                    context.SaveChanges();
                 }
                 catch (DbEntityValidationException e)
                 {

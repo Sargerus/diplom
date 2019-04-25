@@ -18,8 +18,9 @@ namespace WebApplication1.Controllers
         // GET: Reports
         public ActionResult Index()
         {
-            var reports = db.Reports.Include(r => r.TaskFK).Include(r => r.ReportedByFK);
-            return View(reports.ToList());
+            //var reports = db.Reports.Include(r => r.TaskFK).Include(r => r.ReportedByFK);
+            //return View(reports.ToList());
+            return View();
         }
 
         // GET: Reports/Details/5
@@ -43,8 +44,8 @@ namespace WebApplication1.Controllers
             //ViewBag.Backlog = new SelectList(db.Backlogs, "BacklogId", "Description");
             //ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email");
             Report report = new Report();
-            report.Task = Convert.ToInt32(id);
-            ViewBag.TaskDesc = db.BacklogTasks.Find(Convert.ToInt32(id)).Description.ToString(); 
+            //report.Task = Convert.ToInt32(id);
+            //ViewBag.TaskDesc = db.BacklogTasks.Find(Convert.ToInt32(id)).Description.ToString(); 
             report.ReportedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
             return View(report);
         }
@@ -59,12 +60,17 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
             {
                 db.Reports.Add(report);
+
+                //BacklogTask task = db.BacklogTasks.ToList().Where(g => g.TaskId == report.Task).First();
+                //task.Reports.Add(report);
+                //task.HoursDone += report.HoursReported;
+
                 //db.BacklogTasks.Find(report.TaskFK.TaskId).HoursDone += report.HoursReported;
                 db.SaveChanges();
-                return RedirectToAction("Index", "BacklogTasks");
+                return RedirectToAction("Index", "Backlogs");
             }
 
-            ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
+            //ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
             ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email", report.ReportedBy);
             return View(report);
         }
@@ -81,7 +87,7 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
+            //ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
             ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email", report.ReportedBy);
             return View(report);
         }
@@ -99,7 +105,7 @@ namespace WebApplication1.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index","BacklogTasks");
             }
-            ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
+            //ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
             ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email", report.ReportedBy);
             return View(report);
         }

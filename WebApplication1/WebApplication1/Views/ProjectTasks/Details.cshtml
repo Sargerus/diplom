@@ -1,0 +1,91 @@
+﻿@model WebApplication1.Models.ProjectTask
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Body{
+
+<div class="main-backlog-div-pk">
+    <div>
+        <div class="project-label-pk">
+            <span id="task_type"></span> @Html.DisplayFor(model => model.ShortText)
+        </div>
+        <div class="btn-main-pk">
+            @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+            @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+        </div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.RequiredStartDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(mode => Model.RequiredEndDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.TaskEstimated)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TaskDone)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UserAssigned)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AssignedBy)
+            </dd>
+        </dl>
+    </div>
+
+    <hr />
+
+    <div class="text-center">
+        <a data-toggle="collapse" href="#descriptionId" aria-expanded="false" aria-controls="collapseExample">
+            Show description
+        </a>
+
+        <div class="collapse text-justify" style="word-wrap:break-word;margin-bottom:.6em;margin-top:.6em;" id="descriptionId">
+            @Model.Description
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="reports-table-header-pk text-left">Reports</div>
+
+    <div style="border: 1px dashed black; margin-top:1em; margin-bottom:1em;" width="80%"></div>
+
+    <div class="task-div-pk">
+        @if (Model.Reports != null)
+        {
+            foreach (var report in Model.Reports)
+            {
+                <div class="task-container-pk hover-element-pk report-div-pk">
+
+                    <div class="flex-item-middle-pk">
+                        @report.Comment
+                    </div>
+                    <div class="flex-item-small-pk">
+                        @report.HoursReported
+                    </div>
+                    <div class="flex-item-small-pk">
+                        @report.ReportedOn
+                    </div>
+                    <div class="flex-item-small-pk">
+                        @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+                        @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+                    </div>
+                </div>
+            }
+
+        }
+        <div class="add-div-pk">@Html.ActionLink("+", "Create", "Reports", new { @id = Model.TaskKey }, new { @class = "btn-add-pk" })</div>
+    </div>
+</div>
+
+}

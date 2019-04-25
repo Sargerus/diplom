@@ -13,7 +13,7 @@ namespace WebApplication1.Models
         public Project()
         {
             this.UserAssigned = new HashSet<ApplicationUser>();
-            this.Backlogs = new HashSet<Backlog>();
+            //this.Backlogs = new HashSet<Backlog>();
         }
         [Key]
         public int ProjectId { get; set; }
@@ -61,6 +61,6 @@ namespace WebApplication1.Models
         public ApplicationUser HeadOfProjectRef { get; set; }
 
         public virtual ICollection<ApplicationUser> UserAssigned { get; set; }
-        public virtual ICollection<Backlog> Backlogs { get; set; }
+        //public virtual ICollection<Backlog> Backlogs { get; set; }
     }
 }

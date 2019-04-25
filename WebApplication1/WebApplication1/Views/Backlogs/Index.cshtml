@@ -46,7 +46,7 @@
 
             </div>
 
-            <hr />
+            <div style="border: 1px dashed black; margin-top:1em; margin-bottom:1em;"  width="80%"></div>
 
             @{int counter = 0;}
             @foreach (var task in backlog.Tasks)
@@ -64,7 +64,7 @@
                         @*<small class="justify-content-center d-flex position-absolute w-100"></small>*@
                     </div>
                     <div class="flex-item-small-pk div-text-center-pk hover-element-pk">
-                        @Html.ActionLink("Report", "Create", "BacklogTasks", new { @id = task.TaskId }, "")
+                        @Html.ActionLink("Report", "Create", "Reports", new { @id = task.TaskId }, "")
                     </div>
                     <div class="hover-element-pk div-text-center-pk flex-item-small-pk">
                         @task.CreatedBy
