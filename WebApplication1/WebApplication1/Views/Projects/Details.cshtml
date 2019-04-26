@@ -81,7 +81,8 @@
 
         </dl>
     </div>
-    <div class="task-div-pk">
+    <div class="btn btn-success">@Html.ActionLink("My tasks","Index","ProjectTasks", new { projectid = Model.ProjectId, user = @Html.Action("GetUser") }, "")</div>
+    @*<div class="task-div-pk">
         @if (Model.Backlogs != null)
         {
             <table class="table" style="font-size:12px; width:90%; margin-left:8%;">
@@ -118,5 +119,5 @@
 
         }
         <div class="add-div-pk">@Html.ActionLink("+", "Create", "Backlogs", new { @projectId = Model.ProjectId }, new { @class = "btn-add-pk" })</div>
-    </div>
+    </div>*@
 }

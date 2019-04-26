@@ -20,5 +20,9 @@ namespace WebApplication1.Models
         public bool isLead { get; set; }
 
         public bool isDev { get; set; }
+
+        public String myLead { get; set; }
+
+        public String myManager { get; set; }
     }
 }

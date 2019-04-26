@@ -125,6 +125,20 @@ namespace WebApplication1
                         RequiredEndDate = DateTime.Now.AddDays(-5)
                     });
 
+                    context.ProjectTasks.Add(new ProjectTask
+                    {
+                        ProjectKey = 1,
+                        AssignedBy = "administrator",
+                        UserAssigned = "administrator",
+                        TaskEstimated = 20,
+                        TaskDone = 20,
+                        TaskKey = 4,
+                        ShortText = "Simple task",
+                        Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        RequiredStartDate = DateTime.Now,
+                        RequiredEndDate = DateTime.Now.AddDays(-5)
+                    });
+
                     task.Reports.Add(context.Reports.Add(new Report
                     {
                         ReportId = 1,
@@ -147,7 +161,14 @@ namespace WebApplication1
                     {
                         ProjectId = 1,
                         User = "administrator",
-                        isLead = false
+                        isLead = true
+                    });
+
+                    context.Project_User.Add(new Project_User
+                    {
+                        ProjectId = 1,
+                        User = "user",
+                        isDev = true
                     });
 
                     context.SaveChanges();

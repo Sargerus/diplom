@@ -16,6 +16,12 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string GetUser()
+        {
+            return Utility.User;
+        }
+
+
         // GET: Projects
         public ActionResult Index()
         {

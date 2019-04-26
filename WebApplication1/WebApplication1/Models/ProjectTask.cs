@@ -23,8 +23,7 @@ namespace WebApplication1.Models
 
         [Required]
         public String ShortText { get; set; }
-
-        [Required]
+        
         public String Description { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]

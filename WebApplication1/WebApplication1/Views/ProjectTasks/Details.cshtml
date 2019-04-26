@@ -7,85 +7,159 @@
 
 @section Body{
 
-<div class="main-backlog-div-pk">
-    <div>
-        <div class="project-label-pk">
-            <span id="task_type"></span> @Html.DisplayFor(model => model.ShortText)
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+
+    <div class="main-backlog-div-pk">
+        <div>
+            <div class="project-label-pk">
+                <span id="task_type"></span> @Html.DisplayFor(model => model.ShortText)
+            </div>
+            <div class="btn-main-pk">
+                @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+                @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+            </div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.RequiredStartDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(mode => Model.RequiredEndDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TaskEstimated)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.TaskDone)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserAssigned)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.AssignedBy)
+                </dd>
+            </dl>
         </div>
-        <div class="btn-main-pk">
-            @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
-            @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
-        </div>
+
         <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.RequiredStartDate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(mode => Model.RequiredEndDate)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.TaskEstimated)
-            </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.TaskDone)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.UserAssigned)
-            </dt>
+        <div class="text-center">
+            <a data-toggle="collapse" href="#descriptionId" aria-expanded="false" aria-controls="collapseExample">
+                Show description
+            </a>
 
-            <dd>
-                @Html.DisplayFor(model => model.AssignedBy)
-            </dd>
-        </dl>
-    </div>
+            <div class="collapse text-justify" style="word-wrap:break-word;margin-bottom:.6em;margin-top:.6em;" id="descriptionId">
+                @Model.Description
+            </div>
 
-    <hr />
-
-    <div class="text-center">
-        <a data-toggle="collapse" href="#descriptionId" aria-expanded="false" aria-controls="collapseExample">
-            Show description
-        </a>
-
-        <div class="collapse text-justify" style="word-wrap:break-word;margin-bottom:.6em;margin-top:.6em;" id="descriptionId">
-            @Model.Description
         </div>
 
-    </div>
+        <hr />
 
-    <hr />
+        <div class="reports-table-header-pk text-left">Reports</div>
 
-    <div class="reports-table-header-pk text-left">Reports</div>
+        <div style="border: 1px dashed black; margin-top:1em; margin-bottom:1em;" width="80%"></div>
 
-    <div style="border: 1px dashed black; margin-top:1em; margin-bottom:1em;" width="80%"></div>
-
-    <div class="task-div-pk">
-        @if (Model.Reports != null)
-        {
-            foreach (var report in Model.Reports)
+        <div class="task-div-pk">
+            @if (Model.Reports != null)
             {
-                <div class="task-container-pk hover-element-pk report-div-pk">
+                foreach (var report in Model.Reports)
+                {
+                    <div class="task-container-pk hover-element-pk report-div-pk">
 
-                    <div class="flex-item-middle-pk">
-                        @report.Comment
+                        <div class="flex-item-middle-pk">
+                            @report.Comment
+                        </div>
+                        <div class="flex-item-small-pk">
+                            @report.HoursReported
+                        </div>
+                        <div class="flex-item-small-pk">
+                            @report.ReportedOn
+                        </div>
+                        <div class="flex-item-small-pk">
+                            @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+                            @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+                        </div>
                     </div>
-                    <div class="flex-item-small-pk">
-                        @report.HoursReported
-                    </div>
-                    <div class="flex-item-small-pk">
-                        @report.ReportedOn
-                    </div>
-                    <div class="flex-item-small-pk">
-                        @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
-                        @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+                }
+                <div class="modal fade" id="modalReportForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Report document</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-4">
+                                    <label data-error="wrong" data-success="right" for="defaultForm-date">Date</label>
+                                    <input type="date" id="defaultForm-date" class="form-control validate">
+                                </div>
+
+                                <div class="md-form mb-4">
+                                    <label data-error="wrong" data-success="right" for="defaultForm-hours">Time</label>
+                                    <input type="number" min="0" max="8" id="defaultForm-time" class="form-control validate">
+                                </div>
+
+                                <div class="md-form mb-4">
+                                    <label data-error="wrong" data-success="right" for="defaultForm-comment">Comment</label>
+                                    <input type="text" id="defaultForm-comment" class="form-control validate">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-default" onclick="Report();">Send</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="text-center">
+                    <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalReportForm">
+                        New Report
+                    </a>
+                </div>
             }
+        </div>
 
-        }
-        <div class="add-div-pk">@Html.ActionLink("+", "Create", "Reports", new { @id = Model.TaskKey }, new { @class = "btn-add-pk" })</div>
+
+
     </div>
-</div>
 
+    <script type="text/javascript">
+    function Report() {
+
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.post(
+            "/Reports/Create",
+            {
+                __RequestVerificationToken: token,
+                ReportedBy: "@Html.Action("GetUser").ToString()",
+                ReportedOn: document.getElementById("defaultForm-date").value,
+                HoursReported: document.getElementById("defaultForm-time").value,
+                Comment: document.getElementById("defaultForm-comment").value,
+                TaskId: @Model.TaskKey,
+                ProjectId: @Model.ProjectKey
+                  },
+            function (data) {
+                alert(data);
+            },
+            "json"
+        )
+            .fail(function () { alert("fail"); })
+            .done(function () { document.location.reload(true); });
+
+    }
+    </script>
 }
+
+

@@ -9,7 +9,6 @@ namespace WebApplication1.Models
 {
     public class Project
     {
-
         public Project()
         {
             this.UserAssigned = new HashSet<ApplicationUser>();

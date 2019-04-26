@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using WebApplication1.ViewModel;
 
 namespace WebApplication1.Controllers
 {
@@ -55,11 +56,19 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Report report)
+        public ActionResult Create([System.Web.Http.FromBody]ReportCreateViewModel vmreport)
         {
+            Report report = new Report();
+
             if (ModelState.IsValid)
             {
+                report.Comment = vmreport.Comment;
+                report.HoursReported = vmreport.HoursReported;
+                report.ReportedBy = vmreport.ReportedBy;
+                report.ReportedOn = vmreport.ReportedOn;
+                
                 db.Reports.Add(report);
+                db.ProjectTasks.Find(vmreport.TaskId, vmreport.ProjectId).Reports.Add(report);
 
                 //BacklogTask task = db.BacklogTasks.ToList().Where(g => g.TaskId == report.Task).First();
                 //task.Reports.Add(report);
@@ -67,7 +76,7 @@ namespace WebApplication1.Controllers
 
                 //db.BacklogTasks.Find(report.TaskFK.TaskId).HoursDone += report.HoursReported;
                 db.SaveChanges();
-                return RedirectToAction("Index", "Backlogs");
+                return Json(report);
             }
 
             //ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);

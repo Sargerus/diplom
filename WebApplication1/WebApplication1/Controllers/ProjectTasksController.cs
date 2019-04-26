@@ -16,15 +16,14 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string GetUser()
+        {
+            return Utility.User;
+        }
+
         public string CanAddTask()
         {
-            string answer = "0";
-            if(Utility.isUserLead == true || Utility.isUserManager == true)
-            {
-                answer = "1";
-            }
-
-            return answer;
+            return Utility.CanAddTask();
         }
 
         public string DefineColorOfTask(int taskid, int projectid)
@@ -55,17 +54,21 @@ namespace WebApplication1.Controllers
 
         }
         // GET: ProjectTasks
-        public ActionResult Index(int projectId)
+        public ActionResult Index(int projectId, String user)
         {
 
             Utility.DefineUserRolesForCurrentProject(projectId, User.Identity.Name);
+            if (user == null) { user = Utility.User; }
 
             var project = db.Projects.ToList().Find(g => g.ProjectId == projectId);
             ViewBag.ProjectName = project.ProjectDescription;
 
-            var tasks = db.ProjectTasks.Where(g => g.ProjectKey == projectId).Select(g => g).ToList();
+            var tasks = db.ProjectTasks.Where(g => g.ProjectKey == projectId && g.UserAssigned.Equals(user)).Select(g => g).ToList();
 
             var vmtasks = SortTasks(tasks);
+
+            ViewBag.ViewedUser = user;
+            ViewBag.ProjectId = projectId;
             return View(vmtasks);
         }
 
@@ -112,9 +115,16 @@ namespace WebApplication1.Controllers
         }
 
         // GET: ProjectTasks/Create
-        public ActionResult Create()
+        public ActionResult Create(int projectid, string vieweduser)
         {
-            return View();
+            ProjectTask task = new ProjectTask();
+            task.AssignedBy = Utility.User;
+            task.UserAssigned = vieweduser;
+            task.ProjectKey = projectid;
+
+            ViewBag.ViewedUser = vieweduser;
+            ViewBag.ProjectId = projectid;
+            return View(task);
         }
 
         // POST: ProjectTasks/Create
@@ -122,13 +132,14 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TaskKey,ProjectKey,Description,RequiredStartDate,RequiredEndDate,TaskDone,TaskEstimated")] ProjectTask projectTask)
+        public ActionResult Create([Bind(Include = "TaskKey,ProjectKey,Description,RequiredStartDate,RequiredEndDate,TaskDone,TaskEstimated,UserAssigned,ShortText")] ProjectTask projectTask)
         {
             if (ModelState.IsValid)
             {
+                projectTask.TaskKey = db.ProjectTasks.ToList().Count + 1;
                 db.ProjectTasks.Add(projectTask);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { projectid = projectTask.ProjectKey, user = projectTask.UserAssigned });
             }
 
             return View(projectTask);

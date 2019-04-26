@@ -7,6 +7,7 @@
 
 @section Body {
     <div class="task-container-pk header">
+        <div class="header-item">@User.Identity.Name</div>
         <div class="header-item">@ViewBag.ProjectName</div>
         <div class="btn btn-success header-item div-text-center-pk">Week angle</div>
     </div>
@@ -15,27 +16,31 @@
         @foreach (var task in Model)
         {
 
-        <div class="task-container-pk hover-element-pk task-div-pk">
-            <div width="10%">
-                <span class="@task.colorIndicator"></span>
-            </div>
-            <div class="flex-item-middle-pk text-left">
-                @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey }, "")
-            </div>
+            <div class="task-container-pk hover-element-pk task-div-pk">
+                <div width="10%">
+                    <span class="@task.colorIndicator"></span>
+                </div>
+                <div class="flex-item-middle-pk text-left">
+                    @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey }, "")
+                </div>
 
-            <div class="progress flex-item-small-pk">
-                <div class="progress-bar progress-bar-striped " role="progressbar" style="width:50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress flex-item-small-pk">
+                    <div class="progress-bar progress-bar-striped " role="progressbar" style="width:50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
-        </div>
 
         }
 
-        @if (Html.Action("CanAddTask").ToString().Equals("1")) {
+        @if (Html.Action("CanAddTask").ToString().Equals("1"))
+        {
 
-        <div class="btn btn-danger">Add new task</div>
-
+            <div class="text-center hover-element-pk">
+                <div class="btn btn-danger">
+                    @Html.ActionLink("Add Task", "Create", new { projectid = ViewBag.ProjectId, vieweduser = ViewBag.ViewedUser }, "")
+                </div>
+            </div>
         }
-        
+
 
     </div>
 }
