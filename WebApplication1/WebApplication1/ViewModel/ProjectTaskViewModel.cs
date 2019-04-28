@@ -11,5 +11,9 @@ namespace WebApplication1.ViewModel
         public ProjectTask projectTask { get; set; }
 
         public string colorIndicator { get; set; }
+
+        public String EndDate { get; set; }
+
+        public double TaskDoneFor { get; set; }
     }
 }

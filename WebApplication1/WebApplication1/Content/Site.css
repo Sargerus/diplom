@@ -1,27 +1,62 @@
 ﻿/*.main-navigation-bar-pk {
 }*/
 
+.div-hr {
+    margin-left:3%;
+    margin-right:3%;
+    margin-top:.3em;
+    margin-bottom:.3em;
+    border:1px solid rgba(0, 0, 0, 0.1);
+}
+
+.progress {
+    position: relative;
+}
+
+    .progress span {
+        position: absolute;
+        display: block;
+        width: 100%;
+        color: black;
+    }
+
+    .row{
+        padding-left: .3em;
+        padding-right: .3em;
+    }
+.row.col-mar {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.row.col-mar > [class*='col-'] {
+    padding-right: 0em;
+    padding-left: 0em;
+    margin-bottom: .3em;
+    margin-top: .3em;
+}
+
+
 input[type=number] {
     width: 8em;
 }
 
-.header{
-    background-color:antiquewhite;
-    margin-bottom:1em;
-    padding:.5em;
-    font-size:1.2em;
+.header {
+    background-color: antiquewhite;
+    margin-bottom: 1em;
+    padding: .5em;
+    font-size: 1.2em;
 }
 
 .header-item {
-    margin-left:0.5em;
-    margin-right:0.5em;
-
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
-.reports-table-header-pk{
-    font-size:2em;
-    text-decoration:solid;
-    color:black;
+.reports-table-header-pk {
+    font-size: 2em;
+    text-decoration: solid;
+    color: black;
 }
 
 .done-color {
@@ -71,9 +106,9 @@ input[type=number] {
         color: black;
     }
 
-.main-navigation-bar-div-pk:hover {
-    font-size:1.1em;
-}
+    .main-navigation-bar-div-pk:hover {
+        font-size: 1.1em;
+    }
 
 body {
     /*background-color:rgb(178, 173, 173);*/
@@ -105,7 +140,7 @@ td {
 
 .task-container-pk {
     display: flex;
-    font-size:1.1em;
+    font-size: 1.1em;
     /*padding-bottom:.5em;*/
     /*flex-direction: column;*/
 }
@@ -117,7 +152,7 @@ td {
 
 .flex-item-big-abs-pk {
     /*flex-grow: 3;*/
-    width:40%;
+    width: 40%;
     margin-left: .3em;
     margin-right: .3em;
 }
@@ -152,10 +187,11 @@ td {
     }
 
 .main-backlog-div-pk {
-    border:2px solid white;
-    background-color:white;
+    border: 2px solid white;
+    background-color: white;
     margin: .3em;
 }
+
 .project-div-pk:hover {
     transition: .2s linear;
     background-color: whitesmoke;
@@ -169,8 +205,8 @@ td {
 }
 
 .report-div-pk {
-margin-top:.2em;
-margin-bottom:.2em;
+    margin-top: .2em;
+    margin-bottom: .2em;
 }
 
 .task-div-pk {

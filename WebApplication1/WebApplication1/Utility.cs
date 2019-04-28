@@ -18,10 +18,26 @@ namespace WebApplication1
         public static bool isUserLead { get; private set; }
 
         public static bool isUserManager { get; private set; }
-        
+
         public static String myLead { get; private set; }
 
         public static String myManager { get; private set; }
+
+        public static string CanManageProject(int projectid)
+        {
+            string answer = string.Empty;
+
+            if (db.Project_User.Where(g => g.ProjectId.Equals(projectid) && g.User.Equals(User) && g.isManager.Equals(true)).Any())
+            {
+                answer = "1";    
+            } else
+            {
+                answer = "0";
+            }
+
+            return answer;
+
+        }
 
         public static void SetUser(string email)
         {
@@ -36,18 +52,24 @@ namespace WebApplication1
             isUserManager = project_user.isManager;
             myLead = project_user.myLead;
             myManager = project_user.myManager;
-            //User = project_user.User;
+            User = project_user.User;
 
             isDefined = true;
         }
 
-        public static string CanAddTask()
+        public static string CanAddTask(int projectid, string foruser)
         {
             if (!isDefined) { return ""; }
             string answer = "0";
-            if (isUserLead || isUserManager)
+
+            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && g.User.Equals(foruser) && (g.myLead.Equals(User) || g.myManager.Equals(User) || g.isLead.Equals(true)));
+            if (dependentUser.Any())
             {
                 answer = "1";
+            }
+            else
+            {
+                answer = "0";
             }
 
             return answer;

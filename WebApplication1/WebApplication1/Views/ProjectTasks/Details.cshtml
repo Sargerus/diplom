@@ -12,6 +12,12 @@
         @Html.AntiForgeryToken()
     }
 
+    <div class="btn-main-pk">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        @Html.ActionLink("Back to tasks", "Index", "ProjectTasks", new { projectid = Model.ProjectKey, user = ViewBag.ViewedUser }, new { @class = "btn btn-success" } )
+    </div>
+
+
     <div class="main-backlog-div-pk">
         <div>
             <div class="project-label-pk">
@@ -63,7 +69,9 @@
 
         <div class="reports-table-header-pk text-left">Reports</div>
 
-        <div style="border: 1px dashed black; margin-top:1em; margin-bottom:1em;" width="80%"></div>
+        @*<div style="border: 1px dashed black; margin-top:1em; margin-bottom:1em;" width="80%"></div>*@
+
+        <hr />
 
         <div class="task-div-pk">
             @if (Model.Reports != null)
@@ -150,9 +158,7 @@
                 TaskId: @Model.TaskKey,
                 ProjectId: @Model.ProjectKey
                   },
-            function (data) {
-                alert(data);
-            },
+            function (data) { },
             "json"
         )
             .fail(function () { alert("fail"); })

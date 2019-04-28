@@ -52,7 +52,7 @@ namespace WebApplication1
                     userManager.AddToRole(admin.Id, role1.Name);
                     userManager.AddToRole(user.Id, role2.Name);
 
-                    context.Projects.Add(new Project
+                    var project1 = context.Projects.Add(new Project
                     {
                         CreatedBy = "administrator",
                         CreatedOn = DateTime.Now,
@@ -88,7 +88,7 @@ namespace WebApplication1
                         AssignedBy = "administrator",
                         UserAssigned = "user",
                         TaskEstimated = 24,
-                        TaskDone = 8,
+                        TaskDone = 0,
                         TaskKey = 1,
                         Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         ShortText = "Change Fonts",
@@ -96,7 +96,10 @@ namespace WebApplication1
                         RequiredEndDate = DateTime.Now.AddDays(2)
                     });
 
-                    context.ProjectTasks.Add(new ProjectTask
+                    project1.Tasks.Add(task);
+                    user.Projects.Add(project1);
+
+                    project1.Tasks.Add(context.ProjectTasks.Add(new ProjectTask
                     {
                         ProjectKey = 1,
                         AssignedBy = "administrator",
@@ -109,66 +112,74 @@ namespace WebApplication1
                         RequiredStartDate = DateTime.Now.AddDays(-2),
                         RequiredEndDate = DateTime.Now.AddDays(2)
 
-                    });
+                    }));
 
-                    context.ProjectTasks.Add(new ProjectTask
+                    project1.Tasks.Add(context.ProjectTasks.Add(new ProjectTask
                     {
                         ProjectKey = 1,
                         AssignedBy = "administrator",
                         UserAssigned = "user",
                         TaskEstimated = 20,
-                        TaskDone = 20,
+                        TaskDone = 0,
                         TaskKey = 3,
                         ShortText = "Simple task",
                         Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         RequiredStartDate = DateTime.Now,
                         RequiredEndDate = DateTime.Now.AddDays(-5)
-                    });
+                    }));
 
-                    context.ProjectTasks.Add(new ProjectTask
+                    project1.Tasks.Add(context.ProjectTasks.Add(new ProjectTask
                     {
                         ProjectKey = 1,
                         AssignedBy = "administrator",
                         UserAssigned = "administrator",
                         TaskEstimated = 20,
-                        TaskDone = 20,
+                        TaskDone = 0,
                         TaskKey = 4,
                         ShortText = "Simple task",
                         Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         RequiredStartDate = DateTime.Now,
                         RequiredEndDate = DateTime.Now.AddDays(-5)
-                    });
-
-                    task.Reports.Add(context.Reports.Add(new Report
-                    {
-                        ReportId = 1,
-                        Comment = "Govno",
-                        ReportedBy = "user",
-                        ReportedOn = DateTime.Now,
-                        HoursReported = 4
                     }));
 
-                    task.Reports.Add(context.Reports.Add(new Report
-                    {
-                        ReportId = 2,
-                        Comment = "Govno",
-                        ReportedBy = "user",
-                        ReportedOn = DateTime.Now,
-                        HoursReported = 4
-                    }));
+                    //task.Reports.Add(context.Reports.Add(new Report
+                    //{
+                    //    ReportId = 1,
+                    //    Comment = "Govno",
+                    //    ReportedBy = "user",
+                    //    ReportedOn = DateTime.Now,
+                    //    HoursReported = 4
+                    //}));
+
+                    //task.Reports.Add(context.Reports.Add(new Report
+                    //{
+                    //    ReportId = 2,
+                    //    Comment = "Govno",
+                    //    ReportedBy = "user",
+                    //    ReportedOn = DateTime.Now,
+                    //    HoursReported = 4
+                    //}));
 
                     context.Project_User.Add(new Project_User
                     {
                         ProjectId = 1,
                         User = "administrator",
-                        isLead = true
+                        isLead = true,
+                        isManager = true
+                    });
+                    context.Project_User.Add(new Project_User
+                    {
+                        ProjectId = 2,
+                        User = "administrator",
+                        isDev = true
                     });
 
                     context.Project_User.Add(new Project_User
                     {
                         ProjectId = 1,
                         User = "user",
-                        isDev = true
+                        isDev = true,
+                        myLead = "administrator"
                     });
 
                     context.SaveChanges();

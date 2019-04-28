@@ -40,6 +40,8 @@ namespace WebApplication1.Models
         public String UserAssigned { get; set; }
         
         public String AssignedBy { get; set; }
+
+        public bool notVisible { get; set; }
         
         public virtual ICollection<Report> Reports { get; set; }
     }

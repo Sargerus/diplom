@@ -68,7 +68,10 @@ namespace WebApplication1.Controllers
                 report.ReportedOn = vmreport.ReportedOn;
                 
                 db.Reports.Add(report);
-                db.ProjectTasks.Find(vmreport.TaskId, vmreport.ProjectId).Reports.Add(report);
+
+                var task = db.ProjectTasks.Find(vmreport.TaskId, vmreport.ProjectId);
+                task.Reports.Add(report);
+                task.TaskDone += report.HoursReported;
 
                 //BacklogTask task = db.BacklogTasks.ToList().Where(g => g.TaskId == report.Task).First();
                 //task.Reports.Add(report);

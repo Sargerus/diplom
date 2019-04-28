@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication1.ViewModel.StatListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Body{
+
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+
+    <div class="btn btn-success" id="unicID">Съешь меня</div>
+
+    <script type="text/javascript">
+
+        $("#unicID").click(function () {
+            
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            var userIDs = ["user"];
+
+            var users = JSON.stringify({ 'users': userIDs });
+
+            $.post({
+                url: "/StatList/Index",
+                data: { users: userIDs, projectid: "1" },
+                success: function () { alert("done"); }
+            });
+
+        });
+
+    </script>
+
+}

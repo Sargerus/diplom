@@ -206,6 +206,7 @@
     <Compile Include="Controllers\Project_UserController.cs" />
     <Compile Include="Controllers\RecordController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\StatListController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -222,12 +223,14 @@
     <Compile Include="Models\Project_ApplicationUser.cs" />
     <Compile Include="Models\Project_User.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\UserAndProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="ViewModel\ProjectTaskViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\ReportCreateViewModel.cs" />
+    <Compile Include="ViewModel\StatListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -285,6 +288,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\ProjectTasksIndexBehaviour.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -367,6 +371,7 @@
     <Content Include="Views\ProjectTasks\Details.cshtml" />
     <Content Include="Views\ProjectTasks\Edit.cshtml" />
     <Content Include="Views\ProjectTasks\Index.cshtml" />
+    <Content Include="Views\StatList\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

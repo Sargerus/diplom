@@ -12,23 +12,22 @@
             @Html.ActionLink("Create New", "Create")
         }
     </p>
-    <table class="table">
-
-        @foreach (var item in Model)
-        {
-
-            <tr>
-                <td>
-                    <div class="project-div-pk">
-                        @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
-                        @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-danger" })
-                        @Html.ActionLink("New Backlog", "Create", "Backlogs", new { @projectId = item.ProjectId }, new { @class = "btn btn-success" })
-                    </div>
-                </td>
-
-            </tr>
-        }
-    </table>
+    @foreach (var item in Model)
+    {
+        <div class="row col-mar">
+            <div class="col-sm-10 hover-element-pk" style="padding-left:1em;">
+                @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
+            </div>
+            @if (Html.Action("CanManageProject", new { projectid = item.ProjectId }).ToString().Equals("1"))
+            {
+            <div class="col-sm-1">
+                @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-sm btn-success" })
+            </div>
+            <div class="col-sm-1">
+                @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-sm btn-danger" })
+            </div>
+            }
+        </div>
+    }
     <div class="add-div-pk hover-element-pk"> @Html.ActionLink("+", "Create", "", new { @class = "btn-add-pk" }) </div>
 }

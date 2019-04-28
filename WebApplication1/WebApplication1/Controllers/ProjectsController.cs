@@ -16,8 +16,18 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public string GetUser()
+        public string CanManageProject(int projectid)
         {
+            return Utility.CanManageProject(projectid);
+        }
+
+        public string GetUser(int projectid)
+        {
+            if (Utility.User == null)
+            {
+                Utility.DefineUserRolesForCurrentProject(projectid, User.Identity.Name);
+            }
+
             return Utility.User;
         }
 
@@ -25,7 +35,11 @@ namespace WebApplication1.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            var myprojects = db.Project_User.Where(g => g.User.Equals(Utility.User)).Join(db.Projects,
+                                                                                          project_user => project_user.ProjectId,
+                                                                                          project => project.ProjectId,
+                                                                                          (fproject_user, project) => project);
+            return View(myprojects);
         }
 
         // GET: Projects/Details/5

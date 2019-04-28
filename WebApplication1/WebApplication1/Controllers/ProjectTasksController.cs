@@ -16,14 +16,51 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public string GetUser()
+        private Random random;
+
+        public int RandomNumber()
         {
-            return Utility.User;
+            if(random == null)
+            {
+                random = new Random();
+            }
+
+            return random.Next(1, 100000000);
         }
 
-        public string CanAddTask()
+        [HttpPost]
+        public ActionResult SetInvisible(int? taskid, int? projectid)
         {
-            return Utility.CanAddTask();
+            try
+            {
+                db.ProjectTasks.Find(taskid, projectid).notVisible = true;
+                db.SaveChanges();
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
+            return Json("{\"message\":\"success\"}", "application/json");
+
+        }
+
+        public string GetUser(int projectid)
+        {
+            if (Utility.User == null)
+            {
+
+                Utility.DefineUserRolesForCurrentProject(projectid, User.Identity.Name);
+
+            };
+
+            return Utility.User;
+
+        }
+
+        public string CanAddTask(int projectid, string foruser)
+        {
+            return Utility.CanAddTask(projectid, foruser);
         }
 
         public string DefineColorOfTask(int taskid, int projectid)
@@ -54,16 +91,18 @@ namespace WebApplication1.Controllers
 
         }
         // GET: ProjectTasks
-        public ActionResult Index(int projectId, String user)
+        public ActionResult Index(int? projectId, String user)
         {
+            //Define my role on this project
+            Utility.DefineUserRolesForCurrentProject(projectId.Value, User.Identity.Name);
 
-            Utility.DefineUserRolesForCurrentProject(projectId, User.Identity.Name);
+            //if no user come, i'm viewing my tasks
             if (user == null) { user = Utility.User; }
 
             var project = db.Projects.ToList().Find(g => g.ProjectId == projectId);
             ViewBag.ProjectName = project.ProjectDescription;
 
-            var tasks = db.ProjectTasks.Where(g => g.ProjectKey == projectId && g.UserAssigned.Equals(user)).Select(g => g).ToList();
+            var tasks = db.ProjectTasks.Where(g => g.ProjectKey == projectId && g.UserAssigned.Equals(user) && g.notVisible.Equals(false)).Select(g => g).ToList();
 
             var vmtasks = SortTasks(tasks);
 
@@ -84,10 +123,10 @@ namespace WebApplication1.Controllers
             {
                 switch (DefineColorOfTask(task.TaskKey, task.ProjectKey))
                 {
-                    case "indicator-red": { outstanding.Add(new ProjectTaskViewModel { projectTask = task, colorIndicator = "outstanding-color" }); break; }
-                    case "indicator-green": { done.Add(new ProjectTaskViewModel { projectTask = task, colorIndicator = "done-color" }); break; }
-                    case "indicator-orange": { progress.Add(new ProjectTaskViewModel { projectTask = task, colorIndicator = "progress-color" }); break; }
-                    case "indicator-blue": { havetime.Add(new ProjectTaskViewModel { projectTask = task, colorIndicator = "havetime-color" }); break; }
+                    case "indicator-red": { outstanding.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "outstanding-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
+                    case "indicator-green": { done.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "done-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
+                    case "indicator-orange": { progress.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "progress-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
+                    case "indicator-blue": { havetime.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "havetime-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
                 }
 
             }
@@ -100,17 +139,26 @@ namespace WebApplication1.Controllers
         }
 
         // GET: ProjectTasks/Details/5
-        public ActionResult Details(int? taskid, int? projectid)
+        public ActionResult Details(int? taskid, int? projectid, string taskofuser)
         {
             if (taskid == null || projectid == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            if(taskofuser == null)
+            {
+                taskofuser = Utility.User;
+            }
+
             ProjectTask projectTask = db.ProjectTasks.Find(taskid, projectid);
+
             if (projectTask == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.ViewedUser = taskofuser;
             return View(projectTask);
         }
 
@@ -138,6 +186,9 @@ namespace WebApplication1.Controllers
             {
                 projectTask.TaskKey = db.ProjectTasks.ToList().Count + 1;
                 db.ProjectTasks.Add(projectTask);
+
+                db.Projects.Find(projectTask.ProjectKey).Tasks.Add(projectTask);
+
                 db.SaveChanges();
                 return RedirectToAction("Index", new { projectid = projectTask.ProjectKey, user = projectTask.UserAssigned });
             }

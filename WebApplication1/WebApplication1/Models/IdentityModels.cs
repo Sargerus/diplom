@@ -13,11 +13,10 @@ namespace WebApplication1.Models
         public ApplicationUser()
         {
             this.Projects = new HashSet<Project>();
-            this.Reports = new HashSet<Report>();
+            //this.Reports = new HashSet<Report>();
         }
         
         public virtual ICollection<Project> Projects { get; set; }
-        public virtual ICollection<Report> Reports { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -46,6 +45,8 @@ namespace WebApplication1.Models
         }
 
         public System.Data.Entity.DbSet<WebApplication1.Models.Project_User> Project_User { get; set; }
+
+        public System.Data.Entity.DbSet<WebApplication1.ViewModel.StatListViewModel> StatListViewModels { get; set; }
 
         //public System.Data.Entity.DbSet<WebApplication1.Models.BacklogTask> BacklogTasks { get; set; }
 
