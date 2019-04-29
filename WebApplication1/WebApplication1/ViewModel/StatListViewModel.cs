@@ -16,9 +16,9 @@ namespace WebApplication1.ViewModel
         [Key, Column(Order = 1)]
         public String UserName { get; set; }
 
-        public DateTime StartDayOfWeek { get; set; }
+        //public DateTime StartDayOfWeek { get; set; }
 
-        public DateTime EndDayOfWeek { get; set; }
+        //public DateTime EndDayOfWeek { get; set; }
 
         public ICollection<ProjectTask> Tasks { get; set; }
     }

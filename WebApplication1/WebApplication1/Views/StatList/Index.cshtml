@@ -8,17 +8,120 @@
 @section Body{
 
 
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    @*@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+        {
+            @Html.AntiForgeryToken()
+        }*@
+
+    @Html.ActionLink("Cuurent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { "user" }), projectid = 1, today = ViewBag.Today }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Previous Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { "user" }), projectid = 1, today = ViewBag.StartDayOfWeek.AddDays(-7) }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Next Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { "user" }), projectid = 1, today = (DateTime)ViewBag.StartDayOfWeek.AddDays(7) }, new { @class = "btn btn-success" })
+
+    @if (Model != null)
     {
-        @Html.AntiForgeryToken()
+
+        foreach (var item in Model)
+        {
+
+            <div class="header">
+                <div class="header-item">@item.ProjectName</div>
+                <div class="header-item">@item.UserName</div>
+            </div>
+
+            <div class="row col-mar">
+                <div class="col-sm-5 text-center">Description</div>
+                <div class="col-sm-1 text-center">Mon @ViewBag.StartDayOfWeek.ToString("MM/dd/yy")</div> @{ DateTime monday = @ViewBag.StartDayOfWeek; }
+                <div class="col-sm-1 text-center">Tue @ViewBag.StartDayOfWeek.AddDays(1).ToString("MM/dd/yy")</div> @{ DateTime tuesday = monday.AddDays(1); }
+                <div class="col-sm-1 text-center">Wen @ViewBag.StartDayOfWeek.AddDays(2).ToString("MM/dd/yy")</div> @{ DateTime wednesday = monday.AddDays(2); }
+                <div class="col-sm-1 text-center">Tru @ViewBag.StartDayOfWeek.AddDays(3).ToString("MM/dd/yy")</div> @{ DateTime thursday = monday.AddDays(3); }
+                <div class="col-sm-1 text-center">Fri @ViewBag.StartDayOfWeek.AddDays(4).ToString("MM/dd/yy")</div> @{ DateTime friday = monday.AddDays(4); }
+                <div class="col-sm-1 text-center">Sat @ViewBag.StartDayOfWeek.AddDays(5).ToString("MM/dd/yy")</div> @{ DateTime saturday = monday.AddDays(5); }
+                <div class="col-sm-1 text-center">Sun @ViewBag.StartDayOfWeek.AddDays(6).ToString("MM/dd/yy")</div> @{ DateTime sunday = monday.AddDays(6); }
+            </div>
+
+            foreach (var task in item.Tasks)
+            {
+                <div class="row col-mar">
+                    <div class="col-sm-5 text-left div-borders">@task.ShortText</div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursMonday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, monday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursMonday > 0)
+                        {
+                            @hoursMonday
+                        }
+                    </div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursTuesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, tuesday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursTuesday > 0)
+                        {
+                            @hoursTuesday
+                        }
+                    </div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursWednesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, wednesday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursWednesday > 0)
+                        {
+                            @hoursWednesday
+                        }
+                    </div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursThursday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, thursday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursThursday > 0)
+                        {
+                            @hoursThursday
+                        }
+                    </div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursFriday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, friday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursFriday > 0)
+                        {
+                            @hoursFriday
+                        }
+                    </div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursSaturday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, saturday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursSaturday > 0)
+                        {
+                            @hoursSaturday
+                        }
+                    </div>
+                    <div class="col-sm-1 div-borders text-center">
+                        @{ int hoursSunday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, sunday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @if (hoursSunday > 0)
+                        {
+                            @hoursSunday
+                        }
+                    </div>
+                </div>
+            }
+        }
     }
-
-    <div class="btn btn-success" id="unicID">Съешь меня</div>
-
     <script type="text/javascript">
 
-        $("#unicID").click(function () {
-            
+        //$("#unicID").click(function () {
+
+        //    //var form = $('#__AjaxAntiForgeryForm');
+        //    //var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        //    var userIDs = ["user"];
+
+        //    var users = JSON.stringify({ 'users': userIDs });
+
+        //    $.post({
+        //        url: "/StatList/Index",
+        //        data: {
+        //            //__RequestVerificationToken: token,
+        //            users: userIDs,
+        //            projectid: "1"
+        //        },
+        //        success: function (data) { $("html").html(data); }
+        //    });
+
+        //});
+
+
+        @*$("#prevWeek").click(function () {
+
             var form = $('#__AjaxAntiForgeryForm');
             var token = $('input[name="__RequestVerificationToken"]', form).val();
 
@@ -28,11 +131,31 @@
 
             $.post({
                 url: "/StatList/Index",
-                data: { users: userIDs, projectid: "1" },
-                success: function () { alert("done"); }
+                data: { users: userIDs, projectid: "1", today: "@DateTime.Now.AddDays(-7)" },
+                success: function (data) { $("body").html(data); }
             });
 
         });
+
+
+        $("#nextWeek").click(function () {
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            var userIDs = ["user"];
+            var date = new Date();
+            date = Date.now();
+            var sss = date.valueOf();
+            var s1 = sss.toString();
+
+            $.post({
+                url: "/StatList/Index",
+                data: { users: userIDs, projectid: "1" },
+                success: function (data) { $("body").html(data); }
+            });
+
+        });*@
 
     </script>
 

@@ -14,7 +14,7 @@ namespace WebApplication1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: StatList
-        public ActionResult Index(List<string> users, int? projectid)
+        public ActionResult Index(string usersString, int? projectid, DateTime? today)
         {
 
 
@@ -22,7 +22,21 @@ namespace WebApplication1.Controllers
 
             List<StatListViewModel> entityset = new List<StatListViewModel>();
             List<UserAndProject> userWithProjects = new List<UserAndProject>();
+            List<string> users = new List<string>();
 
+            int dayOfWeek = (today == null ? ((int)DateTime.Today.DayOfWeek - 1) : (int)today.Value.DayOfWeek - 1);
+            //int dayOfWeek = ((int)DateTime.Today.DayOfWeek - 1);
+            var Monday = (today == null ? DateTime.Today.AddDays(-dayOfWeek) : today.Value.AddDays(-dayOfWeek));
+            var Sunday = Monday.AddDays(6);
+
+            ViewBag.Today = DateTime.Today;
+            ViewBag.StartDayOfWeek = (Monday == null) ? DateTime.Today : Monday;
+            ViewBag.EndDayOfWeek = (Monday == null) ? DateTime.Today.AddDays(6) : Monday.AddDays(6);
+
+            if (usersString != null)
+            {
+                users = System.Web.Helpers.Json.Decode<List<string>>(usersString);
+            }
             if (users == null)
             {
                 return View();
@@ -35,10 +49,6 @@ namespace WebApplication1.Controllers
                     return View();
                 }
             }
-
-            int dayOfWeek = ((int)DateTime.Today.DayOfWeek - 1);
-            var Monday = DateTime.Today.AddDays(-dayOfWeek);
-            var Sunday = Monday.AddDays(6);
 
             if (projectid == null)
             {
@@ -80,6 +90,7 @@ namespace WebApplication1.Controllers
                                 && (DateTime.Compare(report.ReportedOn.Date, Sunday.Date) < 0 || DateTime.Compare(report.ReportedOn.Date, Sunday.Date) == 0))
                                 {
                                     pt.Add(task);
+                                    break;
                                 }
                             }
                         }
@@ -87,8 +98,8 @@ namespace WebApplication1.Controllers
 
                     entityset.Add(new StatListViewModel
                     {
-                        StartDayOfWeek = Monday,
-                        EndDayOfWeek = Monday.AddDays(6),
+                        //StartDayOfWeek = Monday,
+                        //EndDayOfWeek = Monday.AddDays(6),
                         ProjectName = project.ProjectDescription,
                         UserName = user.User,
                         Tasks = pt
