@@ -374,6 +374,7 @@
     <Content Include="Views\ProjectTasks\Index.cshtml" />
     <Content Include="Views\StatList\Index.cshtml" />
     <Content Include="Views\Account\IndexLeadTeam.cshtml" />
+    <Content Include="Views\ProjectTasks\IndexProjectStat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

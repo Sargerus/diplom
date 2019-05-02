@@ -1,6 +1,35 @@
 ﻿/*.main-navigation-bar-pk {
 }*/
 
+.projecttask-line{
+    padding-top:.2em;
+    padding-bottom:.2em;
+    margin-bottom:.5em;
+}
+
+.outstanding-header {
+    background-color: rgba(209, 0, 0, 0.50);
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
+.processing-header {
+    background-color: rgba(183, 123, 0, 0.50);
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
+.done-header {
+    background-color: rgba(37, 147, 1, 0.70);
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
+.done-task-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .div-hr {
     margin-left: 3%;
     margin-right: 3%;

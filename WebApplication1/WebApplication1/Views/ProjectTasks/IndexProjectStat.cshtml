@@ -1,0 +1,93 @@
+﻿@model ICollection<WebApplication1.ViewModel.ProjectTaskViewModel>
+
+@{
+    ViewBag.Title = "IndexProjectStat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Body{
+
+    @{
+        List<WebApplication1.ViewModel.ProjectTaskViewModel> doneTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
+        List<WebApplication1.ViewModel.ProjectTaskViewModel> processingTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
+        List<WebApplication1.ViewModel.ProjectTaskViewModel> outstandingTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
+
+        foreach (var g in Model)
+        {
+            if (g.colorIndicator.Equals("done-color"))
+            {
+                doneTasks.Add(g);
+            }
+            else if (g.colorIndicator.Equals("progress-color") || g.colorIndicator.Equals("havetime-color"))
+            {
+                processingTasks.Add(g);
+            }
+            else
+            {
+                outstandingTasks.Add(g);
+            }
+        }
+    }
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="done-task-container">
+                <div class="done-header text-center">Done</div>
+                @foreach (var task in doneTasks)
+                {
+                    <div class="row projecttask-line">
+                        <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
+                            <span class="@task.colorIndicator"></span>
+                            @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
+                        </div>
+                        <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
+                            @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
+                                <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="processing-task-container">
+                <div class="processing-header text-center">In Process</div>
+                @foreach (var task in processingTasks)
+                {
+                    <div class="row projecttask-line">
+                        <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
+                            <span class="@task.colorIndicator"></span>
+                            @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
+                        </div>
+                        <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
+                            @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
+                                <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="outstanding-task-container">
+                <div class="outstanding-header text-center">Outstanding</div>
+                @foreach (var task in outstandingTasks)
+                {
+                    <div class="row projecttask-line">
+                        <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
+                            <span class="@task.colorIndicator"></span>
+                            @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
+                        </div>
+                        <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
+                            @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
+                                <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+}

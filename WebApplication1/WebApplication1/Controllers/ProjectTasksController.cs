@@ -111,6 +111,17 @@ namespace WebApplication1.Controllers
             return View(vmtasks);
         }
 
+        public ActionResult IndexProjectStat(int? projectid)
+        {
+            var tasks = from task in db.ProjectTasks
+                        join project in db.Projects on task.ProjectKey equals project.ProjectId
+                        select task;
+
+            var vmtasks = SortTasks(tasks.ToList());
+            return View(vmtasks);
+
+        }
+
         public List<ProjectTaskViewModel> SortTasks(List<ProjectTask> tasks)
         {
             ProjectTaskViewModel vmtask = new ProjectTaskViewModel();

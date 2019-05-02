@@ -68,6 +68,7 @@ namespace WebApplication1.Controllers
                 report.ReportedOn = vmreport.ReportedOn;
                 report.TaskKey = vmreport.TaskId;
                 report.ProjectKey = vmreport.ProjectId;
+                report.ReportId = db.Reports.Count() + 1;
                 
                 db.Reports.Add(report);
 
