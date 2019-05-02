@@ -90,8 +90,8 @@
                             @report.ReportedOn
                         </div>
                         <div class="flex-item-small-pk">
-                            @Html.ActionLink("Change", "Edit", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
-                            @Html.ActionLink("Delete", "Delete", new { @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
+                            @Html.ActionLink("Change", "Edit", "Reports", new { @id = report.ReportId, @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+                            @Html.ActionLink("Delete", "Delete", "Reports", new { @id = report.ReportId, @taskid = Model.TaskKey, @projectid = Model.ProjectKey }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
                         </div>
                     </div>
                 }
@@ -161,7 +161,7 @@
             function (data) { },
             "json"
         )
-            .fail(function () { alert("fail"); })
+            .fail(function () { document.location.reload(true); })
             .done(function () { document.location.reload(true); });
 
     }

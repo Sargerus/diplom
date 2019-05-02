@@ -13,9 +13,9 @@
             @Html.AntiForgeryToken()
         }*@
 
-    @Html.ActionLink("Cuurent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { "user" }), projectid = 1, today = ViewBag.Today }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Previous Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { "user" }), projectid = 1, today = ViewBag.StartDayOfWeek.AddDays(-7) }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Next Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { "user" }), projectid = 1, today = (DateTime)ViewBag.StartDayOfWeek.AddDays(7) }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Previous Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.StartDayOfWeek.AddDays(-7) }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Cuurent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.Today }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Next Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = (DateTime)ViewBag.StartDayOfWeek.AddDays(7) }, new { @class = "btn btn-success" })
 
     @if (Model != null)
     {
@@ -30,63 +30,63 @@
 
             <div class="row col-mar">
                 <div class="col-sm-5 text-center">Description</div>
-                <div class="col-sm-1 text-center">Mon @ViewBag.StartDayOfWeek.ToString("MM/dd/yy")</div> @{ DateTime monday = @ViewBag.StartDayOfWeek; }
-                <div class="col-sm-1 text-center">Tue @ViewBag.StartDayOfWeek.AddDays(1).ToString("MM/dd/yy")</div> @{ DateTime tuesday = monday.AddDays(1); }
-                <div class="col-sm-1 text-center">Wen @ViewBag.StartDayOfWeek.AddDays(2).ToString("MM/dd/yy")</div> @{ DateTime wednesday = monday.AddDays(2); }
-                <div class="col-sm-1 text-center">Tru @ViewBag.StartDayOfWeek.AddDays(3).ToString("MM/dd/yy")</div> @{ DateTime thursday = monday.AddDays(3); }
-                <div class="col-sm-1 text-center">Fri @ViewBag.StartDayOfWeek.AddDays(4).ToString("MM/dd/yy")</div> @{ DateTime friday = monday.AddDays(4); }
-                <div class="col-sm-1 text-center">Sat @ViewBag.StartDayOfWeek.AddDays(5).ToString("MM/dd/yy")</div> @{ DateTime saturday = monday.AddDays(5); }
-                <div class="col-sm-1 text-center">Sun @ViewBag.StartDayOfWeek.AddDays(6).ToString("MM/dd/yy")</div> @{ DateTime sunday = monday.AddDays(6); }
+                <div class="col-sm-1 text-center">Mon @ViewBag.StartDayOfWeek.ToString("MM/dd/yy")</div> @{ DateTime monday = @ViewBag.StartDayOfWeek.Date; }
+                <div class="col-sm-1 text-center">Tue @ViewBag.StartDayOfWeek.AddDays(1).ToString("MM/dd/yy")</div> @{ DateTime tuesday = monday.AddDays(1).Date; }
+                <div class="col-sm-1 text-center">Wen @ViewBag.StartDayOfWeek.AddDays(2).ToString("MM/dd/yy")</div> @{ DateTime wednesday = monday.AddDays(2).Date; }
+                <div class="col-sm-1 text-center">Tru @ViewBag.StartDayOfWeek.AddDays(3).ToString("MM/dd/yy")</div> @{ DateTime thursday = monday.AddDays(3).Date; }
+                <div class="col-sm-1 text-center">Fri @ViewBag.StartDayOfWeek.AddDays(4).ToString("MM/dd/yy")</div> @{ DateTime friday = monday.AddDays(4).Date; }
+                <div class="col-sm-1 text-center">Sat @ViewBag.StartDayOfWeek.AddDays(5).ToString("MM/dd/yy")</div> @{ DateTime saturday = monday.AddDays(5).Date; }
+                <div class="col-sm-1 text-center">Sun @ViewBag.StartDayOfWeek.AddDays(6).ToString("MM/dd/yy")</div> @{ DateTime sunday = monday.AddDays(6).Date; }
             </div>
 
             foreach (var task in item.Tasks)
             {
                 <div class="row col-mar">
-                    <div class="col-sm-5 text-left div-borders">@task.ShortText</div>
+                    <div class="col-sm-5 text-left div-borders">@Html.ActionLink(task.ShortText, "Details", "ProjectTasks", new { taskid = task.TaskKey, projectid = task.ProjectKey }, null)</div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursMonday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, monday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursMonday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, monday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursMonday > 0)
                         {
                             @hoursMonday
                         }
                     </div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursTuesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, tuesday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursTuesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, tuesday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursTuesday > 0)
                         {
                             @hoursTuesday
                         }
                     </div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursWednesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, wednesday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursWednesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, wednesday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursWednesday > 0)
                         {
                             @hoursWednesday
                         }
                     </div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursThursday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, thursday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursThursday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, thursday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursThursday > 0)
                         {
                             @hoursThursday
                         }
                     </div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursFriday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, friday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursFriday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, friday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursFriday > 0)
                         {
                             @hoursFriday
                         }
                     </div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursSaturday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, saturday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursSaturday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, saturday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursSaturday > 0)
                         {
                             @hoursSaturday
                         }
                     </div>
                     <div class="col-sm-1 div-borders text-center">
-                        @{ int hoursSunday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn, sunday) == 0).Select(g => g.HoursReported).Sum(); }
+                        @{ int hoursSunday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, sunday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursSunday > 0)
                         {
                             @hoursSunday

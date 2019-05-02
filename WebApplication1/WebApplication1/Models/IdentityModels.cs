@@ -46,7 +46,9 @@ namespace WebApplication1.Models
 
         public System.Data.Entity.DbSet<WebApplication1.Models.Project_User> Project_User { get; set; }
 
-        public System.Data.Entity.DbSet<WebApplication1.ViewModel.StatListViewModel> StatListViewModels { get; set; }
+        //public System.Data.Entity.DbSet<WebApplication1.ViewModel.StatListViewModel> StatListViewModels { get; set; }
+
+        //public System.Data.Entity.DbSet<WebApplication1.Models.ApplicationUser> ApplicationUsers { get; set; }
 
         //public System.Data.Entity.DbSet<WebApplication1.Models.BacklogTask> BacklogTasks { get; set; }
 

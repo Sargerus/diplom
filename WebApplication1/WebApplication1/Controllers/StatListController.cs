@@ -17,7 +17,6 @@ namespace WebApplication1.Controllers
         public ActionResult Index(string usersString, int? projectid, DateTime? today)
         {
 
-
             //TODO: validation for users
 
             List<StatListViewModel> entityset = new List<StatListViewModel>();
@@ -36,6 +35,18 @@ namespace WebApplication1.Controllers
             if (usersString != null)
             {
                 users = System.Web.Helpers.Json.Decode<List<string>>(usersString);
+
+                for (int i = 0; i < users.Count; i++)
+                {
+                    if(i == 0)
+                    {
+                        ViewBag.ViewedUser += users[i];
+                    } else
+                    {
+                        ViewBag.ViewedUser += "," + users[i];
+                    }
+                }
+
             }
             if (users == null)
             {
@@ -67,7 +78,28 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                userWithProjects = db.Users.Where(g => users.Contains(g.Id)).Select(g => new UserAndProject { User = g.Id, projects = g.Projects }).Where(g => g.projects.All(f => f.ProjectId == projectid)).ToList();
+                ViewBag.ProjectId = projectid.Value;
+                //userWithProjects = db.Users.Where(g => users.Contains(g.Id)).Select(g => new UserAndProject { User = g.Id, projects = g.Projects }).Where(g => g.projects.All(f => f.ProjectId == projectid)).ToList();
+
+                var userWithProjectsBuf = (from u in db.Users
+                                           join p_u in db.Project_User on u.Id equals p_u.User
+                                           join p in db.Projects on p_u.ProjectId equals p.ProjectId
+                                           where users.Contains(u.Id) && p_u.ProjectId == projectid
+                                           select new { User = u.Id, project = p }).ToList();
+
+                foreach (var g in userWithProjectsBuf)
+                {
+                    try
+                    {
+                        var userExist = userWithProjects.First(f => f.User == g.User);
+                        userWithProjects.First(f => f.User == g.User).projects.Add(g.project);
+                    }
+                    catch
+                    {
+                        userWithProjects.Add(new UserAndProject { User = g.User, projects = new List<Project> { g.project } });
+                    }
+
+                }
             }
 
             var orderedUserWithProjects = userWithProjects.OrderBy(g => g.User).Select(f => { f.projects.OrderBy(k => k.ProjectId); return f; });

@@ -82,7 +82,7 @@ namespace WebApplication1.Controllers
                 color = "indicator-red";
             }
 
-            if (task.TaskDone == task.TaskEstimated)
+            if (task.TaskDone >= task.TaskEstimated)
             {
                 color = "indicator-green";
             }
@@ -197,13 +197,13 @@ namespace WebApplication1.Controllers
         }
 
         // GET: ProjectTasks/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? taskid, int? projectid)
         {
-            if (id == null)
+            if (taskid == null || projectid == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectTask projectTask = db.ProjectTasks.Find(id);
+            ProjectTask projectTask = db.ProjectTasks.Find(taskid, projectid);
             if (projectTask == null)
             {
                 return HttpNotFound();
@@ -216,41 +216,41 @@ namespace WebApplication1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TaskKey,ProjectKey,Description,RequiredStartDate,RequiredEndDate,TaskDone,TaskEstimated")] ProjectTask projectTask)
+        public ActionResult Edit([Bind(Include = "TaskKey,ProjectKey,UserAssigned,ShortText,RequiredStartDate,RequiredEndDate,TaskDone,TaskEstimated")] ProjectTask projectTask)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(projectTask).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { taskid = projectTask.TaskKey, projectid = projectTask.ProjectKey,taskofuser = projectTask.UserAssigned });
             }
             return View(projectTask);
         }
 
         // GET: ProjectTasks/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProjectTask projectTask = db.ProjectTasks.Find(id);
-            if (projectTask == null)
-            {
-                return HttpNotFound();
-            }
-            return View(projectTask);
-        }
+        //public ActionResult Delete(int? taskid, int? projectid)
+        //{
+        //    if (taskid == null || projectid == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ProjectTask projectTask = db.ProjectTasks.Find(taskid, projectid);
+        //    if (projectTask == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return RedirectToAction("Details", new { taskid = projectTask.TaskKey, projectid = projectTask.ProjectKey, taskofuser = projectTask.UserAssigned });
+        //}
 
         // POST: ProjectTasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int taskid, int projectid)
         {
-            ProjectTask projectTask = db.ProjectTasks.Find(id);
+            ProjectTask projectTask = db.ProjectTasks.Find(taskid, projectid);
             db.ProjectTasks.Remove(projectTask);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { projectid = projectid, user = Utility.User });
         }
 
         protected override void Dispose(bool disposing)

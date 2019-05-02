@@ -1,0 +1,27 @@
+﻿@model WebApplication1.ViewModel.ApplicatioUserViewModel
+
+@{
+    ViewBag.Title = "IndexLeadTeam";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Body {
+
+    @if (Model != null)
+    {
+    <h1>My Team</h1>
+    <div class="header">
+        <div class="header-item">Team Lead: @Model.TeamLead.UserName</div>
+        <div class="header-item">@Html.ActionLink(Model.ProjectDescription, "Details", "Projects", new { @id = Model.ProjectId },null)</div>
+    </div>
+
+    <div class="task-container-pk">
+        @foreach (var user in Model.users)
+        {
+            <div class="flex-item-big-pk text-left"> @Html.ActionLink(user.UserName, "Details", "Account", new { userid = user.Id })</div>
+            <div class="flex-item-small-pk text-left">@user.Email</div>
+            <div class="flex-item-small-pk">@Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.ProjectId, user = user.Id }, new { @class = "btn btn-sm btn-success" })</div>
+        }
+    </div>
+        }
+    }

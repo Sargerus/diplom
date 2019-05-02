@@ -9,9 +9,26 @@ namespace WebApplication1.Models
 {
     public class Report
     {
-        [Key]
+
+        public Report()
+        {
+            ReportedOn = DateTime.Now;
+            HoursReported = 8;
+            Comment = "Task Done";
+        }
+
+        [Key, Column(Order = 0)]
         public int ReportId { get; set; }
-        
+
+        [Key, Column(Order = 1)]
+        public int TaskKey { get; set; }
+
+        [Key, Column(Order = 2)]
+        public int ProjectKey { get; set; }
+
+        [ForeignKey("TaskKey,ProjectKey")]
+        public virtual ProjectTask ProjectTask { get; set; }
+
         [DataType(DataType.Text)]
         [ForeignKey("ReportedByFK")]
         [Display(Description = "Reported by:")]

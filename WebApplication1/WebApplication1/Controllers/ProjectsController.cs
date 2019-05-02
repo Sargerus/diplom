@@ -16,6 +16,16 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string AmILead(int? projectid)
+        {
+            if (db.Project_User.Where(g => g.myLead.Equals(Utility.User) && g.ProjectId.Equals(projectid.Value)).Any())
+            {
+                return "1";
+            }
+
+            return "0";
+        }
+
         public string CanManageProject(int projectid)
         {
             return Utility.CanManageProject(projectid);
@@ -35,6 +45,8 @@ namespace WebApplication1.Controllers
         // GET: Projects
         public ActionResult Index()
         {
+
+            Utility.SetUser(User.Identity.Name);
             var myprojects = db.Project_User.Where(g => g.User.Equals(Utility.User)).Join(db.Projects,
                                                                                           project_user => project_user.ProjectId,
                                                                                           project => project.ProjectId,
@@ -81,7 +93,7 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Project project, string[] managers)
         {
-            
+
             if (ModelState.IsValid)
             {
                 db.Projects.Add(project);
@@ -106,8 +118,8 @@ namespace WebApplication1.Controllers
             }
             CultureInfo provider = CultureInfo.InvariantCulture;
             ViewBag.Users2 = new SelectList(db.Users.ToList(), "Id", "UserName");
-           // var date = project.StartDate.ToShortDateString();
-           // project.StartDate = DateTime.ParseExact(date, "yyyy-MM-dd", provider);
+            // var date = project.StartDate.ToShortDateString();
+            // project.StartDate = DateTime.ParseExact(date, "yyyy-MM-dd", provider);
             return View(project);
         }
 

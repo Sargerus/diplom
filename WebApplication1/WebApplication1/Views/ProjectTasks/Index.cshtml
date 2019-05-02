@@ -12,17 +12,23 @@
         @Html.AntiForgeryToken()
     }
 
-    <div class="task-container-pk header">
-        <div class="header-item">@ViewBag.ViewedUser</div>
-        <div class="header-item">@ViewBag.ProjectName</div>
-        <div class="btn btn-success header-item div-text-center-pk">Week angle</div>
+    <div class="project-label-pk">
+        @Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" } )
+    </div>
+
+    <div class="row task-header" style="margin: 1.5em 0em;">
+        <div class="col-sm-12">
+            You are viewing: @ViewBag.ViewedUser
+
+            @Html.ActionLink("Week Angle", "Index", "StatList", new { usersString = Json.Encode(new List<String> { ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = DateTime.Now }, new { @class = "btn btn-sm btn-success", @style = "float:right;" })
+        </div>
     </div>
 
     <div style="padding-top:.1em;padding-bottom:.1em;border:1px solid;border-color:rgba(0, 0, 0, 0.36)">
         <div class="row col-mar">
-            <div class="col-sm-8 text-left">Desription</div>
-            <div class="col-sm-2 text-left">End Date</div>
-            <div class="col-sm-2 text-left">Progress</div>
+            <div class="col-sm-8 text-left task-table-header-item" style="padding-left:1.2em;">  Desription</div>
+            <div class="col-sm-2 text-left task-table-header-item ">End Date</div>
+            <div class="col-sm-2 text-center task-table-header-item " style="padding-right:.6em;">Progress</div>
         </div>
 
         <div class="div-hr"></div>
@@ -30,7 +36,7 @@
         {
             string randomId = Html.Action("RandomNumber").ToString();
             string onclick = string.Empty;
-            if (task.colorIndicator.Equals("done-color") && Html.Action("CanAddTask", new { projectid = ViewBag.ProjectId, foruser = ViewBag.ViewedUser }).ToString().Equals("1")) { onclick = "onClick = \"RemoveDoneTask(\"" + task.projectTask.TaskKey + "\",\"" + task.projectTask.ProjectKey + "\",\"" + randomId + "\")\""; }
+            if (task.colorIndicator.Equals("done-color") && Html.Action("CanAddTask", new { projectid = ViewBag.ProjectId, foruser = ViewBag.ViewedUser }).ToString().Equals("1")) { onclick = "RemoveDoneTask(" + task.projectTask.TaskKey + "," + task.projectTask.ProjectKey + "," + randomId + ")"; }
             else { onclick = string.Empty; randomId = ""; }
 
             <div class="row col-mar" id="@randomId">

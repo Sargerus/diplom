@@ -10,20 +10,48 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using WebApplication1.ViewModel;
 
 namespace WebApplication1.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        [HttpGet]
+        public ActionResult IndexLeadTeam(string leadid, int? projectid)
+        {
+            ApplicatioUserViewModel model = new ApplicatioUserViewModel();
+
+            if (Utility.CheckIfLead(leadid, projectid.Value) == true)
+            {
+                model.users = (from p_u in db.Project_User
+                               join u in db.Users on p_u.User equals u.Id
+                               where p_u.ProjectId == projectid.Value && p_u.myLead == leadid
+                               select u).ToList();
+
+                model.ProjectDescription = (from g in db.Projects
+                                            where g.ProjectId == projectid.Value
+                                            select g.ProjectDescription).First();
+
+                model.ProjectId = projectid.Value;
+
+                model.TeamLead = (from g in db.Users
+                                  where g.Id == leadid
+                                  select g).First();
+            }
+
+            return View(model);
+        }
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -35,9 +63,9 @@ namespace WebApplication1.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -122,7 +150,7 @@ namespace WebApplication1.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -161,8 +189,8 @@ namespace WebApplication1.Controllers
                     {
                         var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
                         var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-                       
-                        
+
+
                         var role = roleManager.FindByName("user");
 
                         userManager.AddToRole(user.Id, role.Name);

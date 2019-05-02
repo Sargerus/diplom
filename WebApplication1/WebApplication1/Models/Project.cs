@@ -18,30 +18,30 @@ namespace WebApplication1.Models
         public int ProjectId { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Description = "Description")]
+        [Display(Name = "Description")]
         [Required]
         public string ProjectDescription { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Display(Description = "Created on")]
+        [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Display(Description = "Start Date")]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Display(Description = "End Date")]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
         
-        [Display(Description = "Budget")]
+        [Display(Name = "Budget")]
         public Double Budget { get; set; }
 
         //count of team
-        [Display(Description = "Team")]
+        [Display(Name = "Team")]
         public int Team { get; set; }
 
         [Display(Description = "Total estimate")]
@@ -49,11 +49,11 @@ namespace WebApplication1.Models
 
         [DataType(DataType.Text)]
         [ForeignKey("CreatedByRef")]
-        [Display(Description = "Created by")]
+        [Display(Name = "Created by")]
         public String CreatedBy { get; set; }
         public ApplicationUser CreatedByRef { get; set; }
 
-        [Display(Description = "Head")]
+        [Display(Name = "Head")]
         [ForeignKey("HeadOfProjectRef")]
         [Required]
         public String HeadOfProject { get; set; }

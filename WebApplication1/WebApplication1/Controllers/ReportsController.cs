@@ -66,6 +66,8 @@ namespace WebApplication1.Controllers
                 report.HoursReported = vmreport.HoursReported;
                 report.ReportedBy = vmreport.ReportedBy;
                 report.ReportedOn = vmreport.ReportedOn;
+                report.TaskKey = vmreport.TaskId;
+                report.ProjectKey = vmreport.ProjectId;
                 
                 db.Reports.Add(report);
 
@@ -88,18 +90,18 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Reports/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? taskid, int? projectid)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Report report = db.Reports.Find(id);
+            Report report = db.Reports.Find(id, taskid, projectid);
             if (report == null)
             {
                 return HttpNotFound();
             }
-            //ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
+            
             ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email", report.ReportedBy);
             return View(report);
         }
@@ -115,21 +117,21 @@ namespace WebApplication1.Controllers
             {
                 db.Entry(report).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index","BacklogTasks");
+                return RedirectToAction("Details", "ProjectTasks", new { taskid = report.TaskKey, projectid = report.ProjectKey });
             }
             //ViewBag.Backlog = new SelectList(db.Backlogs, "TaskId", "Description", report.Task);
             ViewBag.ReportedBy = new SelectList(db.Users, "Id", "Email", report.ReportedBy);
-            return View(report);
+            return RedirectToAction("Details", "ProjectTasks", new { taskid = report.TaskKey, projectid = report.ProjectKey });
         }
 
         // GET: Reports/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? taskid, int? projectid)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Report report = db.Reports.Find(id);
+            Report report = db.Reports.Find(id, taskid, projectid);
             if (report == null)
             {
                 return HttpNotFound();
@@ -140,12 +142,12 @@ namespace WebApplication1.Controllers
         // POST: Reports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int taskid, int projectid)
         {
-            Report report = db.Reports.Find(id);
+            Report report = db.Reports.Find(id,taskid,projectid);
             db.Reports.Remove(report);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details","ProjectTasks", new { taskid, projectid });
         }
 
         protected override void Dispose(bool disposing)

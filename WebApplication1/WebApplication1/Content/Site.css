@@ -2,16 +2,22 @@
 }*/
 
 .div-hr {
-    margin-left:3%;
-    margin-right:3%;
-    margin-top:.3em;
-    margin-bottom:.3em;
-    border:1px solid rgba(0, 0, 0, 0.1);
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: .3em;
+    margin-bottom: .3em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .div-borders {
     border: 1px solid rgba(0, 0, 0, 0.1);
-    padding:.1em;
+    padding: .1em;
+}
+
+.task-header {
+    /*padding: .5em;*/
+    /*background-color:burlywood;*/
+    border-radius: 15px 50px 30px;
 }
 
 .progress {
@@ -25,21 +31,22 @@
         color: black;
     }
 
-    .row{
-        padding-left: .3em;
-        padding-right: .3em;
-    }
-.row.col-mar {
-    margin-right: 0;
-    margin-left: 0;
+.row {
+    padding-left: .3em;
+    padding-right: .3em;
 }
 
-.row.col-mar > [class*='col-'] {
-    padding-right: 0em;
-    padding-left: 0em;
-    margin-bottom: .3em;
-    margin-top: .3em;
-}
+    .row.col-mar {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+        .row.col-mar > [class*='col-'] {
+            padding-right: 0em;
+            padding-left: 0em;
+            margin-bottom: .3em;
+            margin-top: .3em;
+        }
 
 
 input[type=number] {
@@ -128,6 +135,21 @@ td {
 
 /*.btn-main-pk {
 }*/
+.btn-mx {
+    margin-left: .3em;
+    margin-right: .3em;
+}
+
+.property-header{
+    font-weight:bold;
+    text-align:center;
+    font-size:120%;
+}
+
+.property{
+    text-align:center;
+    font-size:100%;
+}
 
 .progress {
     margin-bottom: 0px;
@@ -168,6 +190,26 @@ td {
     margin-right: .3em;
 }
 
+.div-property {
+    width: 33%;
+    margin-top:1em;
+    margin-bottom:1em;
+}
+
+.task-table-header-item{
+    font-weight:bold;
+    font-size:110%;
+}
+
+@media screen and (max-width: 772px) {
+    .task-table-header-item {
+        display: none !important;
+    }
+    .div-hr{
+        display:none !important;
+    }
+}
+
 .flex-item-middle-pk {
     flex-grow: 2;
     margin-left: .3em;
@@ -180,9 +222,32 @@ td {
     margin-right: .3em;*/
 }
 
+.line-with-btn {
+    line-height: 1.42857143;
+    padding: 6px 16px;
+}
+
 .hover-element-pk {
     transition: .2s linear;
     background-color: white;
+
+    /*display: inline-block;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;*/
 }
 
     .hover-element-pk:hover {

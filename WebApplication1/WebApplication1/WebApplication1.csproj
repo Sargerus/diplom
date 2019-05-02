@@ -227,6 +227,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="ViewModel\ApplicatioUserViewModel.cs" />
     <Compile Include="ViewModel\ProjectTaskViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\ReportCreateViewModel.cs" />
@@ -372,6 +373,7 @@
     <Content Include="Views\ProjectTasks\Edit.cshtml" />
     <Content Include="Views\ProjectTasks\Index.cshtml" />
     <Content Include="Views\StatList\Index.cshtml" />
+    <Content Include="Views\Account\IndexLeadTeam.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

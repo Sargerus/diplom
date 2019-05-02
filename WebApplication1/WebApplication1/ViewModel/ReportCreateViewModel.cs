@@ -9,7 +9,7 @@ namespace WebApplication1.ViewModel
     {
        
         public int ReportId { get; set; }
-        
+                
         public String ReportedBy { get; set; }
         
         public DateTime ReportedOn { get; set; }

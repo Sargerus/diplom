@@ -23,6 +23,25 @@ namespace WebApplication1
 
         public static String myManager { get; private set; }
 
+        public static bool CheckIfLead(string leadid, int projectid)
+        {
+            bool answer = false;
+
+            var lead = db.Project_User.Find(projectid, leadid);
+            if (lead==null)
+            {
+                answer = false;
+            } else
+            {
+                if(lead.isLead || lead.isManager)
+                {
+                    answer = true;
+                }
+            }
+
+            return answer;
+        }
+
         public static string CanManageProject(int projectid)
         {
             string answer = string.Empty;
@@ -62,7 +81,7 @@ namespace WebApplication1
             if (!isDefined) { return ""; }
             string answer = "0";
 
-            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && g.User.Equals(foruser) && (g.myLead.Equals(User) || g.myManager.Equals(User) || g.isLead.Equals(true)));
+            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && ( g.User.Equals(foruser) && ( g.myLead.Equals(User)  || g.myManager.Equals(User) || g.isLead.Equals(true))));
             if (dependentUser.Any())
             {
                 answer = "1";
