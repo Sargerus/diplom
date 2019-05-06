@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using WebApplication1.ViewModel;
 
 namespace WebApplication1.Controllers
 {
@@ -16,14 +17,25 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public string AmILead(int? projectid)
+        public string AmILead(int? projectid, string user)
         {
-            if (db.Project_User.Where(g => g.myLead.Equals(Utility.User) && g.ProjectId.Equals(projectid.Value)).Any())
+            string answer = "0";
+
+            if (user == null)
             {
-                return "1";
+                user = Utility.User;
             }
 
-            return "0";
+            if ((from g in db.Project_User
+                 where g.ProjectId == projectid.Value && g.User.Equals(user) && (g.isLead == true || g.isManager == true)
+                 select g).Any())
+            {
+
+                answer = "1";
+
+            }
+
+            return answer;
         }
 
         public string CanManageProject(int projectid)
@@ -72,7 +84,21 @@ namespace WebApplication1.Controllers
             //db.Backlogs.ToList().ForEach(backlog => backlog.Tasks.ToList().ForEach(task => k += (int)(task.HoursEstimated.Value)));
             project.TotalEstimate = k;
 
-            return View(project);
+            ProjectViewModel vmproject = new ProjectViewModel();
+            vmproject.project = project;
+
+            vmproject.users = (from g in db.Project_User
+                               where g.ProjectId == id
+                               select g.User).ToList();
+
+            ViewBag.UsersToAssign = new SelectList(db.Users, "Id", "Email");
+
+            var teamleads = from g in db.Project_User
+                            where g.ProjectId == project.ProjectId && g.isLead == true
+                            select new { Id = g.User };
+            ViewBag.TeamLeads = new SelectList(teamleads.ToList(), "Id", "Id", null);
+
+            return View(vmproject);
         }
 
         // GET: Projects/Create

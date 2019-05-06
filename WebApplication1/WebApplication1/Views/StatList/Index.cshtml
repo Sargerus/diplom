@@ -14,7 +14,7 @@
         }*@
 
     @Html.ActionLink("Previous Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.StartDayOfWeek.AddDays(-7) }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Cuurent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.Today }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Curent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.Today }, new { @class = "btn btn-success" })
     @Html.ActionLink("Next Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = (DateTime)ViewBag.StartDayOfWeek.AddDays(7) }, new { @class = "btn btn-success" })
 
     @if (Model != null)
@@ -43,49 +43,49 @@
             {
                 <div class="row col-mar">
                     <div class="col-sm-5 text-left div-borders">@Html.ActionLink(task.ShortText, "Details", "ProjectTasks", new { taskid = task.TaskKey, projectid = task.ProjectKey }, null)</div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursMonday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, monday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursMonday > 0)
                         {
                             @hoursMonday
                         }
                     </div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursTuesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, tuesday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursTuesday > 0)
                         {
                             @hoursTuesday
                         }
                     </div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursWednesday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, wednesday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursWednesday > 0)
                         {
                             @hoursWednesday
                         }
                     </div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursThursday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, thursday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursThursday > 0)
                         {
                             @hoursThursday
                         }
                     </div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursFriday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, friday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursFriday > 0)
                         {
                             @hoursFriday
                         }
                     </div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursSaturday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, saturday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursSaturday > 0)
                         {
                             @hoursSaturday
                         }
                     </div>
-                    <div class="col-sm-1 div-borders text-center">
+                    <div class="col-sm-1 div-borders text-center" style="min-height:1.78em;">
                         @{ int hoursSunday = task.Reports.Where(g => DateTime.Compare(g.ReportedOn.Date, sunday) == 0).Select(g => g.HoursReported).Sum(); }
                         @if (hoursSunday > 0)
                         {

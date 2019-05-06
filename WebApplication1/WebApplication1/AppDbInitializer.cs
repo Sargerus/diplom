@@ -164,7 +164,6 @@ namespace WebApplication1
                     {
                         ProjectId = 1,
                         User = "administrator",
-                        isLead = true,
                         isManager = true
                     });
                     context.Project_User.Add(new Project_User

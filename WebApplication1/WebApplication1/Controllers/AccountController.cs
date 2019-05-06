@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,6 +21,34 @@ namespace WebApplication1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        [HttpPost]
+        public ContentResult UnassignUser(string user, int? projectid)
+        {
+            var record = db.Project_User.Find(projectid.Value, user);
+            db.Project_User.Remove(record);
+            db.SaveChanges();
+
+            return Content("OK","application/json");
+        }
+
+
+        [HttpPost]
+        public ContentResult AssignUser([System.Web.Http.FromBody]AssignedUser assignedUser)
+        {
+            Project_User pu = new Project_User();
+            pu.isLead = assignedUser.isLead;
+            pu.isDev = true;
+            pu.ProjectId = assignedUser.ProjectId;
+            pu.User = assignedUser.Name;
+            pu.myLead = assignedUser.TeamLead;
+
+            db.Project_User.Add(pu);
+            db.SaveChanges();
+
+            return Content("OK","application/json");
+        }
+
 
         [HttpGet]
         public ActionResult IndexLeadTeam(string leadid, int? projectid)

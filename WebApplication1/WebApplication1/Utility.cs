@@ -28,12 +28,13 @@ namespace WebApplication1
             bool answer = false;
 
             var lead = db.Project_User.Find(projectid, leadid);
-            if (lead==null)
+            if (lead == null)
             {
                 answer = false;
-            } else
+            }
+            else
             {
-                if(lead.isLead || lead.isManager)
+                if (lead.isLead || lead.isManager)
                 {
                     answer = true;
                 }
@@ -48,8 +49,9 @@ namespace WebApplication1
 
             if (db.Project_User.Where(g => g.ProjectId.Equals(projectid) && g.User.Equals(User) && g.isManager.Equals(true)).Any())
             {
-                answer = "1";    
-            } else
+                answer = "1";
+            }
+            else
             {
                 answer = "0";
             }
@@ -81,16 +83,29 @@ namespace WebApplication1
             if (!isDefined) { return ""; }
             string answer = "0";
 
-            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && ( g.User.Equals(foruser) && ( g.myLead.Equals(User)  || g.myManager.Equals(User) || g.isLead.Equals(true))));
+            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && (g.User.Equals(foruser) && (g.myLead.Equals(User) || g.myManager.Equals(User))));
             if (dependentUser.Any())
             {
                 answer = "1";
             }
-            else
+            else if (foruser.Equals(Utility.User))
             {
-                answer = "0";
-            }
 
+
+                dependentUser = from g in db.Project_User
+                                where g.ProjectId == projectid && g.isLead == true
+                                select g;
+
+                if (dependentUser.Any())
+                {
+                    answer = "1";
+                }
+                else
+                {
+                    answer = "0";
+                }
+
+            }
             return answer;
         }
 

@@ -211,6 +211,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AssignedUser.cs" />
     <Compile Include="Models\Backlog.cs" />
     <Compile Include="Models\BacklogState.cs" />
     <Compile Include="Models\BacklogType.cs" />
@@ -375,6 +376,7 @@
     <Content Include="Views\StatList\Index.cshtml" />
     <Content Include="Views\Account\IndexLeadTeam.cshtml" />
     <Content Include="Views\ProjectTasks\IndexProjectStat.cshtml" />
+    <Content Include="Views\Account\AssignUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

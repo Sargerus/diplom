@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "AssignUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Body{
+    Choose user to be assigned to project: @Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control" })
+<div class="btn btn-sm btn-success" id="assign">Assign</div>
+
+    <script type="text/javascript">
+        $("#assign").click(
+            function () {
+                $.post({
+                    url: "/Account/AssignUser",
+                    data: $("#assign").children("option:selected").val(),
+                    success: function () { alert("success"); location.replace("/Projects/Details?id="+@ViewBag.ProjectId);}
+                })
+            }
+        )
+    </script>
+}
+

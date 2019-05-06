@@ -9,6 +9,6 @@ namespace WebApplication1.ViewModel
     public class ProjectViewModel
     {
         public Project project { get; set; }
-        public string[] managers { get; set; }
+        public List<string> users { get; set; }
     }
 }

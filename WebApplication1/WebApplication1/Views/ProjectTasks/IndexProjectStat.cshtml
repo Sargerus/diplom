@@ -28,12 +28,27 @@
             }
         }
     }
+    @{int doneTasksCount = 0;
+        int totalDoneHours = 0;
+        int totalRequiredDoneHours = 0;
+
+        int processingTasksCount = 0;
+        int totalprocessingHours = 0;
+        int totalRequiredprocessingHours = 0;
+
+        int outstandingTasksCount = 0;
+        int totaloutstandingHours = 0;
+        int totalRequiredoutstandingHours = 0;
+        }
     <div class="row">
         <div class="col-xs-4">
             <div class="done-task-container">
                 <div class="done-header text-center">Done</div>
                 @foreach (var task in doneTasks)
                 {
+                    doneTasksCount += 1;
+                    totalDoneHours += task.projectTask.TaskDone;
+                    totalRequiredDoneHours += task.projectTask.TaskEstimated;
                     <div class="row projecttask-line">
                         <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
                             <span class="@task.colorIndicator"></span>
@@ -54,19 +69,22 @@
                 <div class="processing-header text-center">In Process</div>
                 @foreach (var task in processingTasks)
                 {
-                    <div class="row projecttask-line">
-                        <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
-                            <span class="@task.colorIndicator"></span>
-                            @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
-                        </div>
-                        <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
-                            @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
-                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
-                                <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
-                            </div>
-                        </div>
+                    processingTasksCount += 1;
+                    totalprocessingHours += task.projectTask.TaskDone;
+                    totalRequiredprocessingHours += task.projectTask.TaskEstimated;
+            <div class="row projecttask-line">
+                <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
+                    <span class="@task.colorIndicator"></span>
+                    @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
+                </div>
+                <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
+                    @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
+                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
+                        <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
                     </div>
-                }
+                </div>
+            </div>
+        }
             </div>
         </div>
         <div class="col-xs-4">
@@ -74,20 +92,44 @@
                 <div class="outstanding-header text-center">Outstanding</div>
                 @foreach (var task in outstandingTasks)
                 {
-                    <div class="row projecttask-line">
-                        <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
-                            <span class="@task.colorIndicator"></span>
-                            @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
-                        </div>
-                        <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
-                            @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
-                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
-                                <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
-                            </div>
-                        </div>
+                    outstandingTasksCount += 1;
+                    totaloutstandingHours += task.projectTask.TaskDone;
+                    totalRequiredoutstandingHours += task.projectTask.TaskEstimated;
+            <div class="row projecttask-line">
+                <div class="col-sm-8" style="margin-left:-.3em;margin-right:-0.45em;">
+                    <span class="@task.colorIndicator"></span>
+                    @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")
+                </div>
+                <div class="progress col-sm-4" style="padding-left:0;padding-right:0;">
+                    @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
+                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
+                        <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
                     </div>
-                }
+                </div>
+            </div>
+        }
             </div>
         </div>
 
+
+        <div class="row">
+            <div class="col-xs-4">
+                <hr />
+                Tasks: @doneTasksCount<br />
+                Total Done: @totalDoneHours<br />
+                Total Estimated: @totalRequiredDoneHours
+            </div>
+            <div class="col-xs-4">
+                <hr />
+                Tasks: @processingTasksCount<br />
+                Total Done: @totalprocessingHours<br />
+                Total Estimated: @totalRequiredprocessingHours
+            </div>
+            <div class="col-xs-4">
+                <hr />
+                Tasks: @outstandingTasksCount<br />
+                Total Done: @totaloutstandingHours<br />
+                Total Estimated: @totalRequiredoutstandingHours
+            </div>
+        </div>
 }
