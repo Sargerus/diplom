@@ -122,7 +122,13 @@ namespace WebApplication1.Controllers
 
             if (ModelState.IsValid)
             {
+                Project_User pu = new Project_User();
+                pu.isManager = true;
+                pu.ProjectId = project.ProjectId;
+                pu.User = Utility.User;
+
                 db.Projects.Add(project);
+                db.Project_User.Add(pu);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

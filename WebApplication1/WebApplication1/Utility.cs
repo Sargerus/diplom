@@ -62,7 +62,7 @@ namespace WebApplication1
 
         public static void SetUser(string email)
         {
-            User = db.Users.Where(g => g.Email.Equals(email)).Select(g => g.Id).First();
+            User = db.Users.Where(g => g.UserName.Equals(email)).Select(g => g.Id).First();
         }
 
         public static void DefineUserRolesForCurrentProject(int projectid, string username)

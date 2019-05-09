@@ -142,8 +142,8 @@
                     @user
                 </div>
                 <div class="col-xs-6">
-                    @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success", @style = "border-radius:15px;" })
-                    @if (Html.Action("AmILead", new { projectid = Model.project.ProjectId, user = user }).ToString().Equals("1"))
+                    @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success"})
+                    @if (Html.Action("AmILead", new { projectid = Model.project.ProjectId, user = Utility.User }).ToString().Equals("1"))
                     {
                         <div class="btn btn-sm btn-danger" onclick="Unassign('@user')" style="border-radius:15px;">Unassign</div>
                     }

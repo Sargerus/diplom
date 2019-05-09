@@ -6,12 +6,6 @@
 }
 
 @section Body{
-    <p>
-        @if (User.IsInRole("admin"))
-        {
-            @Html.ActionLink("Create New", "Create")
-        }
-    </p>
     @foreach (var item in Model)
     {
         <div class="row col-mar">
