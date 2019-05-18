@@ -156,9 +156,19 @@
                 </div>
                 <div class="col-xs-6">
                     @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success" })
-                    @if (Html.Action("AmILead", new { projectid = Model.project.ProjectId, user = Utility.User }).ToString().Equals("1"))
+                    @if (Html.Action("CanManageProject", new { projectid = Model.project.ProjectId }).ToString().Equals("1"))
                     {
-                        <div class="btn btn-sm btn-danger" onclick="Unassign('@user')" style="border-radius:15px;">Unassign</div>
+                        if (!user.Equals(Utility.User))
+                        {
+                            <div class="btn btn-sm btn-danger" onclick="Unassign('@user')" style="border-radius:15px;">Unassign</div>
+
+                            if (!Html.Action("AmILead", new { projectid = Model.project.ProjectId, user = user }).ToString().Equals("1"))
+                            {
+                            <a href="" class="btn btn-warning btn-rounded mb-4" data-toggle="modal" onclick="SetUserToReassign('@user')" data-target="#modalReassignForm">
+                                Reassign
+                            </a>
+                            }
+                        }
                     }
                 </div>
             </div>
@@ -179,12 +189,15 @@
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-date">User</label>
                         @*@Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "usertoassign" })*@
-                        <input id="usertoassign" />
+                        <input id="usertoassign" placeholder="type at least 3 characters" class="ui-widget" />
                     </div>
 
                     <div class="md-form mb-4 projecttask-line">
+                        <input type="checkbox" name="checkname" id="yeslead" onclick="CheckLeadField();" />
                         <label data-error="wrong" data-success="right" for="defaultForm-comment">Is Lead?</label><br />
-                        <input type="checkbox" name="checkname" id="yeslead" />
+
+                        <input type="checkbox" name="checkname" id="yesmanager" onclick="CheckLeadField();" />
+                        <label data-error="wrong" data-success="right" for="defaultForm-comment">Is Manager?</label><br />
                     </div>
 
                     <div class="md-form mb-4 projecttask-line">
@@ -200,37 +213,70 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalReassignForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Ressign user to TeamLead</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-4 projecttask-line">
+                        <label data-error="wrong" data-success="right" for="defaultForm-date">Select new teamlead</label>
+                        @Html.DropDownList("TeamLeads", null, htmlAttributes: new { @class = "form-control", id = "reassignteamlead" })
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" onclick="Reassign();">Reassign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
 
-        @*var text = "@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewBag.UsersToAssignArray))";*@
-        $(document).ready(function () {
-            $(function () {
-                var usersArray = [];
-                console.log(document.getElementById("usertoassign"));
+        var usersArray = [];
+        var nameofusertoreassign = "";
+
                @foreach(var user in Model.usersToAssign)
                {
                    @:usersArray.push("@user");
                };
 
-                console.log("start");
-                usersArray.forEach(function (element) { console.log(element);})
-                console.log("finish");
-
                 $("#usertoassign").autocomplete({
-                    source: usersArray
-                });
-            })
+                    source: usersArray,
+                    minLength: 3
         });
 
+        function SetUserToReassign(user) {
+            nameofusertoreassign = user;
+        }
 
 
+        function CheckLeadField(){
+            let field = document.getElementById('teamlead');
+            if (field.getAttribute('disabled') == 'false' || field.getAttribute('disabled') === null)
+            {
+                $("#teamlead").prop('disabled', true);
+                $("#teamlead").val("");
+            }
+            else {
+                $("#teamlead").prop('disabled', false);
+            }
+
+
+        }
 
         function Assign() {
 
             let user = {
-                Name: $("#usertoassign").children("option:selected").val(),
+                Name: $("#usertoassign").val(),
                 ProjectId: @Model.project.ProjectId,
                 isLead: $("input[id='yeslead']").is(':checked') ? true : false,
+                isManager: $("input[id='yesmanager']").is(':checked') ? true : false,
                 TeamLead: $("#teamlead").children("option:selected").val()
             }
 
@@ -239,7 +285,7 @@
                 contentType: "application/json",
                 data: JSON.stringify(user),
                 success: function () { location.reload(); },
-                error: function () { alert("User" + data.User + "was not assigned to project. Please try again"); },
+                error: function (data) { alert("User" + data.User + "was not assigned to project. Please try again"); },
                 dataType: "json"
             });
         }
@@ -255,6 +301,18 @@
                 dataType: "json"
             });
 
+        }
+
+        function Reassign() {
+            var newteamlead = $("#reassignteamlead").children("option:selected").val();
+
+            $.post({
+                url: "/Account/ReassignUser",
+                data: { TeamLead: newteamlead, user : nameofusertoreassign, projectid : @Model.project.ProjectId },
+                success: function () { location.reload(); },
+                error: function (data) { alert("User" + data.User + "was not reassigned to new team lead. Please try again"); },
+                dataType: "json"
+            });
         }
     </script>
 

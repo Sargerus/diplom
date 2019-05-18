@@ -1,10 +1,13 @@
 ﻿/*.main-navigation-bar-pk {
 }*/
+ul.ui-autocomplete {
+    z-index: 1100;
+}
 
-.projecttask-line{
-    padding-top:.2em;
-    padding-bottom:.2em;
-    margin-bottom:.5em;
+.projecttask-line {
+    padding-top: .2em;
+    padding-bottom: .2em;
+    margin-bottom: .5em;
 }
 
 .outstanding-header {
@@ -169,15 +172,15 @@ td {
     margin-right: .3em;
 }
 
-.property-header{
-    font-weight:bold;
-    text-align:center;
-    font-size:120%;
+.property-header {
+    font-weight: bold;
+    text-align: center;
+    font-size: 120%;
 }
 
-.property{
-    text-align:center;
-    font-size:100%;
+.property {
+    text-align: center;
+    font-size: 100%;
 }
 
 .progress {
@@ -221,21 +224,22 @@ td {
 
 .div-property {
     width: 33%;
-    margin-top:1em;
-    margin-bottom:1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
-.task-table-header-item{
-    font-weight:bold;
-    font-size:110%;
+.task-table-header-item {
+    font-weight: bold;
+    font-size: 110%;
 }
 
 @media screen and (max-width: 772px) {
     .task-table-header-item {
         display: none !important;
     }
-    .div-hr{
-        display:none !important;
+
+    .div-hr {
+        display: none !important;
     }
 }
 
@@ -259,7 +263,6 @@ td {
 .hover-element-pk {
     transition: .2s linear;
     background-color: white;
-
     /*display: inline-block;
     margin-bottom: 0;
     font-size: 14px;

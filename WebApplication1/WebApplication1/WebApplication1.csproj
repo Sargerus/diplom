@@ -229,6 +229,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="UtilityClasses\ForEachExtension.cs" />
     <Compile Include="UtilityClasses\JSSerializer.cs" />
     <Compile Include="ViewModel\ApplicatioUserViewModel.cs" />
     <Compile Include="ViewModel\ProjectTaskViewModel.cs" />

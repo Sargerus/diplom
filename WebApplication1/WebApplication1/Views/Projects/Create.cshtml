@@ -6,11 +6,11 @@
 
 @section Body{
     <head>
-        <script type="text/javascript">
+        @*<script type="text/javascript">
             $(function () { // will trigger when the document is ready
                 $('.datepicker').datepicker(); //Initialise any date pickers
             });
-        </script>
+        </script>*@
     </head>
     <h2>Create</h2>
 
@@ -36,7 +36,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.LongDescription, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LongDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.LongDescription, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
             </div>
         </div>

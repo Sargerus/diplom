@@ -100,7 +100,11 @@ namespace WebApplication1
             if (!isDefined) { return ""; }
             string answer = "0";
 
-            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && (g.User.Equals(foruser) && (g.myLead.Equals(User) || g.myManager.Equals(User))));
+            if(db.Project_User.Find(projectid,Utility.User).isManager == true)
+            {
+                answer = "1";
+            }
+            var dependentUser = db.Project_User.Where(g => g.ProjectId.Equals(projectid) && (g.User.Equals(foruser) && (g.myLead.Equals(User))));
             if (dependentUser.Any())
             {
                 answer = "1";
@@ -110,7 +114,7 @@ namespace WebApplication1
 
 
                 dependentUser = from g in db.Project_User
-                                where g.ProjectId == projectid && (g.isLead == true || g.isManager == true)
+                                where (g.ProjectId == projectid && g.User.Equals(Utility.User)) && (g.isLead == true || g.isManager == true)
                                 select g;
 
                 if (dependentUser.Any())

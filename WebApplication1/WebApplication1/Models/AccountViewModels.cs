@@ -66,6 +66,7 @@ namespace WebApplication1.Models
     {
         [Required]
         [Display(Name = "Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         public string Name { get; set; }
 

@@ -47,8 +47,17 @@ namespace WebApplication1
                         UserName = "user",
                     };
 
+                    ApplicationUser user1 = new ApplicationUser
+                    {
+
+                        Email = "qwe@qwe.ru",
+                        Id = "qwe",
+                        UserName = "qwe",
+                    };
+
                     userManager.Create(admin, "!Kemp111");
                     userManager.Create(user, "!Kemp111");
+                    userManager.Create(user1, "!Kemp111");
                     userManager.AddToRole(admin.Id, role1.Name);
                     userManager.AddToRole(user.Id, role2.Name);
 
@@ -181,8 +190,7 @@ namespace WebApplication1
                     {
                         ProjectId = 1,
                         User = "user",
-                        isDev = true,
-                        myLead = "administrator"
+                        isDev = true
                     });
 
                     context.SaveChanges();

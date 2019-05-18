@@ -15,6 +15,8 @@ namespace WebApplication1.Models
         public Project()
         {
             today = DateTime.Today.Date.ToString("{0:yyyy - MM - dd}");
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today.AddDays(365);
             this.UserAssigned = new HashSet<ApplicationUser>();
             this.Tasks = new HashSet<ProjectTask>();
         }

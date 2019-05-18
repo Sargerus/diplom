@@ -27,11 +27,24 @@ namespace WebApplication1.Controllers
         public ActionResult UnassignUser(string user, int? projectid)
         {
             var record = db.Project_User.Find(projectid.Value, user);
+            foreach(var ss in db.Project_User.Where(g => g.myLead.Equals(user)))
+            {
+                ss.myLead = null;
+            }
             var assigneduser = db.Project_User.Remove(record);
             db.Projects.Find(projectid.Value).Team -= 1;
             db.SaveChanges();
 
             return Json(new { assigneduser }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ReassignUser(string TeamLead, string user, int? projectid)
+        {
+            db.Project_User.Find(projectid.Value, user).myLead = TeamLead;
+            db.SaveChanges();
+
+            return Json(new { user }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -40,11 +53,26 @@ namespace WebApplication1.Controllers
         {
             Project_User pu = new Project_User();
             pu.isLead = assignedUser.isLead;
-            pu.isDev = true;
             pu.ProjectId = assignedUser.ProjectId;
             pu.User = assignedUser.Name;
-            pu.myLead = assignedUser.TeamLead;
             pu.myManager = db.Project_User.Where(g => g.ProjectId == pu.ProjectId && g.User == Utility.User && g.isManager == true).Select(g => g.User).First().ToString();
+
+            if (assignedUser.isManager != null)
+            {
+                if(assignedUser.isManager == true)
+                {
+                    pu.isManager = assignedUser.isManager;
+                    pu.myManager = null;
+                }
+            }
+            
+            if(assignedUser.TeamLead != null)
+            {
+                if (!assignedUser.TeamLead.Equals(string.Empty))
+                {
+                    pu.myLead = assignedUser.TeamLead;
+                }
+            }
 
             db.Project_User.Add(pu);
             db.Projects.Find(assignedUser.ProjectId).Team += 1;

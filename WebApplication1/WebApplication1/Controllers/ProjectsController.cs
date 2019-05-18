@@ -85,28 +85,70 @@ namespace WebApplication1.Controllers
             //db.Backlogs.ToList().ForEach(backlog => backlog.Tasks.ToList().ForEach(task => k += (int)(task.HoursEstimated.Value)));
 
             project.TotalEstimate = (from g in db.ProjectTasks
-                                    where g.ProjectKey == project.ProjectId
-                                    select g.TaskEstimated).Sum(task => task);
+                                     where g.ProjectKey == project.ProjectId
+                                     select g.TaskEstimated).Sum(task => task);
 
             ProjectViewModel vmproject = new ProjectViewModel();
             vmproject.project = project;
 
-            vmproject.users = (from g in db.Project_User
-                               where g.ProjectId == id
-                               select g.User).ToList();
+            var projectusers = (from g in db.Project_User
+                                where g.ProjectId == id
+                                select g).ToList();
+
+            vmproject.users = new List<string>();
+            for (int i = 0; vmproject.users.Count != projectusers.Count; i++)
+            {
+
+                if (projectusers[i].isManager == true)
+                {
+                    vmproject.users.Reverse();
+
+
+                    foreach(var g in projectusers)
+                    {
+                        if (g.isDev == true && ( ( g.myLead == null && g.isLead == false ) || g.myLead == projectusers[i].User) )
+                        {
+                            if (!vmproject.users.Contains(g.User))
+                            {
+                                vmproject.users.Add(g.User);
+                            }
+                        }
+                    }
+
+                    vmproject.users.Add(projectusers[i].User);
+                    vmproject.users.Reverse();
+                    continue;
+                }
+
+                if (projectusers[i].isLead == true)
+                {
+                    vmproject.users.Add(projectusers[i].User);
+
+                    foreach (var leaduser in projectusers)
+                    {
+                        if (leaduser.myLead != null)
+                        {
+                            if (leaduser.myLead.Equals(projectusers[i].User))
+                            {
+                                vmproject.users.Add(leaduser.User);
+                            }
+                        }
+                    }
+                }
+            }
 
             ViewBag.UsersToAssign = new SelectList(db.Users, "Id", "Email");
 
             string[] usersArray = (from g in db.Users
-                              select g.UserName).ToArray();
+                                   select g.UserName).ToArray();
 
             //string asdasd = JSSerializer.Serialize(usersArray).Replace(@"\""", "");
             //ViewBag.UsersToAssignArray = JSSerializer.Serialize(usersArray).Replace("\\",string.Empty);
 
             vmproject.usersToAssign = (from userToAssign in db.Users
-                                      where !(from u in vmproject.users
-                                              select u).Contains(userToAssign.UserName)
-                                      select userToAssign.UserName).ToList();
+                                       where !(from u in vmproject.users
+                                               select u).Contains(userToAssign.UserName)
+                                       select userToAssign.UserName).ToList();
 
             var teamleads = from g in db.Project_User
                             where g.ProjectId == project.ProjectId && g.isLead == true
@@ -144,7 +186,7 @@ namespace WebApplication1.Controllers
 
                 project.ProjectId = db.Projects.ToList().Count + 1;
                 pu.ProjectId = project.ProjectId;
-                
+
                 db.Projects.Add(project);
                 db.Project_User.Add(pu);
                 db.SaveChanges();
@@ -167,9 +209,8 @@ namespace WebApplication1.Controllers
                 return HttpNotFound();
             }
             CultureInfo provider = CultureInfo.InvariantCulture;
-            ViewBag.Users2 = new SelectList(db.Users.ToList(), "Id", "UserName");
-            // var date = project.StartDate.ToShortDateString();
-            // project.StartDate = DateTime.ParseExact(date, "yyyy-MM-dd", provider);
+            ViewBag.Users2 = new SelectList(db.Project_User.Where(g => g.ProjectId == id.Value && g.isManager == true).ToList(), "Id", "UserName");
+            
             return View(project);
         }
 

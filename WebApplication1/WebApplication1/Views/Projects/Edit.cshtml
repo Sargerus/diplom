@@ -14,6 +14,7 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.ProjectId)
+            @Html.HiddenFor(model => model.CreatedBy)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.ProjectDescription, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -55,13 +56,13 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.HeadOfProject, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownListFor(model => model.HeadOfProject, (IEnumerable<SelectListItem>)ViewBag.Users2, "")
                     @Html.ValidationMessageFor(model => model.HeadOfProject, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
