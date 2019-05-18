@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -23,18 +24,19 @@ namespace WebApplication1.Controllers
         private ApplicationUserManager _userManager;
 
         [HttpPost]
-        public ContentResult UnassignUser(string user, int? projectid)
+        public ActionResult UnassignUser(string user, int? projectid)
         {
             var record = db.Project_User.Find(projectid.Value, user);
-            db.Project_User.Remove(record);
+            var assigneduser = db.Project_User.Remove(record);
+            db.Projects.Find(projectid.Value).Team -= 1;
             db.SaveChanges();
 
-            return Content("OK","application/json");
+            return Json(new { assigneduser }, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpPost]
-        public ContentResult AssignUser([System.Web.Http.FromBody]AssignedUser assignedUser)
+        public ActionResult AssignUser([System.Web.Http.FromBody]AssignedUser assignedUser)
         {
             Project_User pu = new Project_User();
             pu.isLead = assignedUser.isLead;
@@ -42,11 +44,13 @@ namespace WebApplication1.Controllers
             pu.ProjectId = assignedUser.ProjectId;
             pu.User = assignedUser.Name;
             pu.myLead = assignedUser.TeamLead;
+            pu.myManager = db.Project_User.Where(g => g.ProjectId == pu.ProjectId && g.User == Utility.User && g.isManager == true).Select(g => g.User).First().ToString();
 
             db.Project_User.Add(pu);
+            db.Projects.Find(assignedUser.ProjectId).Team += 1;
             db.SaveChanges();
 
-            return Content("OK","application/json");
+            return Json(pu, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -133,11 +137,12 @@ namespace WebApplication1.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            string username = db.Users.Where(g => g.Email == model.Email).Select(g => g.UserName).First().ToString();
+            var result = await SignInManager.PasswordSignInAsync(username, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    Utility.SetUser(model.Email);
+                    Utility.SetUser(username);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

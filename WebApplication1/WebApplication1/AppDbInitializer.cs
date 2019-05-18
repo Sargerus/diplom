@@ -36,7 +36,7 @@ namespace WebApplication1
 
                         Email = "admin@admin.ru",
                         Id = "administrator",
-                        UserName = "admin@admin.ru",
+                        UserName = "administrator",
                     };
 
                     ApplicationUser user = new ApplicationUser
@@ -44,7 +44,7 @@ namespace WebApplication1
 
                         Email = "user@user.ru",
                         Id = "user",
-                        UserName = "user@user.ru",
+                        UserName = "user",
                     };
 
                     userManager.Create(admin, "!Kemp111");
@@ -58,8 +58,10 @@ namespace WebApplication1
                         CreatedOn = DateTime.Now,
                         ProjectDescription = "First project",
                         ProjectId = 1,
+                        Team = 2,
                         HeadOfProject = "administrator",
-                        StartDate = DateTime.Now
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now.AddDays(365)
                     });
 
                     context.Projects.Add(new Project
@@ -69,7 +71,8 @@ namespace WebApplication1
                         ProjectDescription = "Second project",
                         ProjectId = 2,
                         HeadOfProject = "administrator",
-                        StartDate = DateTime.Now
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now.AddDays(365)
                     });
 
                     context.Projects.Add(new Project
@@ -79,7 +82,8 @@ namespace WebApplication1
                         ProjectDescription = "Third project",
                         ProjectId = 3,
                         HeadOfProject = "administrator",
-                        StartDate = DateTime.Now
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now.AddDays(365)
                     });
 
                     var task = context.ProjectTasks.Add(new ProjectTask
@@ -99,20 +103,20 @@ namespace WebApplication1
                     project1.Tasks.Add(task);
                     user.Projects.Add(project1);
 
-                    project1.Tasks.Add(context.ProjectTasks.Add(new ProjectTask
-                    {
-                        ProjectKey = 1,
-                        AssignedBy = "administrator",
-                        UserAssigned = "user",
-                        TaskEstimated = 32,
-                        TaskDone = 0,
-                        TaskKey = 2,
-                        ShortText = "Backend govno",
-                        Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        RequiredStartDate = DateTime.Now.AddDays(-2),
-                        RequiredEndDate = DateTime.Now.AddDays(2)
+                    //project1.Tasks.Add(context.ProjectTasks.Add(new ProjectTask
+                    //{
+                    //    ProjectKey = 1,
+                    //    AssignedBy = "administrator",
+                    //    UserAssigned = "user",
+                    //    TaskEstimated = 32,
+                    //    TaskDone = 0,
+                    //    TaskKey = 2,
+                    //    ShortText = "Backend govno",
+                    //    Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    //    RequiredStartDate = DateTime.Now.AddDays(-2),
+                    //    RequiredEndDate = DateTime.Now.AddDays(2)
 
-                    }));
+                    //}));
 
                     project1.Tasks.Add(context.ProjectTasks.Add(new ProjectTask
                     {
@@ -121,7 +125,7 @@ namespace WebApplication1
                         UserAssigned = "user",
                         TaskEstimated = 20,
                         TaskDone = 0,
-                        TaskKey = 3,
+                        TaskKey = 2,
                         ShortText = "Simple task",
                         Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         RequiredStartDate = DateTime.Now,
@@ -135,7 +139,7 @@ namespace WebApplication1
                         UserAssigned = "administrator",
                         TaskEstimated = 20,
                         TaskDone = 0,
-                        TaskKey = 4,
+                        TaskKey = 3,
                         ShortText = "Simple task",
                         Description = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                         RequiredStartDate = DateTime.Now,

@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
+using WebApplication1.UtilityClasses;
 using WebApplication1.ViewModel;
 
 namespace WebApplication1.Controllers
@@ -80,9 +81,12 @@ namespace WebApplication1.Controllers
             }
 
             int k = 0;
-            project.Team = project.UserAssigned.Count;
+            //project.Team = project.UserAssigned.Count;
             //db.Backlogs.ToList().ForEach(backlog => backlog.Tasks.ToList().ForEach(task => k += (int)(task.HoursEstimated.Value)));
-            project.TotalEstimate = k;
+
+            project.TotalEstimate = (from g in db.ProjectTasks
+                                    where g.ProjectKey == project.ProjectId
+                                    select g.TaskEstimated).Sum(task => task);
 
             ProjectViewModel vmproject = new ProjectViewModel();
             vmproject.project = project;
@@ -92,6 +96,17 @@ namespace WebApplication1.Controllers
                                select g.User).ToList();
 
             ViewBag.UsersToAssign = new SelectList(db.Users, "Id", "Email");
+
+            string[] usersArray = (from g in db.Users
+                              select g.UserName).ToArray();
+
+            //string asdasd = JSSerializer.Serialize(usersArray).Replace(@"\""", "");
+            //ViewBag.UsersToAssignArray = JSSerializer.Serialize(usersArray).Replace("\\",string.Empty);
+
+            vmproject.usersToAssign = (from userToAssign in db.Users
+                                      where !(from u in vmproject.users
+                                              select u).Contains(userToAssign.UserName)
+                                      select userToAssign.UserName).ToList();
 
             var teamleads = from g in db.Project_User
                             where g.ProjectId == project.ProjectId && g.isLead == true
@@ -106,6 +121,7 @@ namespace WebApplication1.Controllers
         {
             Project project = new Project();
 
+            project.HeadOfProject = Utility.User;
             project.CreatedBy = db.Users.ToList().Find(g => g.UserName == User.Identity.Name).Id;
             project.CreatedOn = DateTime.Now;
             ViewBag.Users = new SelectList(db.Users.ToList(), "Id", "UserName");
@@ -124,9 +140,11 @@ namespace WebApplication1.Controllers
             {
                 Project_User pu = new Project_User();
                 pu.isManager = true;
-                pu.ProjectId = project.ProjectId;
                 pu.User = Utility.User;
 
+                project.ProjectId = db.Projects.ToList().Count + 1;
+                pu.ProjectId = project.ProjectId;
+                
                 db.Projects.Add(project);
                 db.Project_User.Add(pu);
                 db.SaveChanges();
@@ -166,7 +184,7 @@ namespace WebApplication1.Controllers
             {
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { @id = project.ProjectId });
             }
             return View(project);
         }

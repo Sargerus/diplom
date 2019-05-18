@@ -10,5 +10,6 @@ namespace WebApplication1.ViewModel
     {
         public Project project { get; set; }
         public List<string> users { get; set; }
+        public List<string> usersToAssign { get; set; }
     }
 }

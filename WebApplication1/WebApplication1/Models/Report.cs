@@ -12,7 +12,7 @@ namespace WebApplication1.Models
 
         public Report()
         {
-            ReportedOn = DateTime.Now;
+            ReportedOn = DateTime.Today;
             HoursReported = 8;
             Comment = "Task Done";
         }

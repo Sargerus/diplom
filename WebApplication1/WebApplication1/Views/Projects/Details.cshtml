@@ -19,7 +19,7 @@
             @if (Html.Action("CanManageProject", new { projectid = Model.project.ProjectId }).ToString().Equals("1"))
             {
                 <div class=" col-xs-9 col-xs-push-3 col-md-5 col-md-push-7">
-                    @Html.ActionLink("Stats", "IndexProjectStat", "ProjectTasks", new { @id = Model.project.ProjectId }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+                    @Html.ActionLink("Stats", "IndexProjectStat", "ProjectTasks", new { @projectid = Model.project.ProjectId }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
                     @Html.ActionLink("My tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = @Html.Action("GetUser", new { projectid = Model.project.ProjectId }) }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
                     @Html.ActionLink("Change", "Edit", new { @id = Model.project.ProjectId }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
                     @Html.ActionLink("Delete", "Delete", new { @id = Model.project.ProjectId }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
@@ -33,6 +33,19 @@
             }
         </div>
         <hr />
+        <div class="text-center">
+            <a data-toggle="collapse" href="#descriptionId" aria-expanded="false" aria-controls="collapseExample">
+                Show description
+            </a>
+
+            <div class="collapse text-justify" style="word-wrap:break-word;margin-bottom:.6em;margin-top:.6em;" id="descriptionId">
+                @Model.project.LongDescription
+            </div>
+
+        </div>
+
+        <hr />
+
         <div class="task-container-pk">
 
             <div class="div-property">
@@ -142,7 +155,7 @@
                     @user
                 </div>
                 <div class="col-xs-6">
-                    @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success"})
+                    @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success" })
                     @if (Html.Action("AmILead", new { projectid = Model.project.ProjectId, user = Utility.User }).ToString().Equals("1"))
                     {
                         <div class="btn btn-sm btn-danger" onclick="Unassign('@user')" style="border-radius:15px;">Unassign</div>
@@ -165,12 +178,13 @@
                 <div class="modal-body mx-3">
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-date">User</label>
-                        @Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "usertoassign" })
+                        @*@Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "usertoassign" })*@
+                        <input id="usertoassign" />
                     </div>
 
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-comment">Is Lead?</label><br />
-                        <input type="radio" name="radname" id="yeslead" />
+                        <input type="checkbox" name="checkname" id="yeslead" />
                     </div>
 
                     <div class="md-form mb-4 projecttask-line">
@@ -186,8 +200,31 @@
         </div>
     </div>
 
-
     <script type="text/javascript">
+
+        @*var text = "@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewBag.UsersToAssignArray))";*@
+        $(document).ready(function () {
+            $(function () {
+                var usersArray = [];
+                console.log(document.getElementById("usertoassign"));
+               @foreach(var user in Model.usersToAssign)
+               {
+                   @:usersArray.push("@user");
+               };
+
+                console.log("start");
+                usersArray.forEach(function (element) { console.log(element);})
+                console.log("finish");
+
+                $("#usertoassign").autocomplete({
+                    source: usersArray
+                });
+            })
+        });
+
+
+
+
         function Assign() {
 
             let user = {
@@ -201,7 +238,8 @@
                 url: "/Account/AssignUser",
                 contentType: "application/json",
                 data: JSON.stringify(user),
-                success: function () { alert("success"); location.reload(); },
+                success: function () { location.reload(); },
+                error: function () { alert("User" + data.User + "was not assigned to project. Please try again"); },
                 dataType: "json"
             });
         }
@@ -212,11 +250,9 @@
                 url: "/Account/UnassignUser/",
                 data: { user: userr, projectid: @Model.project.ProjectId},
                 dataType: "application/json",
-                success: function () {
-                    alert("success");
-                    location.reload();
-                },
-                error: function () { alert("fail");}
+                success: function () { location.reload(); },
+                error: function () { alert("fail"); },
+                dataType: "json"
             });
 
         }

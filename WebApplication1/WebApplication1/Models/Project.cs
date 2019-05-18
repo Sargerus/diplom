@@ -4,13 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using WebApplication1.Annotations;
 
 namespace WebApplication1.Models
 {
     public class Project
     {
+        private string today { get; set; }
+
         public Project()
         {
+            today = DateTime.Today.Date.ToString("{0:yyyy - MM - dd}");
             this.UserAssigned = new HashSet<ApplicationUser>();
             this.Tasks = new HashSet<ProjectTask>();
         }
@@ -29,14 +33,20 @@ namespace WebApplication1.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [ProjectDate(-2,18250)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
+        [DataType(DataType.Text)]
+        [Display(Name = "Long description")]
+        public string LongDescription { get; set; }
+
+        [ProjectDate(-2,18250)]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
-        
+
         [Display(Name = "Budget")]
         public Double Budget { get; set; }
 

@@ -28,6 +28,11 @@ namespace WebApplication1.Controllers
             return random.Next(1, 100000000);
         }
 
+        public string CanReport(int? taskid, int? projectid)
+        {
+            return Utility.CanReport(taskid.Value, projectid.Value);
+        }
+
         [HttpPost]
         public ActionResult SetInvisible(int? taskid, int? projectid)
         {
@@ -114,7 +119,7 @@ namespace WebApplication1.Controllers
         public ActionResult IndexProjectStat(int? projectid)
         {
             var tasks = from task in db.ProjectTasks
-                        join project in db.Projects on task.ProjectKey equals project.ProjectId
+                        where task.ProjectKey == projectid.Value
                         select task;
 
             var vmtasks = SortTasks(tasks.ToList());

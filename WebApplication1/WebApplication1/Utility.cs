@@ -23,6 +23,22 @@ namespace WebApplication1
 
         public static String myManager { get; private set; }
 
+        public static string CanReport(int taskid, int projectid)
+        {
+            string answer = "0";
+
+            var user_1 = from g in db.ProjectTasks
+                         where g.TaskKey == taskid && g.ProjectKey == projectid && g.UserAssigned == Utility.User
+                         select g;
+
+            if (user_1.Any())
+            {
+                answer = "1";
+            }
+
+            return answer;
+        }
+
         public static bool CheckIfLead(string leadid, int projectid)
         {
             bool answer = false;
@@ -60,9 +76,10 @@ namespace WebApplication1
 
         }
 
-        public static void SetUser(string email)
+        public static void SetUser(string username)
         {
-            User = db.Users.Where(g => g.UserName.Equals(email)).Select(g => g.Id).First();
+            User = username;
+            //User = db.Users.Where(g => g.UserName.Equals(email)).Select(g => g.Id).First();
         }
 
         public static void DefineUserRolesForCurrentProject(int projectid, string username)
@@ -93,7 +110,7 @@ namespace WebApplication1
 
 
                 dependentUser = from g in db.Project_User
-                                where g.ProjectId == projectid && g.isLead == true
+                                where g.ProjectId == projectid && (g.isLead == true || g.isManager == true)
                                 select g;
 
                 if (dependentUser.Any())
