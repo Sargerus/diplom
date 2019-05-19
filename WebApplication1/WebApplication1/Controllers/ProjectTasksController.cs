@@ -139,6 +139,8 @@ namespace WebApplication1.Controllers
                         where task.ProjectKey == projectid.Value
                         select task;
 
+            ViewBag.projectid = projectid.HasValue ? projectid.Value : -1;
+
             var vmtasks = SortTasks(tasks.ToList());
 
 

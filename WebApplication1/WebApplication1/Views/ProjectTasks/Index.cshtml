@@ -12,30 +12,42 @@
         @Html.AntiForgeryToken()
     }
 
-    <div class="project-label-pk">
-        @Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" })
-    </div>
-
-    <div class="row task-header" style="margin: 1.5em 0em;">
-        <div class="col-sm-12">
-            You are viewing: @ViewBag.ViewedUser
-
-            @Html.ActionLink("Week Angle", "Index", "StatList", new { usersString = Json.Encode(new List<String> { ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = DateTime.Now }, new { @class = "btn btn-sm btn-success", @style = "float:right;" })
+    <div>
+        <div class="task-label-pk row" style="margin-left:0; margin-right:0;">
+            <div class="col-sm-6 col-md-6">
+                @Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" })
+            </div>
+            <div class="col-sm-6 col-md-6 text-right" style="padding-right:0;">
+                @Html.ActionLink("Back to project", "Details", new { @id = ViewBag.ProjectId }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
+            </div>
         </div>
     </div>
 
-    <div class="row" style="margin: 1.5em -.3em;">
-        <div class="input-group col-sm-3">
-            <label for="type" style="margin-right:.2em;">Task Type</label>
-            <select class="browser-default custom-select" name="types" id="filtertasktypes">
-                <option selected value="-1">All</option>
-                <option value="0">Outstanding</option>
-                <option value="1">In Process</option>
-                <option value="2">Done</option>
+    <div class="task-container-pk" style="margin-top:1.5em;">
+
+        <div class="flex-item-small-pk text-left" style="font-size:130%;">
+            <b>You are viewing:</b> @ViewBag.ViewedUser
+        </div>
+
+        <div class="flex-item-small-pk text-right" style="padding-right:.5em;">
+            @Html.ActionLink("Week Angle", "Index", "StatList", new { usersString = Json.Encode(new List<String> { ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = DateTime.Now }, new { @class = "btn btn-sm btn-default", @style = "border-radius:15px;" })
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="row text-right" style="margin: 1.5em -.3em;padding-right:.9em;">
+        <div class="input-group col-sm-9 text-right" style="float:left;padding-right:.5em">
+            <select class="browser-default custom-select form-control" style="float:right;border-radius:15px;" name="types" id="filtertasktypes">
+                <option selected value="-1">Select task type</option>
+                <option value="0" id="outstandingclick">Outstanding</option>
+                <option value="1" id="inprogressclick">In Process</option>
+                <option value="2" id="doneclick">Done</option>
             </select>
         </div>
         <div class="input-group col-sm-3">
-            <input class="form-control" id="searchtext" placeholder="Search by name...">
+            <input class="form-control" id="searchtext" placeholder="Search by name..." style="border-radius:15px 0 0 15px;">
             <span class="input-group-btn">
                 <button class="btn btn-info" style="padding:9px 16px" id="searchbtn"><i class="fa fa-search"></i></button>
             </span>
@@ -44,59 +56,62 @@
 
 
 
-    <div style="padding-top:.1em;padding-bottom:.1em;border:1px solid;border-color:rgba(0, 0, 0, 0.36)">
+    <div style="padding-top:.1em;padding-bottom:.1em;">
         <div class="row col-mar">
-            <div class="col-sm-8 text-left task-table-header-item" style="padding-left:1.2em;">  Desription</div>
-            <div class="col-sm-2 text-left task-table-header-item ">End Date</div>
-            <div class="col-sm-2 text-center task-table-header-item " style="padding-right:.6em;">Progress</div>
-        </div>
+                <div class="col-sm-8 text-left task-table-header-item" style="padding-left:1.2em;">Tasks</div>
+                <div class="col-sm-2 text-left task-table-header-item ">End Date</div>
+                <div class="col-sm-2 text-center task-table-header-item " style="padding-right:.6em;">Progress</div>
+            </div>
 
-        <div class="div-hr"></div>
-        @foreach (var task in Model)
-        {
-            string randomId = Html.Action("RandomNumber").ToString();
-            string onclick = string.Empty;
-            if (task.colorIndicator.Equals("done-color") && Html.Action("CanAddTask", new { projectid = ViewBag.ProjectId, foruser = ViewBag.ViewedUser }).ToString().Equals("1")) { onclick = "RemoveDoneTask(" + task.projectTask.TaskKey + "," + task.projectTask.ProjectKey + "," + randomId + ")"; }
-            else { onclick = string.Empty; randomId = ""; }
+            <div class="div-hr"></div>
 
-            <div class="row col-mar" id="@randomId">
-                <div class="col-sm-8 text-left hover-element-pk">
-                    <span class="@task.colorIndicator" onclick="@onclick"></span>
-                    @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = ViewBag.ViewedUser }, "")
+            @if (!Model.Any())
+            {
+                <div class="text-center" style="margin-top:1em;margin-bottom:1em;">
+                    There are no tasks for this user yet
                 </div>
-                <div class="col-sm-2 text-justify">
-                    @task.EndDate
-                </div>
-                <div class="progress col-sm-2">
-                    @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
-                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
-                        <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
+            }
+
+            @foreach (var task in Model)
+            {
+                string randomId = Html.Action("RandomNumber").ToString();
+                string onclick = string.Empty;
+                if (task.colorIndicator.Equals("done-color") && Html.Action("CanAddTask", new { projectid = ViewBag.ProjectId, foruser = ViewBag.ViewedUser }).ToString().Equals("1")) { onclick = "RemoveDoneTask(" + task.projectTask.TaskKey + "," + task.projectTask.ProjectKey + "," + randomId + ")"; }
+                else { onclick = string.Empty; randomId = ""; }
+
+                <div class="row col-mar" id="@randomId">
+                    <div class="col-sm-8 text-left hover-element-pk">
+                        <span class="@task.colorIndicator" onclick="@onclick"></span>
+                        @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = ViewBag.ViewedUser }, "")
+                    </div>
+                    <div class="col-sm-2 text-justify">
+                        @task.EndDate
+                    </div>
+                    <div class="progress col-sm-2">
+                        @{ string progressValue = (task.TaskDoneFor * 100).ToString(); }
+                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@progressValue%" aria-valuenow="@progressValue" aria-valuemin="0" aria-valuemax="100">
+                            <span>@task.projectTask.TaskDone / @task.projectTask.TaskEstimated</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        }
+            }
 
-        @if (Html.Action("CanAddTask", new { projectid = ViewBag.ProjectId, foruser = ViewBag.ViewedUser }).ToString().Equals("1"))
-        {
+            @if (Html.Action("CanAddTask", new { projectid = ViewBag.ProjectId, foruser = ViewBag.ViewedUser }).ToString().Equals("1"))
+            {
 
-            <div class="text-center hover-element-pk">
-                @Html.ActionLink("Add Task", "Create", new { projectid = ViewBag.ProjectId, vieweduser = ViewBag.ViewedUser }, new { @class = "btn btn-sm btn-danger" })
-            </div>
-        }
+                <div class="text-center" style="margin-top:1.5em;">
+                    @Html.ActionLink("Add Task", "Create", new { projectid = ViewBag.ProjectId, vieweduser = ViewBag.ViewedUser }, new { @class = "btn btn-sm btn-danger" })
+                </div>
+            }
 
 
-    </div>
+        </div>
 
     <script type="text/javascript" src="~/Scripts/ProjectTasksIndexBehaviour.js"></script>
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            $("#searchtext").val("@ViewBag.search");
-            $("#filtertasktypes").val("@ViewBag.filtertype");
-        });
-
-            $("#searchbtn").click(function () {
+        function MakeUrl() {
 
                 var url = "/ProjectTasks/Index?projectId=" + "@ViewBag.ProjectId" + "&user=" + "@ViewBag.ViewedUser";
                 let searchtext = $("#searchtext").val();
@@ -106,9 +121,33 @@
                 {
                     url += "&search=" + searchtext;
                 }
-                
-                window.location.replace(url + "&filtertype=" + tasktype);
 
+                return url + "&filtertype=" + tasktype;
+        }
+
+        function GoToProjectTasksIndex() {
+            window.location.replace(MakeUrl());
+        }
+
+        $(document).ready(function () {
+            $("#searchtext").val("@ViewBag.search");
+            $("#filtertasktypes").val("@ViewBag.filtertype");
+            $("#filtertasktypes").change(function(){
+                GoToProjectTasksIndex();
+            });
+            //$("#outstandingclick").click(function () {
+            //    GoToProjectTasksIndex();
+            //});
+            //$("#doneclick").click(function () {
+            //    GoToProjectTasksIndex();
+            //});
+            //$("#inprogressclick").click(function () {
+            //    GoToProjectTasksIndex();
+            //})
+        });
+
+            $("#searchbtn").click(function () {
+                GoToProjectTasksIndex();
             });
     </script>
 }

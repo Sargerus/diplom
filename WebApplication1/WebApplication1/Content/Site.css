@@ -1,5 +1,25 @@
 ﻿/*.main-navigation-bar-pk {
 }*/
+
+.task-label-pk {
+    padding-left: .5em;
+    border-radius: 15px 50px 30px;
+    font-size: 180%;
+    background-color: rgba(46, 176, 27, 0.10);
+    color: black;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: .3em;
+}
+.outstanding-block {
+    background-color: rgba(255, 213, 208, 0.20);
+}
+.progress-block {
+    background-color: rgba(255, 244, 208, 0.20);
+}
+.done-block {
+    background-color: rgba(213, 255, 208,0.2);
+}
 ul.ui-autocomplete {
     z-index: 1100;
 }
@@ -11,21 +31,24 @@ ul.ui-autocomplete {
 }
 
 .outstanding-header {
+    color:white;
     background-color: rgba(209, 0, 0, 0.50);
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+    padding-top: .5em;
+    padding-bottom: .5em;
 }
 
 .processing-header {
+    color: white;
     background-color: rgba(183, 123, 0, 0.50);
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+    padding-top: .5em;
+    padding-bottom: .5em;
 }
 
 .done-header {
+    color: white;
     background-color: rgba(37, 147, 1, 0.70);
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+    padding-top: .5em;
+    padding-bottom: .5em;
 }
 
 .done-task-container {
