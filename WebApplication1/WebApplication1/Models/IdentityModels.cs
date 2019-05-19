@@ -32,6 +32,7 @@ namespace WebApplication1.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
+        public DbSet<Attacments> Attacments { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -46,7 +47,7 @@ namespace WebApplication1.Models
 
         public System.Data.Entity.DbSet<WebApplication1.Models.Project_User> Project_User { get; set; }
 
-        public System.Data.Entity.DbSet<WebApplication1.ViewModel.ProjectTaskViewModel> ProjectTaskViewModels { get; set; }
+        //public System.Data.Entity.DbSet<WebApplication1.ViewModel.ProjectTaskViewModel> ProjectTaskViewModels { get; set; }
 
         //public System.Data.Entity.DbSet<WebApplication1.ViewModel.StatListViewModel> StatListViewModels { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using WebApplication1.Models;
@@ -22,6 +23,33 @@ namespace WebApplication1
         public static String myLead { get; private set; }
 
         public static String myManager { get; private set; }
+
+        public static bool CheckPathExist(int projectid, int taskid)
+        {
+            try
+            {
+                if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid)))//("\\Attachments\\" + projectid + "\\" + taskid))
+                {
+                    if(!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid)))//Exists("\\Attachments\\" + projectid))
+                    {
+                        var asd = Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid));
+                    }
+                    if(!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid)))
+                    {
+                        var dsa = Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid));
+                    }
+                    
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+
+
+        }
 
         public static string CanReport(int taskid, int projectid)
         {

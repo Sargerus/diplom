@@ -33,6 +33,20 @@ namespace WebApplication1.Controllers
             return Utility.CanReport(taskid.Value, projectid.Value);
         }
 
+        [HttpGet]
+        public ActionResult DownloadFile(int attachid, int projectid, int taskid)
+        {
+            Attacments file = (from g in db.Attacments
+                        where g.AttacmentId == attachid && g.ProjectId == projectid && g.TaskId == taskid
+                        select g).First();
+
+            string path = file.PathToFile;
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(file.PathToFile);
+            string fileName = file.Description;
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
         [HttpPost]
         public ActionResult SetInvisible(int? taskid, int? projectid)
         {
@@ -173,9 +187,14 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
+            ProjectTasksDetailsViewModel vmprojecttask = new ProjectTasksDetailsViewModel();
+            vmprojecttask.projectTask = projectTask;
+            vmprojecttask.Attacments = (from g in db.Attacments
+                                       where g.ProjectId == projectTask.ProjectKey && g.TaskId == projectTask.TaskKey
+                                       select g).ToList();
 
             ViewBag.ViewedUser = taskofuser;
-            return View(projectTask);
+            return View(vmprojecttask);
         }
 
         // GET: ProjectTasks/Create

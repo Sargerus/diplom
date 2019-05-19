@@ -197,6 +197,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttachmentsController.cs" />
     <Compile Include="Controllers\BacklogsController.cs" />
     <Compile Include="Controllers\BacklogTasksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -213,6 +214,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AssignedUser.cs" />
+    <Compile Include="Models\Attacments.cs" />
     <Compile Include="Models\Backlog.cs" />
     <Compile Include="Models\BacklogState.cs" />
     <Compile Include="Models\BacklogType.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="UtilityClasses\ForEachExtension.cs" />
     <Compile Include="UtilityClasses\JSSerializer.cs" />
     <Compile Include="ViewModel\ApplicatioUserViewModel.cs" />
+    <Compile Include="ViewModel\ProjectTasksDetailsViewModel.cs" />
     <Compile Include="ViewModel\ProjectTaskViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\ReportCreateViewModel.cs" />
@@ -383,6 +386,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attachments\" />
+    <Folder Include="Views\Attachments\" />
     <Folder Include="Views\Recotd\" />
     <Folder Include="Views\Task\" />
   </ItemGroup>
