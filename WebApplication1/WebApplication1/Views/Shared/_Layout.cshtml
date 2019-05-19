@@ -20,6 +20,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 
@@ -39,7 +40,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @Html.ActionLink("ReportLand", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("ReportLand", "Index", "Projects", null , new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
                     @Html.Partial("_LoginPartial")
@@ -48,7 +49,7 @@
         </div>
     </div>
 <div class="container col-sm-2 col-lg-2">
-    <nav class="main-navigation-bar-pk">
+    @*<nav class="main-navigation-bar-pk">
             <div class="active main-navigation-bar-div-pk hover-element-pk">
                 <a href="/">Home</a>
                 </div>
@@ -58,7 +59,7 @@
                     <li><a href="/Projects/Index">Project</a></li>
                 </ul>
             </div>
-    </nav>
+    </nav>*@
 </div>
 
 <div class="container-fluid col-sm-8 col-lg-8">

@@ -53,18 +53,17 @@ namespace WebApplication1.Controllers
         {
             Project_User pu = new Project_User();
             pu.isLead = assignedUser.isLead;
+            pu.isDev = assignedUser.isDev;
             pu.ProjectId = assignedUser.ProjectId;
             pu.User = assignedUser.Name;
             pu.myManager = db.Project_User.Where(g => g.ProjectId == pu.ProjectId && g.User == Utility.User && g.isManager == true).Select(g => g.User).First().ToString();
 
-            if (assignedUser.isManager != null)
-            {
-                if(assignedUser.isManager == true)
+
+                if(assignedUser.isManager)
                 {
                     pu.isManager = assignedUser.isManager;
                     pu.myManager = null;
                 }
-            }
             
             if(assignedUser.TeamLead != null)
             {
@@ -171,7 +170,7 @@ namespace WebApplication1.Controllers
             {
                 case SignInStatus.Success:
                     Utility.SetUser(username);
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Projects");//RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

@@ -110,8 +110,11 @@ namespace WebApplication1.Controllers
 
         }
         // GET: ProjectTasks
-        public ActionResult Index(int? projectId, String user)
+        public ActionResult Index(int? projectId, String user, string search, int? filtertype)
         {
+            ViewBag.search = search;
+            ViewBag.filtertype = filtertype.HasValue ? filtertype.Value : -1;
+
             //Define my role on this project
             Utility.DefineUserRolesForCurrentProject(projectId.Value, User.Identity.Name);
 
@@ -123,7 +126,7 @@ namespace WebApplication1.Controllers
 
             var tasks = db.ProjectTasks.Where(g => g.ProjectKey == projectId && g.UserAssigned.Equals(user) && g.notVisible.Equals(false)).Select(g => g).ToList();
 
-            var vmtasks = SortTasks(tasks);
+            var vmtasks = SortTasks(tasks, search, filtertype.HasValue ? filtertype.Value : -1);
 
             ViewBag.ViewedUser = user;
             ViewBag.ProjectId = projectId;
@@ -137,11 +140,13 @@ namespace WebApplication1.Controllers
                         select task;
 
             var vmtasks = SortTasks(tasks.ToList());
+
+
             return View(vmtasks);
 
         }
 
-        public List<ProjectTaskViewModel> SortTasks(List<ProjectTask> tasks)
+        public List<ProjectTaskViewModel> SortTasks(List<ProjectTask> tasks, string search = null, int type = -1)
         {
             ProjectTaskViewModel vmtask = new ProjectTaskViewModel();
             List<ProjectTaskViewModel> outstanding = new List<ProjectTaskViewModel>();
@@ -151,6 +156,14 @@ namespace WebApplication1.Controllers
 
             foreach (var task in tasks)
             {
+                if (search != null)
+                {
+                    if (task.ShortText.IndexOf(search, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        continue;
+                    }
+                }
+
                 switch (DefineColorOfTask(task.TaskKey, task.ProjectKey))
                 {
                     case "indicator-red": { outstanding.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "outstanding-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
@@ -164,6 +177,16 @@ namespace WebApplication1.Controllers
             outstanding.AddRange(progress);
             outstanding.AddRange(havetime);
             outstanding.AddRange(done);
+
+            if (type >= 0)
+            {
+                switch (type)
+                {
+                    case 0: outstanding.RemoveAll(g => !g.colorIndicator.Equals("outstanding-color")); break;
+                    case 1: outstanding.RemoveAll(g => !g.colorIndicator.Equals("progress-color") || !g.colorIndicator.Equals("havetime-color")); break;
+                    case 2: outstanding.RemoveAll(g => !g.colorIndicator.Equals("done-color")); break;
+                }
+            }
 
             return outstanding;
         }

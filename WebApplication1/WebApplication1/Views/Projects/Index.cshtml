@@ -6,26 +6,48 @@
 }
 
 @section Body{
+
+    <div class="row col-mar" style="font-weight:bold">
+        <div class="col-sm-6 hover-element-pk line-with-btn" style="padding-left:1em;">
+            Project Description
+        </div>
+
+        <div class="col-sm-3 text-center">
+            Role
+        </div>
+
+        <div class="col-sm-3 text-center">
+            Actions
+        </div>
+    </div>
+
+    <div class="div-hr"></div>
+
     @foreach (var item in Model)
     {
         <div class="row col-mar">
-            <div class="col-sm-7 hover-element-pk line-with-btn" style="padding-left:1em;">
+            <div class="col-sm-6 hover-element-pk line-with-btn" style="padding-left:1em;">
                 @Html.ActionLink(item.ProjectDescription, "Details", new { @id = item.ProjectId }, null)
             </div>
-            <div class="col-sm-5">
-                @Html.ActionLink("My Tasks", "Index", "ProjectTasks", new { projectid = item.ProjectId, user = Utility.User }, new { @class = "btn btn-sm btn-mx btn-success", @style = "border-radius:15px;" })
-                @*@if (Html.Action("CanManageProject", new { projectid = item.ProjectId }).ToString().Equals("1"))
-                {
-                    @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-sm btn-mx btn-success", @style = "border-radius:15px;" })
-                    @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-sm btn-mx btn-danger", @style = "border-radius:15px;" })
-                }*@
-                @if (Html.Action("AmILead", new { projectid = item.ProjectId }).ToString().Equals("1"))
-                {
-                    @Html.ActionLink("My Team", "IndexLeadTeam", "Account", new { leadid = Utility.User, projectid = item.ProjectId }, new { @class = "btn btn-sm btn-mx btn-danger", @style = "border-radius:15px;" })
 
-                }
+            <div class="col-sm-3 text-center">
+                @Html.Action("DefineMyRole", new { projectid = item.ProjectId })
+            </div>
+
+            <div class="col-sm-3 text-center">
+                @Html.ActionLink("My Tasks", "Index", "ProjectTasks", new { projectid = item.ProjectId, user = Utility.User }, new { @class = "btn btn-sm btn-success", @style = "border-radius:15px;" })
+                @*@if (Html.Action("CanManageProject", new { projectid = item.ProjectId }).ToString().Equals("1"))
+                    {
+                        @Html.ActionLink("Change", "Edit", new { @id = item.ProjectId }, new { @class = "btn btn-sm btn-mx btn-success", @style = "border-radius:15px;" })
+                        @Html.ActionLink("Delete", "Delete", new { @id = item.ProjectId }, new { @class = "btn btn-sm btn-mx btn-danger", @style = "border-radius:15px;" })
+                    }*@
+                @*@if (Html.Action("AmILead", new { projectid = item.ProjectId }).ToString().Equals("1"))
+                    {
+                        @Html.ActionLink("My Team", "IndexLeadTeam", "Account", new { leadid = Utility.User, projectid = item.ProjectId }, new { @class = "btn btn-sm btn-mx btn-danger", @style = "border-radius:15px;" })
+
+                    }*@
             </div>
         </div>
     }
-    <div class="hover-element-pk text-center"> @Html.ActionLink("Create new project", "Create", "", new { @class = "btn btn-danger btn-sm", @style="border-radius:15px;" }) </div>
+    <div class=" text-center"> @Html.ActionLink("Create new project", "Create", "", new { @class = "btn btn-danger btn-lg", @style = "border-radius:30px;margin-top:3em;" }) </div>
 }

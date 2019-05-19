@@ -13,7 +13,7 @@
     }
 
     <div class="project-label-pk">
-        @Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" } )
+        @Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" })
     </div>
 
     <div class="row task-header" style="margin: 1.5em 0em;">
@@ -23,6 +23,26 @@
             @Html.ActionLink("Week Angle", "Index", "StatList", new { usersString = Json.Encode(new List<String> { ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = DateTime.Now }, new { @class = "btn btn-sm btn-success", @style = "float:right;" })
         </div>
     </div>
+
+    <div class="row" style="margin: 1.5em -.3em;">
+        <div class="input-group col-sm-3">
+            <label for="type" style="margin-right:.2em;">Task Type</label>
+            <select class="browser-default custom-select" name="types" id="filtertasktypes">
+                <option selected value="-1">All</option>
+                <option value="0">Outstanding</option>
+                <option value="1">In Process</option>
+                <option value="2">Done</option>
+            </select>
+        </div>
+        <div class="input-group col-sm-3">
+            <input class="form-control" id="searchtext" placeholder="Search by name...">
+            <span class="input-group-btn">
+                <button class="btn btn-info" style="padding:9px 16px" id="searchbtn"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+
+
 
     <div style="padding-top:.1em;padding-bottom:.1em;border:1px solid;border-color:rgba(0, 0, 0, 0.36)">
         <div class="row col-mar">
@@ -69,4 +89,26 @@
     </div>
 
     <script type="text/javascript" src="~/Scripts/ProjectTasksIndexBehaviour.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#searchtext").val("@ViewBag.search");
+            $("#filtertasktypes").val("@ViewBag.filtertype");
+        });
+
+            $("#searchbtn").click(function () {
+
+                var url = "/ProjectTasks/Index?projectId=" + "@ViewBag.ProjectId" + "&user=" + "@ViewBag.ViewedUser";
+                let searchtext = $("#searchtext").val();
+                let tasktype = $("#filtertasktypes").children("option:selected").val();
+
+                if (searchtext != "")
+                {
+                    url += "&search=" + searchtext;
+                }
+                
+                window.location.replace(url + "&filtertype=" + tasktype);
+
+            });
+    </script>
 }

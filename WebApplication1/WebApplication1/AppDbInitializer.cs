@@ -193,6 +193,13 @@ namespace WebApplication1
                         isDev = true
                     });
 
+                    context.Project_User.Add(new Project_User
+                    {
+                        ProjectId = 2,
+                        User = "user",
+                        isManager = true
+                    });
+
                     context.SaveChanges();
 
                 }

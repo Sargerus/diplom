@@ -18,6 +18,25 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string DefineRolePadding(int? projectid, string user)
+        {
+            string answer = String.Empty;
+
+            switch (Utility.DefineMyRoleOnProject(projectid.HasValue ? projectid.Value : 1, user))
+            {
+                case "Manager": answer = "0em"; break;
+                case "TeamLead": answer = "1em"; break;
+                case "Developer": answer = "1.5em"; break;
+            }
+
+            return answer;
+        }
+
+        public string DefineMyRole(int? projectid, string user)
+        {
+            return Utility.DefineMyRoleOnProject(projectid.HasValue ? projectid.Value : 1, user);
+        }
+
         public string AmILead(int? projectid, string user)
         {
             string answer = "0";
@@ -84,9 +103,14 @@ namespace WebApplication1.Controllers
             //project.Team = project.UserAssigned.Count;
             //db.Backlogs.ToList().ForEach(backlog => backlog.Tasks.ToList().ForEach(task => k += (int)(task.HoursEstimated.Value)));
 
-            project.TotalEstimate = (from g in db.ProjectTasks
-                                     where g.ProjectKey == project.ProjectId
-                                     select g.TaskEstimated).Sum(task => task);
+            var tasktime = from g in db.ProjectTasks
+                           where g.ProjectKey == project.ProjectId
+                           select g.TaskEstimated;
+
+            if (tasktime.Any())
+            {
+                project.TotalEstimate = tasktime.Sum(task => task);
+            }
 
             ProjectViewModel vmproject = new ProjectViewModel();
             vmproject.project = project;
@@ -96,7 +120,7 @@ namespace WebApplication1.Controllers
                                 select g).ToList();
 
             vmproject.users = new List<string>();
-            for (int i = 0; vmproject.users.Count != projectusers.Count; i++)
+            for (int i = 0; vmproject.users.Count < projectusers.Count; i++)
             {
 
                 if (projectusers[i].isManager == true)
@@ -104,9 +128,9 @@ namespace WebApplication1.Controllers
                     vmproject.users.Reverse();
 
 
-                    foreach(var g in projectusers)
+                    foreach (var g in projectusers)
                     {
-                        if (g.isDev == true && ( ( g.myLead == null && g.isLead == false ) || g.myLead == projectusers[i].User) )
+                        if (g.isDev == true && ((g.myLead == null && g.isLead == false) || g.myLead == projectusers[i].User))
                         {
                             if (!vmproject.users.Contains(g.User))
                             {
@@ -210,7 +234,7 @@ namespace WebApplication1.Controllers
             }
             CultureInfo provider = CultureInfo.InvariantCulture;
             ViewBag.Users2 = new SelectList(db.Project_User.Where(g => g.ProjectId == id.Value && g.isManager == true).ToList(), "Id", "UserName");
-            
+
             return View(project);
         }
 

@@ -20,5 +20,7 @@ namespace WebApplication1.Models
         public string TeamLead { get; set; }
 
         public bool isManager { get; set; }
+
+        public bool isDev { get; set; }
     }
 }

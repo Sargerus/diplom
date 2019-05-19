@@ -9,6 +9,12 @@ namespace WebApplication1
 {
     public class Utility
     {
+        public enum TaskTypes
+        {
+            Outstanding = 0,
+            InProccess = 1,
+            Done = 2
+        }
 
         private static ApplicationDbContext db = new ApplicationDbContext();
 
@@ -24,21 +30,50 @@ namespace WebApplication1
 
         public static String myManager { get; private set; }
 
+        public static string DefineMyRoleOnProject(int projectid, string user)
+        {
+            if (user == null)
+            {
+                user = Utility.User;
+            }
+            string answer = String.Empty;
+
+            var pu = (from g in db.Project_User
+                      where g.ProjectId == projectid && g.User == user
+                      select g).First();
+
+            if (pu.isManager)
+            {
+                answer = "Manager";
+            }
+            else if (pu.isLead)
+            {
+                answer = "TeamLead";
+            }
+            else
+            {
+                answer = "Developer";
+            }
+
+            return answer;
+
+        }
+
         public static bool CheckPathExist(int projectid, int taskid)
         {
             try
             {
                 if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid)))//("\\Attachments\\" + projectid + "\\" + taskid))
                 {
-                    if(!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid)))//Exists("\\Attachments\\" + projectid))
+                    if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid)))//Exists("\\Attachments\\" + projectid))
                     {
                         var asd = Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid));
                     }
-                    if(!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid)))
+                    if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid)))
                     {
                         var dsa = Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, @"Attachments\" + projectid + @"\" + taskid));
                     }
-                    
+
                 }
             }
             catch
@@ -128,7 +163,7 @@ namespace WebApplication1
             if (!isDefined) { return ""; }
             string answer = "0";
 
-            if(db.Project_User.Find(projectid,Utility.User).isManager == true)
+            if (db.Project_User.Find(projectid, Utility.User).isManager == true)
             {
                 answer = "1";
             }
