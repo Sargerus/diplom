@@ -185,7 +185,7 @@ namespace WebApplication1.Controllers
                 switch (type)
                 {
                     case 0: outstanding.RemoveAll(g => !g.colorIndicator.Equals("outstanding-color")); break;
-                    case 1: outstanding.RemoveAll(g => !g.colorIndicator.Equals("progress-color") || !g.colorIndicator.Equals("havetime-color")); break;
+                    case 1: outstanding.RemoveAll(g => !g.colorIndicator.Equals("progress-color") && !g.colorIndicator.Equals("havetime-color")); break;
                     case 2: outstanding.RemoveAll(g => !g.colorIndicator.Equals("done-color")); break;
                 }
             }

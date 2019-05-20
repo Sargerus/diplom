@@ -27,7 +27,7 @@
         <div class="col-sm-4 text-center">
         </div>
 
-        <div class="col-sm-4 text-right" style="padding-right:0">
+        <div class="col-sm-4 text-right" style="padding-right:.2em;">
             @Html.ActionLink("My tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = @Html.Action("GetUser", new { projectid = Model.project.ProjectId }) }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
         </div>
 
@@ -180,7 +180,7 @@
                 <div class="col-xs-6 hover-element-pk text-left">
                     @Html.Action("DefineMyRole", new { projectid = Model.project.ProjectId, user = user })
                 </div>
-                <div class="col-xs-4 text-right">
+                <div class="col-xs-4 text-right" style="padding-right:.3em;">
                     @if (Html.Action("CanManageProject", new { projectid = Model.project.ProjectId }).ToString().Equals("1"))
                     {
                         if (!user.Equals(Utility.User))
@@ -221,16 +221,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Assign new user</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <h4 class="modal-title w-100 font-weight-bold">Assign new user</h4>
                 </div>
                 <div class="modal-body mx-3">
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-date">User</label>
                         @*@Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "usertoassign" })*@
-                        <input id="usertoassign" class="form-control" placeholder="type at least 3 characters" class="ui-widget" />
+                        <input id="usertoassign" class="form-control ui-widget" placeholder="type at least 3 characters"  />
                     </div>
 
                     <div class="md-form mb-4 projecttask-line">
@@ -249,6 +249,7 @@
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-hours">TeamLead</label>
                         @Html.DropDownList("TeamLeads", null, htmlAttributes: new { @class = "form-control", id = "teamlead" })
+                        <span id="errorifemptylead"></span>
                     </div>
 
                 </div>
@@ -264,15 +265,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Ressign user to Team Lead</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <h4 class="modal-title w-100 font-weight-bold">Ressign user to Team Lead</h4>
                 </div>
                 <div class="modal-body mx-3">
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-date">Select new team lead</label>
                         @Html.DropDownList("TeamLeads", null, htmlAttributes: new { @class = "form-control", id = "reassignteamlead" })
+                        <span id="errorifemptylead2"></span>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -286,6 +288,10 @@
 
         var usersArray = [];
         var nameofusertoreassign = "";
+
+        $("#document").ready(function () {
+            CheckLeadCount();
+        })
 
                @foreach(var user in Model.usersToAssign)
                {
@@ -301,6 +307,18 @@
             nameofusertoreassign = user;
         }
 
+        function CheckLeadCount() {
+            if (@ViewBag.LeadsCount <= 0) {
+                $("#errorifemptylead").text("There are no team leads in project");
+                $("#errorifemptylead").prop("style", "color:red");
+
+                $("#errorifemptylead2").text("There are no team leads in project");
+                $("#errorifemptylead2").prop("style", "color:red");
+
+                $("#teamlead").prop('disabled', true);
+                $("#reassignteamlead").prop('disabled', true);
+            }
+        }
 
         function CheckLeadField() {
             var role = $("input[name='checkname']:checked").val();
@@ -312,15 +330,8 @@
                 $("#teamlead").prop('disabled', true);
                 $("#teamlead").val("");
             }
-            //if (role=="0" || role== field.getAttribute('disabled') == 'false' || field.getAttribute('disabled') === null)
-            //{
-            //    $("#teamlead").prop('disabled', true);
-            //    $("#teamlead").val("");
-            //}
-            //else {
-            //    $("#teamlead").prop('disabled', false);
-            //}
 
+            CheckLeadCount();
 
         }
 
@@ -340,7 +351,7 @@
                 case "1": user.isLead = true; break;
                 case "2": user.isManager = true; break;
             }
-            
+
             $.post({
                 url: "/Account/AssignUser",
                 contentType: "application/json",

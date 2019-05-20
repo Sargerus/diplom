@@ -13,31 +13,62 @@
             @Html.AntiForgeryToken()
         }*@
 
-    @Html.ActionLink("Previous Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.StartDayOfWeek.AddDays(-7) }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Curent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.Today }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Next Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = (DateTime)ViewBag.StartDayOfWeek.AddDays(7) }, new { @class = "btn btn-success" })
-
     @if (Model != null)
     {
 
         foreach (var item in Model)
         {
 
-            <div class="header">
-                <div class="header-item">@item.ProjectName</div>
-                <div class="header-item">@item.UserName</div>
+            <div>
+                <div class="task-label-pk row" style="margin-left:0; margin-right:0;">
+                    <div class="col-sm-6 col-md-6">
+                        Timesheet
+                    </div>
+                    <div class="col-sm-6 col-md-6 text-right" style="padding-right:0;">
+                        @Html.ActionLink("Back to tasks", "Index", "ProjectTasks", new { @projectId = ViewBag.ProjectId, user = (string)ViewBag.ViewedUser }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
+                    </div>
+                </div>
             </div>
+
+            <div class="text-left row" style="font-size:130%;margin-top:1.5em;">
+                <div class="col-sm-6">
+                    <b>You are viewing:</b>@ViewBag.ViewedUser
+                </div>
+                <div class="col-sm-6">
+                    <b>Project:&nbsp;</b>@Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" })
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="text-right" style="padding-right:.5em;margin-bottom:1.5em;">
+                @Html.ActionLink("Previous Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.StartDayOfWeek.AddDays(-7) }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
+                @Html.ActionLink("Curent Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = ViewBag.Today }, new { @class = "btn btn-warning", @style = "border-radius:15px;" })
+                @Html.ActionLink("Next Week", "Index", "StatList", new { usersString = Json.Encode(new List<String> { (string)ViewBag.ViewedUser }), projectid = ViewBag.ProjectId, today = (DateTime)ViewBag.StartDayOfWeek.AddDays(7) }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
+
+            </div>
+            @*<div class="header">
+                    <div class="header-item">@item.ProjectName</div>
+                    <div class="header-item">@item.UserName</div>
+                </div>*@
 
             <div class="row col-mar">
                 <div class="col-sm-5 text-center">Description</div>
-                <div class="col-sm-1 text-center">Mon @ViewBag.StartDayOfWeek.ToString("MM/dd/yy")</div> @{ DateTime monday = @ViewBag.StartDayOfWeek.Date; }
-                <div class="col-sm-1 text-center">Tue @ViewBag.StartDayOfWeek.AddDays(1).ToString("MM/dd/yy")</div> @{ DateTime tuesday = monday.AddDays(1).Date; }
-                <div class="col-sm-1 text-center">Wen @ViewBag.StartDayOfWeek.AddDays(2).ToString("MM/dd/yy")</div> @{ DateTime wednesday = monday.AddDays(2).Date; }
-                <div class="col-sm-1 text-center">Tru @ViewBag.StartDayOfWeek.AddDays(3).ToString("MM/dd/yy")</div> @{ DateTime thursday = monday.AddDays(3).Date; }
-                <div class="col-sm-1 text-center">Fri @ViewBag.StartDayOfWeek.AddDays(4).ToString("MM/dd/yy")</div> @{ DateTime friday = monday.AddDays(4).Date; }
-                <div class="col-sm-1 text-center">Sat @ViewBag.StartDayOfWeek.AddDays(5).ToString("MM/dd/yy")</div> @{ DateTime saturday = monday.AddDays(5).Date; }
-                <div class="col-sm-1 text-center">Sun @ViewBag.StartDayOfWeek.AddDays(6).ToString("MM/dd/yy")</div> @{ DateTime sunday = monday.AddDays(6).Date; }
+                <div class="col-sm-1 text-center">Mon @ViewBag.StartDayOfWeek.ToString("dd/MM/yy")</div> @{ DateTime monday = @ViewBag.StartDayOfWeek.Date; }
+                <div class="col-sm-1 text-center">Tue @ViewBag.StartDayOfWeek.AddDays(1).ToString("dd/MM/yy")</div> @{ DateTime tuesday = monday.AddDays(1).Date; }
+                <div class="col-sm-1 text-center">Wen @ViewBag.StartDayOfWeek.AddDays(2).ToString("dd/MM/yy")</div> @{ DateTime wednesday = monday.AddDays(2).Date; }
+                <div class="col-sm-1 text-center">Tru @ViewBag.StartDayOfWeek.AddDays(3).ToString("dd/MM/yy")</div> @{ DateTime thursday = monday.AddDays(3).Date; }
+                <div class="col-sm-1 text-center">Fri&nbsp; @ViewBag.StartDayOfWeek.AddDays(4).ToString("dd/MM/yy")</div> @{ DateTime friday = monday.AddDays(4).Date; }
+                <div class="col-sm-1 text-center">Sat @ViewBag.StartDayOfWeek.AddDays(5).ToString("dd/MM/yy")</div> @{ DateTime saturday = monday.AddDays(5).Date; }
+                <div class="col-sm-1 text-center">Sun @ViewBag.StartDayOfWeek.AddDays(6).ToString("dd/MM/yy")</div> @{ DateTime sunday = monday.AddDays(6).Date; }
             </div>
+
+            if (!item.Tasks.Any())
+            {
+                <div class="text-center" style="margin-top:1.5em;">
+                    There are no reports for user @ViewBag.ViewedUser on this week
+                </div>
+            }
 
             foreach (var task in item.Tasks)
             {

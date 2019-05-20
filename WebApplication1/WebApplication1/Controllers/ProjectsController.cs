@@ -177,6 +177,7 @@ namespace WebApplication1.Controllers
             var teamleads = from g in db.Project_User
                             where g.ProjectId == project.ProjectId && g.isLead == true
                             select new { Id = g.User };
+            ViewBag.LeadsCount = teamleads.Any() ? teamleads.Count() : 0;
             ViewBag.TeamLeads = new SelectList(teamleads.ToList(), "Id", "Id", null);
 
             return View(vmproject);
@@ -233,7 +234,10 @@ namespace WebApplication1.Controllers
                 return HttpNotFound();
             }
             CultureInfo provider = CultureInfo.InvariantCulture;
-            ViewBag.Users2 = new SelectList(db.Project_User.Where(g => g.ProjectId == id.Value && g.isManager == true).ToList(), "Id", "UserName");
+            //ViewBag.Users2 = new SelectList(db.Project_User.Where(g => g.ProjectId == id.Value && g.isManager == true).ToList(), "Id", "UserName");
+            ViewBag.usersToAssign = (from g in db.Project_User
+                                     where g.ProjectId == id.Value && g.isManager
+                                     select g.User).ToList();
 
             return View(project);
         }

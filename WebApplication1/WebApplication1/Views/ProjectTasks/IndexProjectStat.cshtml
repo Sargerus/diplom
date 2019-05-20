@@ -70,7 +70,7 @@
                         <div class="row" style="font-size:85%;">
 
                             <div class="col-sm-8 text-left">
-                                Assigned: @task.projectTask.UserAssigned
+                                Assigned: @Html.ActionLink(task.projectTask.UserAssigned,"Index",new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
                             </div>
                             <div class="col-sm-4 text-center" style="padding-left:.1em;">
                                 @task.projectTask.TaskDone / @task.projectTask.TaskEstimated h
@@ -85,10 +85,10 @@
             <div class="processing-task-container">
                 <div class="processing-header text-center">In Process</div>
                 @foreach (var task in processingTasks)
-                {
-                    processingTasksCount += 1;
-                    totalprocessingHours += task.projectTask.TaskDone;
-                    totalRequiredprocessingHours += task.projectTask.TaskEstimated;
+                                    {
+                                        processingTasksCount += 1;
+                                        totalprocessingHours += task.projectTask.TaskDone;
+                                        totalRequiredprocessingHours += task.projectTask.TaskEstimated;
                     <div class="projecttask-line progress-block">
                         <div style="padding-left:.2em;font-size:110%;">
                             @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")<br />
@@ -98,7 +98,7 @@
                         <div class="row" style="font-size:85%;">
 
                             <div class="col-sm-8 text-left">
-                                Assigned: @task.projectTask.UserAssigned
+                                Assigned: @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
                             </div>
                             <div class="col-sm-4 text-center" style="padding-left:.1em;">
                                 @task.projectTask.TaskDone / @task.projectTask.TaskEstimated h
@@ -113,10 +113,10 @@
             <div class="outstanding-task-container">
                 <div class="outstanding-header text-center">Outstanding</div>
                 @foreach (var task in outstandingTasks)
-                {
-                    outstandingTasksCount += 1;
-                    totaloutstandingHours += task.projectTask.TaskDone;
-                    totalRequiredoutstandingHours += task.projectTask.TaskEstimated;
+                                {
+                                    outstandingTasksCount += 1;
+                                    totaloutstandingHours += task.projectTask.TaskDone;
+                                    totalRequiredoutstandingHours += task.projectTask.TaskEstimated;
                     <div class="projecttask-line outstanding-block">
                         <div style="padding-left:.2em;font-size:110%;">
                             @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, "")<br />
@@ -126,7 +126,7 @@
                         <div class="row" style="font-size:85%;">
 
                             <div class="col-sm-8 text-left">
-                                Assigned: @task.projectTask.UserAssigned
+                                Assigned: @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
                             </div>
                             <div class="col-sm-4 text-center" style="padding-left:.1em;">
                                 @task.projectTask.TaskDone / @task.projectTask.TaskEstimated h

@@ -31,6 +31,9 @@ namespace WebApplication1.Controllers
             ViewBag.Today = DateTime.Today;
             ViewBag.StartDayOfWeek = (Monday == null) ? DateTime.Today : Monday;
             ViewBag.EndDayOfWeek = (Monday == null) ? DateTime.Today.AddDays(6) : Monday.AddDays(6);
+            ViewBag.ProjectName = (from g in db.Projects
+                                  where g.ProjectId == projectid.Value
+                                  select g.ProjectDescription).First();
 
             if (usersString != null)
             {

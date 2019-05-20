@@ -101,7 +101,7 @@
             {
 
                 <div class="text-center" style="margin-top:1.5em;">
-                    @Html.ActionLink("Add Task", "Create", new { projectid = ViewBag.ProjectId, vieweduser = ViewBag.ViewedUser }, new { @class = "btn btn-sm btn-danger" })
+                    @Html.ActionLink("Add Task", "Create", new { projectid = ViewBag.ProjectId, vieweduser = ViewBag.ViewedUser }, new { @class = "btn btn-sm btn-danger", @style="border-radius:15px;" })
                 </div>
             }
 
@@ -135,15 +135,6 @@
             $("#filtertasktypes").change(function(){
                 GoToProjectTasksIndex();
             });
-            //$("#outstandingclick").click(function () {
-            //    GoToProjectTasksIndex();
-            //});
-            //$("#doneclick").click(function () {
-            //    GoToProjectTasksIndex();
-            //});
-            //$("#inprogressclick").click(function () {
-            //    GoToProjectTasksIndex();
-            //})
         });
 
             $("#searchbtn").click(function () {
