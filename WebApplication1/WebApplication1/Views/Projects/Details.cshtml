@@ -382,7 +382,7 @@
                 url: "/Account/ReassignUser",
                 data: { TeamLead: newteamlead, user : nameofusertoreassign, projectid : @Model.project.ProjectId },
                 success: function () { location.reload(); },
-                error: function (data) { alert("User" + data.User + "was not reassigned to new team lead. Please try again"); },
+                error: function (data) { alert("User" + data.User + " was not reassigned to new team lead. Please try again"); },
                 dataType: "json"
             });
         }

@@ -383,6 +383,7 @@
     <Content Include="Views\Account\IndexLeadTeam.cshtml" />
     <Content Include="Views\ProjectTasks\IndexProjectStat.cshtml" />
     <Content Include="Views\Account\AssignUser.cshtml" />
+    <Content Include="Views\Shared\_LayoutTotalTasks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

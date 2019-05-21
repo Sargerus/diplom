@@ -48,7 +48,6 @@ namespace WebApplication1.Models
         [Display(Name = "Task Estimated")]
         public int TaskEstimated { get; set; }
 
-        [Required]
         [Display(Name = "User Assigned to Task")]
         public String UserAssigned { get; set; }
 

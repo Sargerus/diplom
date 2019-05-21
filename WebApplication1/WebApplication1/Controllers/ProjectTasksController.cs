@@ -20,7 +20,7 @@ namespace WebApplication1.Controllers
 
         public int RandomNumber()
         {
-            if(random == null)
+            if (random == null)
             {
                 random = new Random();
             }
@@ -37,8 +37,8 @@ namespace WebApplication1.Controllers
         public ActionResult DownloadFile(int attachid, int projectid, int taskid)
         {
             Attacments file = (from g in db.Attacments
-                        where g.AttacmentId == attachid && g.ProjectId == projectid && g.TaskId == taskid
-                        select g).First();
+                               where g.AttacmentId == attachid && g.ProjectId == projectid && g.TaskId == taskid
+                               select g).First();
 
             string path = file.PathToFile;
 
@@ -100,10 +100,14 @@ namespace WebApplication1.Controllers
             {
                 color = "indicator-red";
             }
-
             if (task.TaskDone >= task.TaskEstimated)
             {
                 color = "indicator-green";
+            }
+
+            if (task.UserAssigned == null)
+            {
+                color = string.Empty;
             }
 
             return color;
@@ -135,11 +139,29 @@ namespace WebApplication1.Controllers
 
         public ActionResult IndexProjectStat(int? projectid)
         {
+            List<string> userslist = new List<string>();
+
             var tasks = from task in db.ProjectTasks
                         where task.ProjectKey == projectid.Value
                         select task;
 
             ViewBag.projectid = projectid.HasValue ? projectid.Value : -1;
+
+            if (Utility.CanManageProject(projectid.HasValue ? projectid.Value : -1).Equals("1"))
+            {
+                userslist = (from g in db.Project_User
+                             where g.ProjectId == projectid
+                             select g.User).ToList();
+            }
+            else if (Utility.CheckIfLead(Utility.User, projectid.Value))
+            {
+                userslist = (from g in db.Project_User
+                             where g.myLead == Utility.User && g.ProjectId == projectid.Value
+                             select g.User).ToList();
+            }
+
+            userslist.Insert(0, null);
+            ViewBag.UsersToAssign = new SelectList(userslist, null);
 
             var vmtasks = SortTasks(tasks.ToList());
 
@@ -154,6 +176,7 @@ namespace WebApplication1.Controllers
             List<ProjectTaskViewModel> outstanding = new List<ProjectTaskViewModel>();
             List<ProjectTaskViewModel> progress = new List<ProjectTaskViewModel>();
             List<ProjectTaskViewModel> havetime = new List<ProjectTaskViewModel>();
+            List<ProjectTaskViewModel> none = new List<ProjectTaskViewModel>();
             List<ProjectTaskViewModel> done = new List<ProjectTaskViewModel>();
 
             foreach (var task in tasks)
@@ -172,74 +195,75 @@ namespace WebApplication1.Controllers
                     case "indicator-green": { done.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "done-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
                     case "indicator-orange": { progress.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "progress-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
                     case "indicator-blue": { havetime.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "havetime-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
+                    default: { none.Add(new ProjectTaskViewModel { projectTask = task, EndDate = task.RequiredEndDate.ToShortDateString(), colorIndicator = "none-color", TaskDoneFor = Convert.ToDouble((Convert.ToDouble(task.TaskDone) / Convert.ToDouble(task.TaskEstimated)).ToString("00.0")) }); break; }
                 }
-
             }
 
-            outstanding.AddRange(progress);
-            outstanding.AddRange(havetime);
-            outstanding.AddRange(done);
+                outstanding.AddRange(none);
+                outstanding.AddRange(progress);
+                outstanding.AddRange(havetime);
+                outstanding.AddRange(done);
 
-            if (type >= 0)
-            {
-                switch (type)
+                if (type >= 0)
                 {
-                    case 0: outstanding.RemoveAll(g => !g.colorIndicator.Equals("outstanding-color")); break;
-                    case 1: outstanding.RemoveAll(g => !g.colorIndicator.Equals("progress-color") && !g.colorIndicator.Equals("havetime-color")); break;
-                    case 2: outstanding.RemoveAll(g => !g.colorIndicator.Equals("done-color")); break;
+                    switch (type)
+                    {
+                        case 0: outstanding.RemoveAll(g => !g.colorIndicator.Equals("outstanding-color")); break;
+                        case 1: outstanding.RemoveAll(g => !g.colorIndicator.Equals("progress-color") && !g.colorIndicator.Equals("havetime-color")); break;
+                        case 2: outstanding.RemoveAll(g => !g.colorIndicator.Equals("done-color")); break;
+                    }
                 }
+
+                return outstanding;
             }
 
-            return outstanding;
-        }
-
-        // GET: ProjectTasks/Details/5
-        public ActionResult Details(int? taskid, int? projectid, string taskofuser)
-        {
-            if (taskid == null || projectid == null)
+            // GET: ProjectTasks/Details/5
+            public ActionResult Details(int? taskid, int? projectid, string taskofuser)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (taskid == null || projectid == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (taskofuser == null)
+                {
+                    taskofuser = Utility.User;
+                }
+
+                ProjectTask projectTask = db.ProjectTasks.Find(taskid, projectid);
+
+                if (projectTask == null)
+                {
+                    return HttpNotFound();
+                }
+                ProjectTasksDetailsViewModel vmprojecttask = new ProjectTasksDetailsViewModel();
+                vmprojecttask.projectTask = projectTask;
+                vmprojecttask.Attacments = (from g in db.Attacments
+                                            where g.ProjectId == projectTask.ProjectKey && g.TaskId == projectTask.TaskKey
+                                            select g).ToList();
+
+                ViewBag.ViewedUser = taskofuser;
+                return View(vmprojecttask);
             }
 
-            if(taskofuser == null)
+            // GET: ProjectTasks/Create
+            public ActionResult Create(int projectid, string vieweduser)
             {
-                taskofuser = Utility.User;
+                ProjectTask task = new ProjectTask();
+                task.AssignedBy = Utility.User;
+                task.UserAssigned = vieweduser;
+                task.ProjectKey = projectid;
+
+                ViewBag.ViewedUser = vieweduser;
+                ViewBag.ProjectId = projectid;
+                return View(task);
             }
-
-            ProjectTask projectTask = db.ProjectTasks.Find(taskid, projectid);
-
-            if (projectTask == null)
-            {
-                return HttpNotFound();
-            }
-            ProjectTasksDetailsViewModel vmprojecttask = new ProjectTasksDetailsViewModel();
-            vmprojecttask.projectTask = projectTask;
-            vmprojecttask.Attacments = (from g in db.Attacments
-                                       where g.ProjectId == projectTask.ProjectKey && g.TaskId == projectTask.TaskKey
-                                       select g).ToList();
-
-            ViewBag.ViewedUser = taskofuser;
-            return View(vmprojecttask);
-        }
-
-        // GET: ProjectTasks/Create
-        public ActionResult Create(int projectid, string vieweduser)
-        {
-            ProjectTask task = new ProjectTask();
-            task.AssignedBy = Utility.User;
-            task.UserAssigned = vieweduser;
-            task.ProjectKey = projectid;
-
-            ViewBag.ViewedUser = vieweduser;
-            ViewBag.ProjectId = projectid;
-            return View(task);
-        }
 
         // POST: ProjectTasks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TaskKey,ProjectKey,Description,RequiredStartDate,RequiredEndDate,TaskDone,TaskEstimated,UserAssigned,ShortText")] ProjectTask projectTask)
         {
             if (ModelState.IsValid)
@@ -282,7 +306,7 @@ namespace WebApplication1.Controllers
             {
                 db.Entry(projectTask).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", new { taskid = projectTask.TaskKey, projectid = projectTask.ProjectKey,taskofuser = projectTask.UserAssigned });
+                return RedirectToAction("Details", new { taskid = projectTask.TaskKey, projectid = projectTask.ProjectKey, taskofuser = projectTask.UserAssigned });
             }
             return View(projectTask);
         }
