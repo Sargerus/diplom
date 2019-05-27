@@ -102,8 +102,17 @@ namespace WebApplication1
             return answer;
         }
 
-        public static bool CheckIfLead(string leadid, int projectid)
+        public static bool CheckIfLead(string leadid, int projectid, string foruser = null)
         {
+            if(foruser != null)
+            {
+                var oo = from g in db.Project_User
+                         where g.User.Equals(foruser) && g.myLead.Equals(Utility.User)
+                         select g;
+
+                return oo.Any();
+            }
+
             bool answer = false;
 
             var lead = db.Project_User.Find(projectid, leadid);

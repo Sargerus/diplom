@@ -18,6 +18,11 @@ namespace WebApplication1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public string CheckLeadFor(int? projectid, string foruser)
+        {
+            return Utility.CheckIfLead(Utility.User, projectid.Value, foruser) == true ? "1" : "0";
+        }
+
         public string DefineRolePadding(int? projectid, string user)
         {
             string answer = String.Empty;

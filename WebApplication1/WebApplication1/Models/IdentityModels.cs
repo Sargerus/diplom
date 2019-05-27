@@ -47,6 +47,8 @@ namespace WebApplication1.Models
 
         public System.Data.Entity.DbSet<WebApplication1.Models.Project_User> Project_User { get; set; }
 
+        public System.Data.Entity.DbSet<WebApplication1.ViewModel.ProjectTaskViewModel> ProjectTaskViewModels { get; set; }
+
         //public System.Data.Entity.DbSet<WebApplication1.ViewModel.ProjectTaskViewModel> ProjectTaskViewModels { get; set; }
 
         //public System.Data.Entity.DbSet<WebApplication1.ViewModel.StatListViewModel> StatListViewModels { get; set; }

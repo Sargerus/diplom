@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6 col-md-6 text-right" style="padding-right:0;">
                 @Html.ActionLink("Delete", "Delete", new { @id = Model.project.ProjectId }, new { @class = "btn btn-danger", @style = "border-radius:15px;" })
-                @Html.ActionLink("Back to projects", "Index", null, new { @class = "btn btn-success", @style = "border-radius:15px;" })
+                @Html.ActionLink("Back to projects", "Index", "Projects", new { @class = "btn btn-success", @style = "border-radius:15px;" })
             </div>
         </div>
     </div>
@@ -49,13 +49,15 @@
     <hr />
 
     <div>
-        @if (Html.Action("CanManageProject", new { projectid = Model.project.ProjectId }).ToString().Equals("1"))
-        {
-            <div class="text-right" style="padding-right:.5em;">
-                @Html.ActionLink("Stats", "IndexProjectStat", "ProjectTasks", new { @projectid = Model.project.ProjectId }, new { @class = "btn btn-default", @style = "border-radius:15px;" })
+        <div class="text-right" style="padding-right:.5em;">
+            @if (Html.Action("CanManageProject", new { projectid = Model.project.ProjectId }).ToString().Equals("1"))
+            {
+
                 @Html.ActionLink("Change", "Edit", new { @id = Model.project.ProjectId }, new { @class = "btn btn-default", @style = "border-radius:15px;" })
-            </div>
-        }
+
+            }
+            @Html.ActionLink("Stats", "IndexProjectStat", "ProjectTasks", new { @projectid = Model.project.ProjectId }, new { @class = "btn btn-default", @style = "border-radius:15px;" })
+        </div>
 
         <div class="task-container-pk">
 
@@ -90,14 +92,14 @@
 
         <div class="task-container-pk">
 
-            <div class="div-property">
-                <div class="property-header">
-                    @Html.DisplayNameFor(model => Model.project.Budget)
-                </div>
-                <div class="property">
-                    @Html.DisplayFor(model => Model.project.Budget)
-                </div>
+            @*<div class="div-property">
+            <div class="property-header">
+                @Html.DisplayNameFor(model => Model.project.Budget)
             </div>
+            <div class="property">
+                @Html.DisplayFor(model => Model.project.Budget)
+            </div>
+        </div>*@
 
             <div class="div-property">
                 <div class="property-header">
@@ -117,6 +119,15 @@
                 </div>
             </div>
 
+            <div class="div-property">
+                <div class="property-header">
+                    @Html.DisplayNameFor(model => Model.project.HeadOfProject)
+                </div>
+                <div class="property">
+                    @Html.DisplayFor(model => Model.project.HeadOfProject)
+                </div>
+            </div>
+
         </div>
 
         <div class="task-container-pk">
@@ -127,15 +138,6 @@
                 </div>
                 <div class="property">
                     @Html.DisplayFor(model => Model.project.CreatedBy)
-                </div>
-            </div>
-
-            <div class="div-property">
-                <div class="property-header">
-                    @Html.DisplayNameFor(model => Model.project.HeadOfProject)
-                </div>
-                <div class="property">
-                    @Html.DisplayFor(model => Model.project.HeadOfProject)
                 </div>
             </div>
 
@@ -210,6 +212,10 @@
                         }
                         @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success", @style = "border-radius:15px;" })
                     }
+                    else if (Html.Action("CheckLeadFor", new { projectid = Model.project.ProjectId, foruser = user }).ToString().Equals("1"))
+                    {
+                        @Html.ActionLink("Tasks", "Index", "ProjectTasks", new { projectid = Model.project.ProjectId, user = user }, new { @class = "btn btn-sm btn-success", @style = "border-radius:15px;" })
+                    }
 
                 </div>
             </div>
@@ -230,7 +236,7 @@
                     <div class="md-form mb-4 projecttask-line">
                         <label data-error="wrong" data-success="right" for="defaultForm-date">User</label>
                         @*@Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "usertoassign" })*@
-                        <input id="usertoassign" class="form-control ui-widget" placeholder="type at least 3 characters"  />
+                        <input id="usertoassign" class="form-control ui-widget" placeholder="type at least 3 characters" />
                     </div>
 
                     <div class="md-form mb-4 projecttask-line">

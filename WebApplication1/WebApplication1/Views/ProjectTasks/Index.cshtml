@@ -18,7 +18,7 @@
                 @Html.ActionLink((string)ViewBag.ProjectName, "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @style = "color:black;" })
             </div>
             <div class="col-sm-6 col-md-6 text-right" style="padding-right:0;">
-                @Html.ActionLink("Back to project", "Details", new { @id = ViewBag.ProjectId }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
+                @Html.ActionLink("Back to project", "Details", "Projects", new { @id = ViewBag.ProjectId }, new { @class = "btn btn-success", @style = "border-radius:15px;" })
             </div>
         </div>
     </div>

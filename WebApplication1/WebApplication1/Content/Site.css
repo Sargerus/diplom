@@ -1,11 +1,13 @@
 ﻿/*.main-navigation-bar-pk {
 }*/
-
-
-.required{
-    font-weight:bold;
-    color:red;
-    font-size:120%;
+.hover-pointer:hover {
+    cursor: pointer;
+    
+}
+.required {
+    font-weight: bold;
+    color: red;
+    font-size: 120%;
 }
 .corner-button {
     transition: .2s ease-out;
@@ -58,18 +60,22 @@
 }
 
 .outstanding-block {
+    margin-top:.5em;
     background-color: rgba(255, 213, 208, 0.20);
 }
 
 .progress-block {
+    margin-top: .5em;
     background-color: rgba(255, 244, 208, 0.20);
 }
 
 .done-block {
+    margin-top: .5em;
     background-color: rgba(213, 255, 208,0.2);
 }
 
 .none-block {
+    margin-top: .5em;
     background-color: rgba(97, 96, 93, 0.1);
 }
 
@@ -117,10 +123,11 @@ ul.ui-autocomplete {
 }
 
 .div-hr {
-    margin-left: 3%;
+    margin:3% .3em;
+    /*margin-left: 3%;
     margin-right: 3%;
     margin-top: .3em;
-    margin-bottom: .3em;
+    margin-bottom: .3em;*/
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -272,12 +279,6 @@ td {
     text-align: center;
     /*width: 50%;*/
     /*margin: 15px auto;*/
-}
-
-.progress-value {
-    /*position: absolute;
-    right: 0;
-    left: 0;*/
 }
 
 .task-container-pk {

@@ -40,7 +40,7 @@ namespace WebApplication1.Models
         [DataType(DataType.Date)]
         [Display(Name = "Required End Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime RequiredEndDate { get; set; }
+        public DateTime? RequiredEndDate { get; set; }
 
         [Display(Name = "Task Done")]
         public int TaskDone { get; set; }

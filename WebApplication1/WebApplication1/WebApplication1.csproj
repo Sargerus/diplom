@@ -384,6 +384,7 @@
     <Content Include="Views\ProjectTasks\IndexProjectStat.cshtml" />
     <Content Include="Views\Account\AssignUser.cshtml" />
     <Content Include="Views\Shared\_LayoutTotalTasks.cshtml" />
+    <Content Include="Views\ProjectTasks\IndexProjectStatLimited.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

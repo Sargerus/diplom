@@ -27,7 +27,6 @@
         List<WebApplication1.ViewModel.ProjectTaskViewModel> doneTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
         List<WebApplication1.ViewModel.ProjectTaskViewModel> processingTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
         List<WebApplication1.ViewModel.ProjectTaskViewModel> outstandingTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
-        List<WebApplication1.ViewModel.ProjectTaskViewModel> noneTasks = new List<WebApplication1.ViewModel.ProjectTaskViewModel>();
 
         foreach (var g in Model)
         {
@@ -39,13 +38,9 @@
             {
                 processingTasks.Add(g);
             }
-            else if (g.colorIndicator.Equals("outstanding-color"))
-            {
-                outstandingTasks.Add(g);
-            }
             else
             {
-                noneTasks.Add(g);
+                outstandingTasks.Add(g);
             }
         }
     }
@@ -74,7 +69,15 @@
 
     <div class="row text-right" style="margin: 1.5em -.3em;padding-right:.9em;">
         <div class="input-group col-sm-3 text-right" style="float:left;padding-right:.5em">
-            @Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "userssearch" })
+            @if (Html.Action("AmILead", new { projectid = ViewBag.projectid }).ToString().Equals("1"))
+            {
+                @Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "userssearch" })
+            }
+            else
+            {
+                @Html.DropDownList("UsersToAssign", null, htmlAttributes: new { @class = "form-control", id = "userssearch", disabled = "true" })
+            }
+
         </div>
         <div class="input-group col-sm-3">
             <input class="form-control" id="searchtext" placeholder="Search by task name..." style="border-radius:15px 0 0 15px;">
@@ -85,7 +88,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="done-task-container">
                 <div class="done-header text-center">Done</div>
                 @foreach (var task in doneTasks)
@@ -101,7 +104,15 @@
                         </div>
 
                         <div class="hover-pointer" style="margin-left:.2em;margin-top:3em;font-size:85%;">
-                            <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey, '@task.projectTask.ShortText')">Assigned:</a> @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
+                            @if (Html.Action("AmILead", new { projectid = ViewBag.projectid }).ToString().Equals("1"))
+                            {
+                                <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey, '@task.projectTask.ShortText')">Assigned:</a>
+                            }
+                            else
+                            {
+                                @: Assigned
+                            }
+                            @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
                         </div>
                         <div class="row" style="font-size:85%;">
 
@@ -117,41 +128,8 @@
                 }
             </div>
         </div>
-        <div class="col-xs-3">
-            <div class="none-task-container">
-                <div class="none-header text-center">None</div>
-                @foreach (var task in noneTasks)
-                {
-                    //processingTasksCount += 1;
-                    //totalprocessingHours += task.projectTask.TaskDone;
-                    //totalRequiredprocessingHours += task.projectTask.TaskEstimated;
-                    <div class="projecttask-line none-block">
-                        <div style="padding-left:.2em;font-size:110%;">
-                            @Html.ActionLink(@task.projectTask.ShortText, "Details", new { taskid = task.projectTask.TaskKey, projectid = task.projectTask.ProjectKey, taskofuser = task.projectTask.UserAssigned }, new { @target = "_blank" })<br />
-                        </div>
 
-                        <div class="hover-pointer" style="margin-left:.2em;margin-top:3em;font-size:85%;">
-                            <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey)">Assign User</a>
-                        </div>
-                        <div class="row" style="font-size:85%;">
-
-                            <div class="col-sm-8 text-left">
-                                Required End Date:
-                                @if (@task.projectTask.RequiredEndDate.HasValue)
-                                {
-                                    @task.projectTask.RequiredEndDate.Value.ToString("dd.MM.yyyy")
-                                }
-                            </div>
-                            <div class="col-sm-4 text-right" style="padding-left:.1em;">
-                                @task.projectTask.TaskDone / @task.projectTask.TaskEstimated h
-                            </div>
-
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="progress-task-container">
                 <div class="processing-header text-center">Processing</div>
                 @foreach (var task in processingTasks)
@@ -165,7 +143,15 @@
                         </div>
 
                         <div class="hover-pointer" style="margin-left:.2em;margin-top:3em;font-size:85%;">
-                            <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey, '@task.projectTask.ShortText')">Assigned:</a> @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
+                            @if (Html.Action("AmILead", new { projectid = ViewBag.projectid }).ToString().Equals("1"))
+                            {
+                                <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey, '@task.projectTask.ShortText')">Assigned:</a>
+                            }
+                            else
+                            {
+                                @: Assigned
+                            }
+                            @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
                         </div>
                         <div class="row" style="font-size:85%;">
 
@@ -185,7 +171,7 @@
                 }
             </div>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="outstanding-task-container">
                 <div class="outstanding-header text-center">Outstanding</div>
                 @foreach (var task in outstandingTasks)
@@ -199,7 +185,15 @@
                         </div>
 
                         <div class="hover-pointer" style="margin-left:.2em;margin-top:3em;font-size:85%;">
-                            <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey, '@task.projectTask.ShortText')">Assigned:</a> @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
+                            @if (Html.Action("AmILead", new { projectid = ViewBag.projectid }).ToString().Equals("1"))
+                            {
+                                <a style="color:black;" data-toggle="modal" data-target="#modalAssignForm" onclick="SaveTaskInfo(@task.projectTask.TaskKey, @task.projectTask.ProjectKey, '@task.projectTask.ShortText')">Assigned:</a>
+                            }
+                            else
+                            {
+                                @: Assigned
+                            }
+                            @Html.ActionLink(task.projectTask.UserAssigned, "Index", new { projectId = task.projectTask.ProjectKey, user = task.projectTask.UserAssigned }, new { style = "text-decoration:none;color:black;" })
                         </div>
                         <div class="row" style="font-size:85%;">
 
@@ -216,27 +210,6 @@
             </div>
         </div>
     </div>
-
-    @*<div class="row">
-            <div class="col-xs-4">
-                <hr />
-                Tasks: @doneTasksCount<br />
-                @*Total Completed: @totalDoneHours<br />
-                Total Estimated: @totalRequiredDoneHours
-            </div>
-            <div class="col-xs-4">
-                <hr />
-                Tasks: @processingTasksCount<br />
-                Total Completed: @totalprocessingHours<br />
-                Total Estimated: @totalRequiredprocessingHours
-            </div>
-            <div class="col-xs-4">
-                <hr />
-                Tasks: @outstandingTasksCount<br />
-                Total Completed: @totaloutstandingHours<br />
-                Total Estimated: @totalRequiredoutstandingHours
-            </div>
-        </div>*@
 
     <div data-toggle="modal" data-target="#modalCreateTaskForm" class="corner-button"><i class="fa fa-plus" style="font-weight:bold;"></i></div>
 
@@ -299,7 +272,7 @@
                     <div class="projecttask-line">
                         <div class="row">
                             <div class="col-sm-6"><b>Start Date<sup class="required">*</sup></b> <input type="text" class="datepicker form-control" id="start-date" /></div>
-                            <div class="col-sm-6"><b>End Date</b><input type="text" class="datepicker form-control" id="end-date" /></div>
+                            <div class="col-sm-6"><b>End Date<sup class="required">*</sup></b><input type="text" class="datepicker form-control" id="end-date" /></div>
                         </div>
                     </div>
 

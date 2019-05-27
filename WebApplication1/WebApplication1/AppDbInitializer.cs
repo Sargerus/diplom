@@ -75,11 +75,11 @@ namespace WebApplication1
 
                     context.Projects.Add(new Project
                     {
-                        CreatedBy = "administrator",
+                        CreatedBy = "user",
                         CreatedOn = DateTime.Now,
                         ProjectDescription = "Second project",
                         ProjectId = 2,
-                        HeadOfProject = "administrator",
+                        HeadOfProject = "user",
                         StartDate = DateTime.Now,
                         EndDate = DateTime.Now.AddDays(365)
                     });

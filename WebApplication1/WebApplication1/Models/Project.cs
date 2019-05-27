@@ -35,7 +35,7 @@ namespace WebApplication1.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [ProjectDate(-2,18250)]
+        //[ProjectDate(-2,18250)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
@@ -43,7 +43,7 @@ namespace WebApplication1.Models
         [Display(Name = "Long description")]
         public string LongDescription { get; set; }
 
-        [ProjectDate(-2,18250)]
+        //[ProjectDate(-2,18250)]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Display(Name = "End Date")]
